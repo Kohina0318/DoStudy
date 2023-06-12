@@ -14,5 +14,18 @@ const getContent= async (cid,sid,ctid) => {
   }
 };
 
+const getContentDetail= async (cid) => {
+  try {
+    const response = await fetch(`${await SERVER_URL()}/api/content-detail-list?content_id=${cid}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    });
+    const result = await response.json();
+    return result;
+  } catch (err) {
+    console.log('error in getContent...in ContentRepo ', err);
+  }
+};
 
-export {  getContent };
+
+export {getContent,  getContentDetail };

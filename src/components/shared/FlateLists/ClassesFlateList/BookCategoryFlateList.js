@@ -26,7 +26,7 @@ function BookCategoryDataFlatList({ item, themecolor, boxSize }) {
         source={{ uri: item.image }}
         style={{...styles.subImg}}
       />
-      <View style={{...styles.subConView}}>
+      <View style={{...styles.subConView,backgroundColor: themecolor.CONTENTHEADEROPACITY}}>
       <Text
         allowFontScaling={false}
         numberOfLines={1}

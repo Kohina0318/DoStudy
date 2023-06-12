@@ -89,9 +89,9 @@ const MainNavigatorstyle = StyleSheet.create({
         height: height *0.945,
     },
     userimg: {
-        width: "70%",
+        width: "80%",
         resizeMode: 'contain',
-        height:100
+        height:120
     },
     view1: {
         flexDirection: 'row',
@@ -127,7 +127,9 @@ const MainNavigatorstyle = StyleSheet.create({
         borderWidth: 1,
       },
       ImageRView:{
-        left:5, justifyContent:"center",alignItems:'center'
+        // left:5,
+         justifyContent:"center",alignItems:'center',
+         marginBottom:30
       }
 
 })

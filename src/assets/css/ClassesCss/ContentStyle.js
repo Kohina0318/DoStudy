@@ -28,20 +28,27 @@ const styles = StyleSheet.create({
   heading:{
     fontSize: FontSize.labelText4,
     fontWeight: 'bold',
+    fontFamily: FontFamily.PopinsMedium,
   },
   txt:
   {
       color: Colors.bluetheme,
       fontFamily: FontFamily.Popinssemibold,
       fontSize: FontSize.labelText2,
-      fontWeight: 'bold',
+      f1ontWeight: 'bold',
   },
   txt1:
   {
       fontFamily: FontFamily.Popinssemibold,
       color: Colors.black,
       fontSize: FontSize.labelText4,
-      fontWeight: 'bold',
+  },
+  txt2:
+  {
+      color: Colors.bluetheme,
+      fontFamily: FontFamily.PopinsMedium,
+      fontSize: FontSize.labelText2,
+      
   },
   mt5:{
     marginTop:7
@@ -65,10 +72,31 @@ const styles = StyleSheet.create({
     height: height*0.4,
 },
 
+touchview: {
+  // width: width,
+  position: 'absolute',
+  bottom: 0,
+  height: 60,
+  justifyContent: 'center',
+  alignSelf: 'flex-end',
+  backgroundColor:'transparent'
+},
 
+mainView: {
+  margin:10,
+  alignSelf: 'center',
+  justifyContent: 'center',
+  width: width * 0.15,
+  height:width * 0.15,
+  borderRadius:50,
+  borderWidth:1
+},
+UnitHeading:{
+  fontSize: FontSize.labelText5,
+  fontWeight: 'bold',
+  fontFamily: FontFamily.PopinsMedium,
+},
 
-
-  
   
 });
 

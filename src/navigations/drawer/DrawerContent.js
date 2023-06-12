@@ -41,7 +41,7 @@ export default function DrawerContent(props) {
         <View style={{ ...MainNavigatorstyle.ImageRView }}>
           <ImageR
             style={{ ...MainNavigatorstyle.userimg }}
-            source={require('../../assets/images/dostudy.jpg')}
+            source={require('../../assets/images/newlog.png')}
           />
         </View>
 
