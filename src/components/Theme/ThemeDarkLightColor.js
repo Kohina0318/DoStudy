@@ -86,10 +86,13 @@ class MyThemeClass {
       STARCOLOR: this.mode === 'dark' ?  '#f39c12':  '#ffd32a',
       BACKICON: this.mode === 'dark' ? '#FFF' : Colors.bluetheme,
       ICONINPUT: this.mode === 'dark' ? 'grey' : Colors.bluetheme,
-      OTPBOXCOLOR: this.mode === 'dark' ? '#3c3e44' : Colors.Textinputbg,
+      OTPBOXCOLOR: this.mode === 'dark' ? '#3c3e44' : 'rgba(245, 245, 245, 0.9)',
       BORDERCOLOR: this.mode === 'dark' ? Colors.bluetheme : "#fff",
       ADDTOCARTBUTTONCOLOR:  this.mode === 'dark' ? "#0f3479" : Colors.bluetheme,
+      ButtonIconLight:  this.mode === 'dark' ? "rgba(222, 222, 242, 1)" : 'rgba(222, 222, 242, 1)',
+      ButtonIconLightRight:  this.mode === 'dark' ? "rgba(237, 59, 59, 0.65)" : 'rgba(252, 39, 39, 0.65)',
       MODAL: this.mode === 'dark' ? '#9E9E9E' : '#a3bad357',
+      STATUSEBARCONTENT: this.mode === 'dark' ? 'light-content' : 'dark-content',
      
     }
 

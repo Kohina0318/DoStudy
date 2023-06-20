@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, } from 'react-native';
+import { View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   TransitionSpecs,
@@ -15,6 +15,8 @@ import FA from 'react-native-vector-icons/FontAwesome';
 import AD from 'react-native-vector-icons/AntDesign';
 import Ii from 'react-native-vector-icons/Ionicons';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
+import Profile from '../../screens/profile/Profile';
+import Support from '../../screens/support/Support';
 
 const Tab = createBottomTabNavigator();
 const MyTransition = {
@@ -26,9 +28,10 @@ const MyTransition = {
   headerStyleInterpolator: HeaderStyleInterpolators.forFade,
 };
 
-export default function BottomNavigationStack() {
+export default function BottomNavigationStack(props) {
   const mode = useSelector(state => state.mode);
   const themecolor = new MyThemeClass(mode).getThemeColor();
+
 
   return (
     <Tab.Navigator
@@ -54,49 +57,38 @@ export default function BottomNavigationStack() {
         component={Dashboard}
         options={{
           MyTransition,
-          tabBarLabel: ' ',
-          tabBarLabelStyle: { bottom: -5 },
+          tabBarLabel: '',
+          tabBarLabelStyle: { top: -4, },
           tabBarIcon: ({ color, size, focused }) =>
             focused ? (
               <>
                 <AD name="home" color={themecolor.BACKICON} size={24} />
-                <View
+                {/* <View
                   style={{
                     ...MainNavigatorstyle.tabbarbottomborder,
                     backgroundColor: themecolor.BACKICON,
                   }}
-                />
+                /> */}
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    ...MainNavigatorstyle.abelstylecss2,
+                    color: themecolor.BACKICON,
+                  }}>
+                  Home
+                </Text>
               </>
             ) : (
               <>
                 <AD name="home" size={24} color={themecolor.TXTGREY} />
-              </>
-            ),
-          headerShown: false,
-        }}
-      />
-
-      <Tab.Screen
-        name="Categories"
-        component=""
-        options={{
-          MyTransition,
-          tabBarLabel: ' ',
-          tabBarLabelStyle: { bottom: -5 },
-          tabBarIcon: ({ color, size, focused }) =>
-            focused ? (
-              <>
-                <AD name="appstore-o" color={themecolor.BACKICON} size={22} />
-                <View
+                <Text
+                  allowFontScaling={false}
                   style={{
-                    ...MainNavigatorstyle.tabbarbottomborder,
-                    backgroundColor: themecolor.BACKICON,
-                  }}
-                />
-              </>
-            ) : (
-              <>
-                <AD name="appstore-o" size={22} color={themecolor.TXTGREY} />
+                    ...MainNavigatorstyle.abelstylecss2,
+                    color: themecolor.TXTGREY,
+                  }}>
+                  Home
+                </Text>
               </>
             ),
           headerShown: false,
@@ -104,8 +96,8 @@ export default function BottomNavigationStack() {
       />
 
       <Tab.Screen
-        name="Contact Us"
-        component={""}
+        name="Help & Support"
+        component={Support}
         options={{
           MyTransition,
           tabBarLabel: ' ',
@@ -114,25 +106,36 @@ export default function BottomNavigationStack() {
             focused ? (
               <>
                 <Ii name="ios-chatbubble-ellipses-outline" color={themecolor.BACKICON} size={24} />
-                <View
+                <Text
+                  allowFontScaling={false}
                   style={{
-                    ...MainNavigatorstyle.tabbarbottomborder,
-                    backgroundColor: themecolor.BACKICON,
-                  }}
-                />
+                    ...MainNavigatorstyle.abelstylecss2,
+                    color: themecolor.BACKICON,
+                  }}>
+                 Help & Support
+                </Text>
               </>
             ) : (
               <>
-                 <Ii name="ios-chatbubble-ellipses-outline"  size={24} color={themecolor.TXTGREY} />
+                <Ii name="ios-chatbubble-ellipses-outline" size={24} color={themecolor.TXTGREY} />
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    ...MainNavigatorstyle.abelstylecss2,
+                    color: themecolor.TXTGREY,
+                  }}>
+                 Help & Support
+                </Text>
               </>
             ),
           headerShown: false,
         }}
       />
 
+
       <Tab.Screen
-        name="Profile"
-        component={""}
+        name={"Profile"}
+        component={Profile}
         options={{
           MyTransition,
           tabBarLabel: ' ',
@@ -141,16 +144,26 @@ export default function BottomNavigationStack() {
             focused ? (
               <>
                 <FA name="user-o" color={themecolor.BACKICON} size={22} />
-                <View
+                <Text
+                  allowFontScaling={false}
                   style={{
-                    ...MainNavigatorstyle.tabbarbottomborder,
-                    backgroundColor: themecolor.BACKICON,
-                  }}
-                />
+                    ...MainNavigatorstyle.abelstylecss2,
+                    color: themecolor.BACKICON,
+                  }}>
+                 Profile
+                </Text>
               </>
             ) : (
               <>
                 <FA name="user-o" size={22} color={themecolor.TXTGREY} />
+                <Text
+                  allowFontScaling={false}
+                  style={{
+                    ...MainNavigatorstyle.abelstylecss2,
+                    color: themecolor.TXTGREY,
+                  }}>
+                 Profile
+                </Text>
               </>
             ),
           headerShown: false,

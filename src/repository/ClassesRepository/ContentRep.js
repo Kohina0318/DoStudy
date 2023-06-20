@@ -5,7 +5,8 @@ const getContent= async (cid,sid,ctid) => {
   try {
     const response = await fetch(`${await SERVER_URL()}/api/content-list?class_id=${cid}&subject_id=${sid}&category_id=${ctid}`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      headers: { 'Content-Type': 'application/json;charset=utf-8',
+      Authorization: `${await getAppToken()}` },
     });
     const result = await response.json();
     return result;
@@ -18,7 +19,8 @@ const getContentDetail= async (cid) => {
   try {
     const response = await fetch(`${await SERVER_URL()}/api/content-detail-list?content_id=${cid}`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      headers: { 'Content-Type': 'application/json;charset=utf-8',
+      Authorization: `${await getAppToken()}` },
     });
     const result = await response.json();
     return result;

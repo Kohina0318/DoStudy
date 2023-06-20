@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Dimensions, Text, BackHandler,
+    Dimensions, Text, BackHandler,Image
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -13,6 +13,7 @@ import HalfSizeButton from '../../components/shared/button/halfSizeButton';
 import Tts from 'react-native-tts';
 import { getContentDetail } from '../../repository/ClassesRepository/ContentRep';
 import IC from 'react-native-vector-icons/Ionicons';
+
 const { width } = Dimensions.get('screen');
 
 export default function ContentDetail(props) {
@@ -35,10 +36,12 @@ export default function ContentDetail(props) {
     const mode = useSelector(state => state.mode);
     const themecolor = new MyThemeClass(mode).getThemeColor();
 
-    const [loader, setLoader] = useState(false);
+    const [loader, setLoader] = useState(true);
     const [data, setData] = useState([]);
     const [description, setDescription] = useState('');
+    const [description1, setDescription1] = useState('');
     const [speckerOnStop, setSpeckerOnStop] = useState(0);
+    const [stringStopLength, setStringStopLength] = useState(0);
 
     const handleContentDetail = async () => {
         try {
@@ -46,6 +49,8 @@ export default function ContentDetail(props) {
             if (res.status === true) {
                 setData(res.data);
                 setDescription(res.data[0].description)
+                setDescription1(res.data[0].description)
+                setLoader(false)
             } else {
                 setLoader(false)
             }
@@ -67,10 +72,22 @@ export default function ContentDetail(props) {
     }, []);
 
     const handleVoice = async () => {
-        Tts.speak(description);
+        Tts.setDefaultLanguage('hi-IN');
+        Tts.setDefaultRate(0.2);
+        Tts.addEventListener('tts-progress', (event) => { setStringStopLength(event.end) });
+
+        if (stringStopLength > 0) {
+            Tts.speak(description1);
+        }
+        else {
+            Tts.speak(description);
+        }
+        setSpeckerOnStop(1)
     }
     const handleStopVoice = async () => {
         Tts.stop();
+        var data = description1.slice(stringStopLength);
+        setDescription1(data)
         setSpeckerOnStop(0)
     }
 
@@ -92,10 +109,17 @@ export default function ContentDetail(props) {
                                 ...styles.datalistView,
                                 backgroundColor: themecolor.BOXBORDERCOLOR,
                                 borderColor: themecolor.BOXBORDERCOLOR1,
-                                padding:20
+                                padding: 20
                             }}
                         >
-                              <View style={styles.mt5}/>
+                            <View style={styles.mt5} />
+
+                            <Image
+                                source={{ uri: props.route.params.UnitImage }}
+                                style={{ width: 300, height: 200,  }}
+                                resizeMode= 'contain'
+                            />
+                            <View style={styles.mt5} />
                             <Text
                                 allowFontScaling={false}
                                 style={{
@@ -105,15 +129,17 @@ export default function ContentDetail(props) {
                                 {props.route.params.UnitName}
                             </Text>
 
-                            <View style={styles.mt5}/>
+                            <View style={styles.mt5} />
+                            <View style={styles.mt5} />
 
                             <Text
+                                selectable={true}
                                 allowFontScaling={false}
                                 style={{
                                     ...styles.txt,
                                     color: themecolor.TXTWHITE,
                                 }}>{description}</Text>
-                         
+
                         </View>
 
                         <View style={{ marginVertical: 77 }} />

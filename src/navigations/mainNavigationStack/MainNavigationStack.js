@@ -17,6 +17,17 @@ import Content from '../../screens/classes/Content';
 import ContentDetail from '../../screens/classes/ContentDetail';
 import Classes from '../../screens/classes/Classes';
 import SubjectCategory from '../../screens/classes/SubjectCategory';
+import Profile from '../../screens/profile/Profile';
+import Support from '../../screens/support/Support';
+import SignIn from '../../screens/auth/SignIn';
+import SignUp from '../../screens/auth/SignUp';
+import ForgotPswd from '../../screens/auth/ForgotPswd';
+import EditProfile from '../../screens/profile/EditProfile';
+import ChangePswd from '../../screens/profile/ChangePswd';
+import VerifyOtp from '../../screens/auth/VerifyOtp';
+import VerifyOtpForgotPswd from '../../screens/auth/VerifyOtpForgotPswd';
+import ChangePswdByForgot from '../../screens/auth/ChangePswdByForgot';
+import MemberShip from '../../screens/MemberShip/MemberShip';
 
 
 function MainNavigationStack(props) {
@@ -67,11 +78,67 @@ function MainNavigationStack(props) {
           component={Content}
           options={{ headerShown: false }}
         />
-       <Stack.Screen
+        <Stack.Screen
           name="ContentDetail"
           component={ContentDetail}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ChangePswd"
+          component={ChangePswd}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Support"
+          component={Support}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SignIn"
+          component={SignIn}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="VerifyOtp"
+          component={VerifyOtp}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SignUp"
+          component={SignUp}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ForgotPswd"
+          component={ForgotPswd}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="VerifyOtpForgotPswd"
+          component={VerifyOtpForgotPswd}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ChangePswdByForgot"
+          component={ChangePswdByForgot}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="MemberShip"
+          component={MemberShip}
+          options={{ headerShown: false }}
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

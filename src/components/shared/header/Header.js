@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Image,
+  StatusBar,
   Text,
   View,
   Dimensions,
@@ -27,6 +28,12 @@ export default function Header(props) {
         backgroundColor: themecolor.LOGINTHEMECOLOR1,
         borderBottomColor: themecolor.BOXBORDERCOLOR1
       }}>
+
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle={themecolor.STATUSEBARCONTENT}
+      />
 
       <View style={{ ...styles.mainViewContainer }}>
         <View
@@ -57,8 +64,8 @@ export default function Header(props) {
 
           <View style={{ ...styles.iconTitle, }}>
             {props.title == 'Home' ? (
-              <View style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>              
-              {/* <Image
+              <View style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
+                {/* <Image
                 source={require('../../../assets/images/dostudy.jpg')}
                 style={{ width: 60, height: 70, resizeMode: 'contain', }}
               /> */}
