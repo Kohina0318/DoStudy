@@ -17,6 +17,7 @@ import { styles } from '../../assets/css/ProfileCss/EditProfileStyle';
 import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import HalfSizeButton from '../../components/shared/button/halfSizeButton';
+import { postforgotPassword } from '../../repository/AuthRepository/ForgotRepository';
 
 const { width, height } = Dimensions.get('window');
 
@@ -47,6 +48,68 @@ export default function ChangePswdByForgot(props) {
     const [confirmNewPswd, setConfirmNewPswd] = useState('');
     const [isPasswordSecure1, setIsPasswordSecure1] = useState(true);
     const [isPasswordSecure2, setIsPasswordSecure2] = useState(true);
+
+
+    const handleSubmit = async () => {
+         if (newPswd == '') {
+            toast.show('New Password is required!', {
+                type: 'warning',
+                placement: 'bottom',
+                duration: 1000,
+                offset: 30,
+                animationType: 'slide-in',
+            });
+        } else if (confirmNewPswd == '') {
+            toast.show('Confirm New Password is required!', {
+                type: 'warning',
+                placement: 'bottom',
+                duration: 1000,
+                offset: 30,
+                animationType: 'slide-in',
+            });
+        } else {
+            try {
+                let formdata = new FormData();
+                formdata.append('phone', props.route.params.mobileNo);
+                formdata.append('otp', props.route.params.otp);
+                formdata.append('password1', newPswd);
+                formdata.append('password2', confirmNewPswd);
+
+                var res = await postforgotPassword(formdata);
+
+                if (res.status === true) {
+                    navigation.navigate("Dashboard")
+                    toast.show(res.meassage, {
+                        type: 'success',
+                        placement: 'bottom',
+                        duration: 1000,
+                        offset: 30,
+                        animationType: 'slide-in',
+                    });
+                }
+                else {
+                    toast.show(res.message, {
+                        type: 'warning',
+                        placement: 'bottom',
+                        duration: 1000,
+                        offset: 30,
+                        animationType: 'slide-in',
+                    });
+                }
+
+            } catch (e) {
+                console.log('errrror in..getManageAddress page in address-->', e);
+                toast.show('Something went wrong!, Try again later.', {
+                    type: 'danger',
+                    placement: 'bottom',
+                    duration: 1000,
+                    offset: 30,
+                    animationType: 'slide-in',
+                });
+            }
+        }
+    };
+
 
     return (
         <View style={{ backgroundColor: themecolor.THEMECOLOR, ...styles.bg }}>
@@ -171,7 +234,7 @@ export default function ChangePswdByForgot(props) {
                         <HalfSizeButton
                         title="Update Password"
                         icon=""
-                        onPress=""
+                        onPress={()=>handleSubmit()}
                         color="#fff"
                         backgroundColor={themecolor.ADDTOCARTBUTTONCOLOR}
                         borderColor={themecolor.BOXBORDERCOLOR1}

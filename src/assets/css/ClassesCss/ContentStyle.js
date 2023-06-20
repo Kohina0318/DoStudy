@@ -71,6 +71,9 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     height: height*0.4,
 },
+m20:{
+  margin:15
+},
 
 touchview: {
   // width: width,
@@ -96,6 +99,14 @@ UnitHeading:{
   fontWeight: 'bold',
   fontFamily: FontFamily.PopinsMedium,
 },
+
+backgroundVideo:{
+  position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+}
 
   
 });

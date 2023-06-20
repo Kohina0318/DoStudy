@@ -101,6 +101,7 @@ export default function EditProfile(props) {
 
 
     const handleEditProfile = async () => {
+        setLoader(true);
         if (mobileNo == '') {
             toast.show('Mobile number is required!', {
                 type: 'warning',
@@ -150,8 +151,8 @@ export default function EditProfile(props) {
                 formdata.append('profile_photo', image)
 
                 const res = await postEditProfile(formdata);
-                console.log("postEditProfile....", res)
                 if (res.status == true) {
+                    setLoader(false);
                     setShowmodal(!showmodal)
 
                 }
@@ -528,7 +529,7 @@ export default function EditProfile(props) {
                 <VerifyModel
                     setShowmodal={setShowmodal}
                     title={'Edit Profile Successfully.'}
-                    navigateTo='Profile'
+                    navigateTo='Dashboard'
                 />
             )}
         </View>

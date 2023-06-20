@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Dimensions, Text, BackHandler,Image
+    Dimensions, Text, BackHandler, Image
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -13,6 +13,8 @@ import HalfSizeButton from '../../components/shared/button/halfSizeButton';
 import Tts from 'react-native-tts';
 import { getContentDetail } from '../../repository/ClassesRepository/ContentRep';
 import IC from 'react-native-vector-icons/Ionicons';
+import VideoPlayer from 'react-native-video-player';
+import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRepo';
 
 const { width } = Dimensions.get('screen');
 
@@ -42,6 +44,27 @@ export default function ContentDetail(props) {
     const [description1, setDescription1] = useState('');
     const [speckerOnStop, setSpeckerOnStop] = useState(0);
     const [stringStopLength, setStringStopLength] = useState(0);
+    const [profilData, setProfileData] = useState({});
+
+
+    const handleUserData = async () => {
+        try {
+            var res = await getProfileInfo();
+            if (res.status === true) {
+                setProfileData(res.data[0])
+            }
+            else {
+                toast.show(res.message, {
+                    type: 'warning',
+                    placement: 'bottom',
+                    duration: 1000,
+                    offset: 30,
+                    animationType: 'slide-in',
+                });
+            }
+        } catch (e) {
+        }
+    };
 
     const handleContentDetail = async () => {
         try {
@@ -68,14 +91,15 @@ export default function ContentDetail(props) {
     }
 
     useEffect(() => {
+        handleUserData();
         handleContentDetail();
     }, []);
 
     const handleVoice = async () => {
-        Tts.setDefaultLanguage('hi-IN');
-        Tts.setDefaultRate(0.2);
+        Tts.setDefaultRate(0.4);
         Tts.addEventListener('tts-progress', (event) => { setStringStopLength(event.end) });
-
+        Tts.setDefaultLanguage('hin-IND')
+        // Tts.setDefaultVoice('en-IN-Wavenet-C')
         if (stringStopLength > 0) {
             Tts.speak(description1);
         }
@@ -116,8 +140,8 @@ export default function ContentDetail(props) {
 
                             <Image
                                 source={{ uri: props.route.params.UnitImage }}
-                                style={{ width: 300, height: 200,  }}
-                                resizeMode= 'contain'
+                                style={{ width: 300, height: 200, }}
+                                resizeMode='contain'
                             />
                             <View style={styles.mt5} />
                             <Text
@@ -132,13 +156,44 @@ export default function ContentDetail(props) {
                             <View style={styles.mt5} />
                             <View style={styles.mt5} />
 
-                            <Text
-                                selectable={true}
-                                allowFontScaling={false}
-                                style={{
-                                    ...styles.txt,
-                                    color: themecolor.TXTWHITE,
-                                }}>{description}</Text>
+
+                            {profilData.package_type === 0 ? (
+                                <Text
+                                    selectable={true}
+                                    allowFontScaling={false}
+                                    numberOfLines={2}
+                                    ellipsizeMode='tail'
+                                    style={{
+                                        ...styles.txt,
+                                        color: themecolor.TXTWHITE,
+                                    }}>{description}</Text>
+
+                            ) : (
+                                <>
+                                    <Text
+                                        selectable={true}
+                                        allowFontScaling={false}
+                                        style={{
+                                            ...styles.txt,
+                                            color: themecolor.TXTWHITE,
+                                        }}>{description}</Text>
+
+
+                                    <View style={{ ...styles.m20, width: "100%" }}>
+                                        <VideoPlayer
+                                            video={{ uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' }}
+                                            videoWidth={1500}
+                                            videoHeight={1000}
+                                            thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
+                                            autoPlay={false}
+                                            defaultMuted={true}
+                                            showDuration={true}
+                                            disableFullscreen={true}
+                                            disableSeek={true}
+                                        />
+                                    </View>
+                                </>
+                            )}
 
                         </View>
 

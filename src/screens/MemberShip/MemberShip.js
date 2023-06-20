@@ -112,7 +112,7 @@ export default function MemberShip(props) {
 
                         {data.length > 0 ? (
                             <>
-                                <MemberFlatList data={data} userName={name} userEmail={email} userPhoneNo={phone} />
+                                <MemberFlatList data={data} userName={name} userEmail={email} userPhoneNo={phone} setLoader={setLoader} />
                                 <View style={styles.margT} />
                             </>
                         ) : (

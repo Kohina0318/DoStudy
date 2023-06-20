@@ -49,7 +49,6 @@ export default function DrawerContent(props) {
 
 
   const handleLogout = async () => {
-    
     try {
       var res = await postSignOut()
 

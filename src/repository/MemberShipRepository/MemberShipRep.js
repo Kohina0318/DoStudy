@@ -15,5 +15,24 @@ const getPackage = async () => {
   }
 };
 
+const postMemberShipPayment = async (formdata) => {
+  try {
+    const response = await fetch(
+      `${await SERVER_URL()}/api/purchase-package`,
+      {
+        method: 'POST',
+        headers: {'Content-Type': 'multipart/form-data',
+        Authorization: `${await getAppToken()}`},
+        body: formdata,
+      },
+    );
+    const result = await response.json();
+    return result;
+  } catch (err) {
+    console.log('error in postMemberShipPayment...in MemberShipRep ', err);
+  }
+};
 
-export {  getPackage };
+
+
+export {  getPackage ,postMemberShipPayment};
