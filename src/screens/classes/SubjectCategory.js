@@ -74,6 +74,13 @@ export default function SubjectCategory(props) {
             onpress: "",
             touch: false,
         },
+        {
+            id: 6,
+            image: require('../../assets/images/notes.png'),
+            name: 'Notes',
+            onpress: "",
+            touch: false,
+        },
     ]
 
 

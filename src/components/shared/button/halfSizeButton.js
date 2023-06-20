@@ -25,7 +25,7 @@ export default halfSizeButton = props => {
       alignItems: 'center',
       justifyContent: 'center',
       height:props.height ? props.height:  width * 0.11,
-      borderRadius: 5,
+      borderRadius: 10,
       borderWidth: 0.6,
       borderColor: props.borderColor,
     },
@@ -46,7 +46,7 @@ export default halfSizeButton = props => {
               color: props.color,
               ...styles.textButton,
             }}>
-            {props.icon} {props.title}
+            {props.icon} {props.title} {props.iconLast}
           </Text>
         </View>
       </TouchableOpacity>

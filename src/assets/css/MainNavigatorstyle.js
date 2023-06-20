@@ -22,9 +22,16 @@ const MainNavigatorstyle = StyleSheet.create({
     },
     labelstylecss: {
         color: Colors.sidemenucolor,
-        fontSize: FontSize.labelText2,
+        fontSize: FontSize.labelText4,
         fontFamily: FontFamily.PopinsMedium,
         left: 10,
+    },
+    abelstylecss2: {
+        color: Colors.sidemenucolor,
+        fontSize: FontSize.smallText,
+        fontFamily: FontFamily.PopinsMedium,
+        fontWeight: 700,
+        marginBottom:-13
     },
     labelicon: {
         width: 16,
@@ -50,8 +57,8 @@ const MainNavigatorstyle = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignContent: 'center',
-        paddingHorizontal: 16,
-        paddingVertical: 12,
+        paddingHorizontal: 15,
+        paddingVertical: 20,
     },
     bottomicon: {
         width: 22,
@@ -86,12 +93,12 @@ const MainNavigatorstyle = StyleSheet.create({
     userinfo1: {
         alignSelf: 'center',
         width: '100%',
-        height: height *0.945,
+        height: height * 0.945,
     },
     userimg: {
-        width: "70%",
+        width: "80%",
         resizeMode: 'contain',
-        height:100
+        height: 120
     },
     view1: {
         flexDirection: 'row',
@@ -105,7 +112,7 @@ const MainNavigatorstyle = StyleSheet.create({
     {
         width: 40,
         height: 40,
-        borderRadius:60
+        borderRadius: 60
     },
     view2: {
         alignSelf: 'center',
@@ -114,21 +121,23 @@ const MainNavigatorstyle = StyleSheet.create({
         // position: "absolute",
         width: '100%',
     },
-    view2txt:{
+    view2txt: {
         color: Colors.bluetheme,
         textAlign: 'center',
         fontSize: 13,
-      },
-      DrawerContentSView:{
+    },
+    DrawerContentSView: {
         borderTopRightRadius: 10,
         borderBottomRightRadius: 10,
         overflow: 'hidden',
         width: width * 0.69,
         borderWidth: 1,
-      },
-      ImageRView:{
-        left:5, justifyContent:"center",alignItems:'center'
-      }
+    },
+    ImageRView: {
+        // left:5,
+        justifyContent: "center", alignItems: 'center',
+        marginBottom: 30
+    }
 
 })
 export { MainNavigatorstyle }

@@ -5,7 +5,8 @@ const getSubjects = async (id) => {
   try {
     const response = await fetch(`${await SERVER_URL()}/api/subject-list?class_id=${id}`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      headers: { 'Content-Type': 'application/json;charset=utf-8' ,
+      Authorization: `${await getAppToken()}`},
     });
     const result = await response.json();
     return result;

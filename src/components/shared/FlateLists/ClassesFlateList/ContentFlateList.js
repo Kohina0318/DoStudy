@@ -20,7 +20,7 @@ function ContentDataFlateList({ item, themecolor }) {
 
 
     return (
-        <View
+        <View 
             style={{
                 ...styles.datalistView,
                 backgroundColor: themecolor.BOXBORDERCOLOR,
@@ -46,8 +46,7 @@ function ContentDataFlateList({ item, themecolor }) {
 
             <TouchableOpacity activeOpacity={0.5}  style={{...styles.mt5, ...styles.buttonView,
               backgroundColor: themecolor.ADDTOCARTBUTTONCOLOR,}}
-              onPress={() => navigation.navigate('ContentDetail', { Id:item.id, UnitNo:item.unit_no })}
-            >
+                   onPress={() => navigation.navigate('ContentDetail', { Id:item.id, UnitNo:item.unit_no,UnitName:item.unit_name,UnitImage:item.image })}>
             <Text allowFontScaling={false} style={{...styles.buttontxt}}>View <AD name="arrowright" size={15} /> </Text>
             </TouchableOpacity>
 

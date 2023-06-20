@@ -1,28 +1,68 @@
-import React from 'react';
-import {Dimensions, Image, StatusBar, View, StyleSheet,Text} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Dimensions, Image, StatusBar, View, StyleSheet, Text } from 'react-native';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
+import { getUserData } from '../../repository/CommonRepository';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 export default function Splash(props) {
 
   const mode = useSelector(state => state.mode);
   const themecolor = new MyThemeClass(mode).getThemeColor()
-  
-  React.useEffect(()=>
-   {
-      setTimeout(async () => {
-          props.navigation.reset({
-            index: 0,
-            routes: [{name: 'Dashboard'}],
-          });
-      }, 1000)
-   
-      return ()=>{
-        
-      } },[])
-  
+
+  const [UserData, setUserData] = useState([]);
+
+  useEffect(() => {
+    async function temp() {
+      try {
+        var userData = await getUserData();
+        if (userData == null || userData == '' || userData == undefined) {
+          setUserData([])
+          setTimeout(async () => {
+            props.navigation.reset({
+              index: 0,
+              routes: [{ name: 'SignIn' }],
+            });
+          }, 1000)
+        } else {
+          setUserData(Object.values(userData));
+          setTimeout(async () => {
+            props.navigation.reset({
+              index: 0,
+              routes: [{ name: 'Dashboard' }],
+            });
+          }, 2000)
+
+        }
+      } catch (e) {
+        setUserData([])
+      }
+    }
+    temp()
+  }, [props]);
+
+
+  // React.useEffect(() => {
+  //   setTimeout(async () => {
+  //     if (UserData.length > 0) {
+  //       props.navigation.reset({
+  //         index: 0,
+  //         routes: [{ name: 'Dashboard' }],
+  //       });
+  //     }else{
+  //       props.navigation.reset({
+  //         index: 0,
+  //         routes: [{ name: 'SignIn' }],
+  //       });
+  //     }
+  //   }, 1000)
+
+  //   return () => {
+
+  //   }
+  // }, [])
+
 
   return (
     <View
@@ -30,7 +70,12 @@ export default function Splash(props) {
         ...styles.MainContainer,
         backgroundColor: themecolor.LOGINTHEMECOLOR,
       }}>
-      <StatusBar translucent={true} backgroundColor={'transparent'} />
+
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle={themecolor.STATUSEBARCONTENT}
+      />
       <Image
         style={{
           width: width * 0.7,
@@ -41,7 +86,7 @@ export default function Splash(props) {
         }}
         source={require('../../assets/images/newlog.png')}
       />
-     
+
     </View>
   );
 }
@@ -75,5 +120,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
   },
-  
+
 });
