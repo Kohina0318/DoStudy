@@ -20,7 +20,7 @@ import Ii from 'react-native-vector-icons/Ionicons';
 import { postSignOut } from '../../repository/AuthRepository/SignOutRepository';
 import { removeDatafromAsync } from '../../repository/AsyncStorageServices';
 import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRepo';
-import moment from 'moment';
+
 
 export default function Profile(props) {
 
@@ -30,9 +30,11 @@ export default function Profile(props) {
     const mode = useSelector(state => state.mode);
     const themecolor = new MyThemeClass(mode).getThemeColor();
     const [loader, setLoader] = useState(true);
+    const [data, setData] = useState({});
+    const [packageExpiry, setPackageExpiry] = useState("");
 
-    const date = new Date()
-    alert(date);
+    let yourDate = new Date()
+    var TodayDate = yourDate.toISOString().split('T')[0]
 
     const profileData = [
         {
@@ -67,16 +69,12 @@ export default function Profile(props) {
         },
     ];
 
-
-    const [data, setData] = useState({});
-
-
     const handleUserData = async () => {
         try {
             var res = await getProfileInfo();
             if (res.status === true) {
-                console.log("datta....", res)
                 setData(res.data[0])
+                setPackageExpiry(res.data[0].package_valid_date)
                 setLoader(false);
             }
             else {
@@ -143,26 +141,36 @@ export default function Profile(props) {
                                     Free
                                 </Text>
                                 :
-                                <>
+                                TodayDate >= packageExpiry ?
 
                                     <Text
                                         allowFontScaling={false}
-                                        style={{ ...styles.smallTxt, color: themecolor.TEXTGREEN, fontWeight: '700' }}
+                                        style={{ ...styles.smallTxt, color: themecolor.TEXTRED }}
                                         numberOfLines={2}>
-                                        Package Activated </Text>
-
-                                    <Text
-                                        allowFontScaling={false}
-                                        style={{ ...styles.smallTxt, color: themecolor.TXTWHITE }}
-                                        numberOfLines={2}>
-                                        expiry at {" "}
+                                        Your Package is expiried
+                                    </Text>
+                                    :
+                                    <>
                                         <Text
                                             allowFontScaling={false}
-                                            style={{ ...styles.smallTxt, color: themecolor.TEXTRED }}
-                                            numberOfLines={2}>{data.package_valid_date} </Text>
-                                    </Text>
+                                            style={{ ...styles.smallTxt, color: themecolor.TEXTGREEN, fontWeight: '700' }}
+                                            numberOfLines={2}>
+                                            Package Activated </Text>
 
-                                </>}
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={{ ...styles.smallTxt, color: themecolor.TXTWHITE }}
+                                            numberOfLines={2}>
+                                            expiry at {" "}
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={{ ...styles.smallTxt, color: themecolor.TEXTRED }}
+                                                numberOfLines={2}>{packageExpiry} </Text>
+                                        </Text>
+
+                                    </>
+
+                            }
                         </View>
 
                         <View style={styles.mt10} />
