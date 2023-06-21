@@ -19,6 +19,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import HalfSizeButton from '../../components/shared/button/halfSizeButton';
 import FA from 'react-native-vector-icons/FontAwesome';
 import OTPInputView from '@twotalltotems/react-native-otp-input'
+import { postVerifyOtpForgot } from '../../repository/AuthRepository/ForgotRepository';
 
 
 export default function VerifyOtpForgotPswd(props) {
@@ -48,9 +49,47 @@ export default function VerifyOtpForgotPswd(props) {
     const [otp, setOtp] = useState("");
 
     const HandleVerifyOtp=async()=>{
-        navigation.navigate("ChangePswdByForgot")
-    }
-    
+        // navigation.navigate("ChangePswdByForgot")
+
+        if (otp == '') {
+            toast.show('OTP is required!', {
+                type: 'warning',
+                placement: 'bottom',
+                duration: 1000,
+                offset: 30,
+                animationType: 'slide-in',
+            });
+        }else{
+            try {
+                let formdata = new FormData();
+                formdata.append('phone', props.route.params.mobileNo);
+                formdata.append('otp', otp);
+
+                const res = await postVerifyOtpForgot(formdata);
+                if (res.status == true) {
+                     navigation.navigate("ChangePswdByForgot", { mobileNo: mobileNo,otp:otp})
+                } else {
+
+                    toast.show(res.message, {
+                        type: 'danger',
+                        placement: 'bottom',
+                        duration: 1000,
+                        offset: 30,
+                        animationType: 'slide-in',
+                    });
+                }
+            } catch (e) {
+                console.log('catch in ....login page', e);
+                toast.show('Something went wrong!, Try again later.', {
+                    type: 'danger',
+                    placement: 'bottom',
+                    duration: 1000,
+                    offset: 30,
+                    animationType: 'slide-in',
+                });
+            }
+        }
+    } 
 
     return (
         <View style={{ backgroundColor: themecolor.LOGINTHEMECOLOR, ...styles.bg }}>

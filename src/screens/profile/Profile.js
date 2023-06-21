@@ -21,6 +21,7 @@ import { postSignOut } from '../../repository/AuthRepository/SignOutRepository';
 import { removeDatafromAsync } from '../../repository/AsyncStorageServices';
 import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRepo';
 
+
 export default function Profile(props) {
 
     const toast = useToast();
@@ -29,8 +30,12 @@ export default function Profile(props) {
     const mode = useSelector(state => state.mode);
     const themecolor = new MyThemeClass(mode).getThemeColor();
     const [loader, setLoader] = useState(true);
+    const [data, setData] = useState({});
+    const [packageExpiry, setPackageExpiry] = useState("");
 
-    
+    let yourDate = new Date()
+    var TodayDate = yourDate.toISOString().split('T')[0]
+
     const profileData = [
         {
             id: 1,
@@ -60,22 +65,16 @@ export default function Profile(props) {
             id: 5,
             name: "Sign Out",
             icon: <AD name="logout" size={18} color={themecolor.BACKICON} />,
-            onpress1:'Sign Out'
+            onpress1: 'Sign Out'
         },
     ];
-
-
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [image, setImage] = useState('');
 
     const handleUserData = async () => {
         try {
             var res = await getProfileInfo();
             if (res.status === true) {
-                setName(res.data[0].name)
-                setEmail(res.data[0].email)
-                setImage(res.data[0].profile_photo)
+                setData(res.data[0])
+                setPackageExpiry(res.data[0].package_valid_date)
                 setLoader(false);
             }
             else {
@@ -98,8 +97,6 @@ export default function Profile(props) {
     }, []);
 
 
-
-
     return (
         <View style={{ backgroundColor: themecolor.THEMECOLOR, ...styles.bg }}>
             <Header title="Profile" />
@@ -120,7 +117,7 @@ export default function Profile(props) {
                         <View style={styles.viewDetails}>
                             <View style={{ ...styles.ImgView, borderColor: themecolor.BOXBORDERCOLOR1, }}>
                                 <Image
-                                    source={{uri:image}}
+                                    source={{ uri: data.profile_photo }}
                                     style={{ ...styles.imgEdit }}
                                 />
                             </View>
@@ -128,14 +125,52 @@ export default function Profile(props) {
                                 allowFontScaling={false}
                                 style={{ ...styles.headTxt, color: themecolor.TXTWHITE }}
                                 numberOfLines={2}>
-                                {name}
+                                {data.name}
                             </Text>
-                            <Text
+                            {/* <Text
                                 allowFontScaling={false}
                                 style={{ ...styles.smallTxt, color: themecolor.TXTWHITE }}
                                 numberOfLines={2}>
-                                {email}
-                            </Text>
+                                {data.email}
+                            </Text> */}
+                            {data.package_type == 0 ?
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{ ...styles.headTxt, color: themecolor.TEXTGREEN }}
+                                    numberOfLines={2}>
+                                    Free
+                                </Text>
+                                :
+                                TodayDate >= packageExpiry ?
+
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{ ...styles.smallTxt, color: themecolor.TEXTRED }}
+                                        numberOfLines={2}>
+                                        Your Package is expiried
+                                    </Text>
+                                    :
+                                    <>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={{ ...styles.smallTxt, color: themecolor.TEXTGREEN, fontWeight: '700' }}
+                                            numberOfLines={2}>
+                                            Package Activated </Text>
+
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={{ ...styles.smallTxt, color: themecolor.TXTWHITE }}
+                                            numberOfLines={2}>
+                                            expiry at {" "}
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={{ ...styles.smallTxt, color: themecolor.TEXTRED }}
+                                                numberOfLines={2}>{packageExpiry} </Text>
+                                        </Text>
+
+                                    </>
+
+                            }
                         </View>
 
                         <View style={styles.mt10} />

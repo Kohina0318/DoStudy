@@ -18,6 +18,7 @@ import AD from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import HalfSizeButton from '../../components/shared/button/halfSizeButton';
 import FA from 'react-native-vector-icons/FontAwesome';
+import { postforgotByNumber} from '../../repository/AuthRepository/ForgotRepository';
 
 
 export default function ForgotPswd(props) {
@@ -47,9 +48,53 @@ export default function ForgotPswd(props) {
     const [mobileNo, setMobileNo] = useState('');
 
     const HandleSendOtp=async()=>{
-        navigation.navigate("VerifyOtpForgotPswd")
-    }
+        // navigation.navigate("VerifyOtpForgotPswd")
+        if (mobileNo == '') {
+            toast.show('Mobile number is required!', {
+                type: 'warning',
+                placement: 'bottom',
+                duration: 1000,
+                offset: 30,
+                animationType: 'slide-in',
+            });
+        } else if (mobileNo.length < 10) {
+            toast.show('Please enter valid mobile number!', {
+                type: 'warning',
+                placement: 'bottom',
+                duration: 1000,
+                offset: 30,
+                animationType: 'slide-in',
+            });
+        }else{
+            try {
+                let formdata = new FormData();
+                formdata.append('phone', mobileNo);
 
+                const res = await postforgotByNumber(formdata);
+                if (res.status == true) {
+                     navigation.navigate("VerifyOtpForgotPswd", { mobileNo: mobileNo})
+                } else {
+
+                    toast.show(res.message, {
+                        type: 'danger',
+                        placement: 'bottom',
+                        duration: 1000,
+                        offset: 30,
+                        animationType: 'slide-in',
+                    });
+                }
+            } catch (e) {
+                console.log('catch in ....login page', e);
+                toast.show('Something went wrong!, Try again later.', {
+                    type: 'danger',
+                    placement: 'bottom',
+                    duration: 1000,
+                    offset: 30,
+                    animationType: 'slide-in',
+                });
+            }
+        }
+    }
 
     return (
         <View style={{ backgroundColor: themecolor.LOGINTHEMECOLOR, ...styles.bg }}>

@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     width:width*0.944, justifyContent:"flex-start", 
   },
   datalistView: {
-    width: width * 0.93,
+    width: width * 0.95,
     marginTop: 6,
     padding: 13,
     borderRadius: 10,
@@ -33,9 +33,8 @@ const styles = StyleSheet.create({
   txt:
   {
       color: Colors.bluetheme,
-      fontFamily: FontFamily.Popinssemibold,
-      fontSize: FontSize.labelText2,
-      f1ontWeight: 'bold',
+      fontFamily: FontFamily.PopinsRegular,
+      fontSize: FontSize.labelText3,
   },
   txt1:
   {
@@ -52,6 +51,9 @@ const styles = StyleSheet.create({
   },
   mt5:{
     marginTop:7
+  },
+  mt15:{
+    marginTop:15
   },
   buttonView:{ width:width*0.25,alignItems:"center",padding:4, borderRadius:20},
   buttontxt: {
@@ -70,6 +72,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     overflow: 'hidden',
     height: height*0.4,
+},
+m20:{
+  margin:15
 },
 
 touchview: {
@@ -95,7 +100,40 @@ UnitHeading:{
   fontSize: FontSize.labelText5,
   fontWeight: 'bold',
   fontFamily: FontFamily.PopinsMedium,
+  textAlign:"center"
 },
+
+backgroundVideo:{
+  position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+},
+text: {
+  color: 'black',
+  fontSize: 14,
+},
+gradient: {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+},
+pdf: {
+  width:width*0.85,
+  height: height*0.6,
+  backgroundColor:"red"
+},
+widthVideo:{
+  width:width*0.85,
+  margin:10
+},
+widthImg:{
+  width:width*0.85,
+  height: width *0.52,
+}
 
   
 });

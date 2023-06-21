@@ -14,15 +14,18 @@ import { styles } from '../../../../assets/css/MemberShipCss/MemberShipStyle';
 import RazorpayCheckout from 'react-native-razorpay';
 import { getProfileInfo } from '../../../../repository/ProfileRepository/EditProfileRepo';
 import HalfSizeButton from '../../button/halfSizeButton';
+import { useToast } from 'react-native-toast-notifications';
+import { postMemberShipPayment } from '../../../../repository/MemberShipRepository/MemberShipRep';
 
 const { width, height } = Dimensions.get('screen');
 
-function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail }) {
+function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail ,setLoader}) {
     const navigation = useNavigation();
+    const toast = useToast();
+    
     const access_key = 'rzp_test_cdnNWMaIkNop2J';
     const random_id = Math.random().toFixed(16).split('.')[1];
-
-
+   
     const handlePayNow = async () => {
         var options = {
             description: random_id,
@@ -46,11 +49,50 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
             },
         };
         RazorpayCheckout.open(options)
-            .then(async (data) => {
+            .then(async (data) => { 
+                setLoader(true)
                 if (data.razorpay_payment_id) {
-                    console.log('razorpay_signature', data.razorpay_signature);
-                    console.log('razorpay_order_id', data.razorpay_order_id);
-                    console.log('razorpay_payment_id', data.razorpay_payment_id);
+
+                // console.log("data.razorpay_payment_id....",data.razorpay_payment_id)
+
+                  var body = new FormData();
+                  body.append('payment_type', 'razorpay');
+                  body.append('razorToken', access_key);
+                  body.append('package_id', item.id);
+                  body.append('package_amount', parseInt(item.amount));
+                  body.append('razorpay_signature', data.razorpay_signature);
+                  body.append('razorpay_order_id', data.razorpay_order_id);
+                  body.append('razorpay_payment_id', data.razorpay_payment_id);
+                  body.append('zb_order_id', random_id);
+
+                  var res = await postMemberShipPayment(body);
+                //   console.log("postMemberShipPayment....",res)
+                  if (res.status == true) {
+                    setLoader(false);
+                    // props.navigation.navigate('PaymentConfirmation', { data: detailData })
+                    props.navigation.navigate('Dashboard');
+                  } else {
+                    setLoader(false);
+                    toast.show(res.message, {
+                      type: 'warning',
+                      placement: 'bottom',
+                      duration: 1000,
+                      offset: 30,
+                      animationType: 'slide-in',
+                    });
+                  }
+                } else {
+                  setLoader(false)
+                  toast.show(
+                    'Something Went wrong!, Please try after sometime.',
+                    {
+                      type: 'danger',
+                      placement: 'bottom',
+                      duration: 1000,
+                      offset: 30,
+                      animationType: 'slide-in',
+                    },
+                  );
                 }
             })
             .catch(error => {
@@ -101,7 +143,7 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
                     <Text
                         allowFontScaling={false}
                         numberOfLines={1}
-                        style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>for {item.validation} </Text>
+                        style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>for {item.validation ==12 ?"1 Year" :item.validation==1? item.validation+" Month": item.validation+" Months"}  </Text>
                 </Text>
             </View>
 
@@ -164,7 +206,7 @@ export function MemberFlatList(props) {
         <FlatList
             data={props.data}
             renderItem={({ item }) => (
-                <MemberDataFlatList item={item} themecolor={themecolor} userName={props.userName} userEmail={props.userEmail} userPhoneNo={props.userPhoneNo} />
+                <MemberDataFlatList item={item} themecolor={themecolor} userName={props.userName} userEmail={props.userEmail} userPhoneNo={props.userPhoneNo} setLoader={props.setLoader} />
             )}
             horizontal={true}
             showsVerticalScrollIndicator={false}
