@@ -15,6 +15,7 @@ const getProfileInfo = async () => {
     });
     const result = await response.json();
 
+   
     if (result.token_status == 'false') {
       await removeDatafromAsync('@UserData');
       await removeDatafromAsync('@Token');
@@ -43,7 +44,7 @@ const postEditProfile = async formdata => {
   try {
     const response = await fetch(
       `${await SERVER_URL()}/api/edit-profile`,
-      {
+      {  
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data',

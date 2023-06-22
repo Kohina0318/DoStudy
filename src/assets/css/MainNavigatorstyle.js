@@ -26,6 +26,12 @@ const MainNavigatorstyle = StyleSheet.create({
         fontFamily: FontFamily.PopinsMedium,
         left: 10,
     },
+    labelstylecss1: {
+        color: Colors.sidemenucolor,
+        fontSize: FontSize.labelText5,
+        fontFamily: FontFamily.PopinsMedium,
+        fontWeight:'700'
+    },
     abelstylecss2: {
         color: Colors.sidemenucolor,
         fontSize: FontSize.smallText,
@@ -96,11 +102,12 @@ const MainNavigatorstyle = StyleSheet.create({
         height: height * 0.945,
     },
     userimg: {
-        width: "80%",
-        resizeMode: 'contain',
-        height: 120
+        width: "50%",
+        resizeMode: 'cover',
+        height: 120,
+        borderRadius: 100 
     },
-    view1: {
+   view1: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignSelf: 'center',
@@ -135,8 +142,9 @@ const MainNavigatorstyle = StyleSheet.create({
     },
     ImageRView: {
         // left:5,
-        justifyContent: "center", alignItems: 'center',
-        marginBottom: 30
+        justifyContent: "center",
+         alignItems: 'center',
+        marginBottom: 30,
     }
 
 })

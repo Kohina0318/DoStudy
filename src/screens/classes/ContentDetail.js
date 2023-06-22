@@ -18,6 +18,8 @@ import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRe
 import LinearGradient from "react-native-linear-gradient";
 import FA from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
+import Video from "react-native-video";
+import VideoPlayerControl from 'react-native-video-controls';
 import Pdf from 'react-native-pdf';
 
 const { width } = Dimensions.get('screen');
@@ -288,9 +290,10 @@ export default function ContentDetail(props) {
                                             padding: 20
                                         }}
                                     >
-                                        <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
+                                        <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center', display: "flex" }}>
                                             {contantUrlType === 'mp4' ?
                                                 <View style={{ ...styles.widthVideo }}>
+
                                                     <VideoPlayer
                                                         video={{ uri: contantUrl }}
                                                         videoWidth={1500}
@@ -299,7 +302,28 @@ export default function ContentDetail(props) {
                                                         ref={(ref) => { player = ref }}
                                                         muted={false}
                                                         paused={false}
+                                                        showDuration={true}
+                                                        pauseOnPress={true}
+                                                        disableFullscreen={true}
                                                     />
+                                                    {/* <VideoPlayerControl source={{ uri: contantUrl }}  
+                                                        ref={ref =>
+                                                            this.player = ref
+                                                        } 
+                                                        onEnterFullscreen={()=>alert('hi')}   
+                                                        style={{ ...styles.widthVideo }}
+                                                        controls={true}
+                                                        paused={false}
+                                                        fullscreen={true}
+                                                        resizeMode="cover"
+                                                    /> */}
+                                                    <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('FullVideoContainDetail', { contantUrl: contantUrl })}>
+                                                        <Text allowFontScaling={false}
+                                                            style={{
+                                                                ...styles.txt1,
+                                                                color: themecolor.ADDTOCARTBUTTONCOLOR,
+                                                            }}>View in Full Page</Text>
+                                                    </TouchableOpacity>
                                                 </View>
                                                 :
                                                 contantUrlType === 'pdf' ?
@@ -308,7 +332,7 @@ export default function ContentDetail(props) {
                                                             uri: contantUrl,
                                                             cache: true,
                                                         }}
-                                                        spacing={0}
+                                                        spacing={1}
                                                         trustAllCerts={Platform.OS === 'ios'}
                                                         onLoadComplete={(numberOfPages, filePath) => {
                                                             console.log(`number of pages: ${numberOfPages}`);
@@ -322,7 +346,7 @@ export default function ContentDetail(props) {
                                                         onPressLink={uri => {
                                                             console.log(`Link presse: ${uri}`);
                                                         }}
-                                                        style={{...styles.pdf,backgroundColor:themecolor.THEMECOLOR}}
+                                                        style={{ ...styles.pdf, backgroundColor: themecolor.THEMECOLOR }}
                                                     />
                                                     :
                                                     <></>

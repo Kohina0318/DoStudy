@@ -10,7 +10,7 @@ import Header from '../../components/shared/header/Header';
 import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
 import NoDataMsg from '../../components/shared/NoData/NoDataMsg';
 import { BookCategoryFlateList} from '../../components/shared/FlateLists/ClassesFlateList/BookCategoryFlateList';
-import { getBookCategory } from '../../repository/ClassesRepository/BookCategoryRepo';
+import { getBookCategory, getCategoryTopics } from '../../repository/ClassesRepository/CategoryRepo';
 import { styles } from '../../assets/css/ClassesCss/CategoryStyle';
 
 
@@ -40,9 +40,11 @@ export default function BookCategory(props) {
     const [loader, setLoader] = useState(true);
     const [data, setData] = useState([]);
 
-    const handleBookCategory = async () => {
+    const handleCategoryTopics = async () => {
         try {
-            var res = await getBookCategory(props.route.params.ClassId,props.route.params.Id);
+            var res = await getCategoryTopics(props.route.params.Id,props.route.params.subjectId);
+            console.log(res)
+          
             if (res.status === true) {
                 setData(res.data);
                 setLoader(false)
@@ -63,7 +65,7 @@ export default function BookCategory(props) {
     }
 
     useEffect(() => {
-        handleBookCategory();
+        handleCategoryTopics();
     }, []);
 
 

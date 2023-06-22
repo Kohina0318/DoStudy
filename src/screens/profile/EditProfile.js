@@ -62,7 +62,6 @@ export default function EditProfile(props) {
     const [image, setImage] = useState('');
 
 
-
     const handleUserData = async () => {
         try {
             var res = await getProfileInfo();
@@ -153,7 +152,19 @@ export default function EditProfile(props) {
                 const res = await postEditProfile(formdata);
                 if (res.status == true) {
                     setLoader(false);
-                    setShowmodal(!showmodal)
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Dashboard' }],
+                    });
+                    
+                    toast.show("Edit Profile Successfully.", {
+                        type: 'success',
+                        placement: 'bottom',
+                        duration: 1000,
+                        offset: 30,
+                        animationType: 'slide-in',
+                    });
+                    // setShowmodal(!showmodal)
 
                 }
             } catch (e) {

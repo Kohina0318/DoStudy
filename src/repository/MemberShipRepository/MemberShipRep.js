@@ -11,7 +11,21 @@ const getPackage = async () => {
     const result = await response.json();
     return result;
   } catch (err) {
-    console.log('error in MemberShipRep...in MemberShipRepository ', err);
+    console.log('error in getPackage...in MemberShipRepository ', err);
+  }
+};
+
+const getActivePackage = async () => {
+  try {
+    const response = await fetch(`${await SERVER_URL()}/api/active-package`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json;charset=utf-8',
+      Authorization: `${await getAppToken()}` },
+    });
+    const result = await response.json();
+    return result;
+  } catch (err) {
+    console.log('error in getActivePackage...in MemberShipRepository ', err);
   }
 };
 
@@ -35,4 +49,4 @@ const postMemberShipPayment = async (formdata) => {
 
 
 
-export {  getPackage ,postMemberShipPayment};
+export {  getPackage,getActivePackage ,postMemberShipPayment};

@@ -18,6 +18,7 @@ import VerifyModel from '../../components/shared/Model/VerifyModel';
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import { postVerifyOtp } from '../../repository/AuthRepository/SignUpRepository';
 import { StoreDatatoAsync } from '../../repository/AsyncStorageServices';
+import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
 
 export default function VerifyOtp(props) {
 
@@ -41,10 +42,14 @@ export default function VerifyOtp(props) {
     const mode = useSelector(state => state.mode);
     const themecolor = new MyThemeClass(mode).getThemeColor();
 
+    const [loader, setLoader] = useState(false);
+
+
     const [otp, setOtp] = useState("");
     const [showmodal, setShowmodal] = useState(false);
-    
+
     const handleSignIn = async () => {
+        setLoader(true)
         if (otp == '') {
             toast.show('OTP is required!', {
                 type: 'warning',
@@ -64,9 +69,24 @@ export default function VerifyOtp(props) {
                 if (res.status == true) {
                     await StoreDatatoAsync('@UserData', JSON.stringify(res.data));
                     await StoreDatatoAsync('@Token', JSON.stringify(res.data.user.jwt_token));
-                    setShowmodal(!showmodal)
+                    setLoader(false)
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Dashboard' }],
+                    });
+                    toast.show("Sign Up Successfully.", {
+                        type: 'success',
+                        placement: 'bottom',
+                        duration: 1000,
+                        offset: 30,
+                        animationType: 'slide-in',
+                    });
+                    
+
+                    // setShowmodal(!showmodal)
                 }
                 else {
+                    setLoader(false)
                     toast.show(res.message, {
                         type: 'danger',
                         placement: 'bottom',
@@ -76,6 +96,7 @@ export default function VerifyOtp(props) {
                     });
                 }
             } catch (e) {
+                setLoader(false)
                 console.log('catch in ....login page', e);
                 toast.show('Something went wrong!, Try again later.', {
                     type: 'danger',
@@ -98,80 +119,84 @@ export default function VerifyOtp(props) {
                 barStyle={themecolor.STATUSEBARCONTENT}
             />
 
-            <View
-                style={{
-                    ...styles.container,
-                }}>
+            {loader ? (
+                <LoadingFullScreen style={{ flex: 1 }} />
+            ) : (
+                <View
+                    style={{
+                        ...styles.container,
+                    }}>
 
-                <View style={{ ...styles.BackIconView }}>
-                    <TouchableOpacity
-                        activeOpacity={0.5}
-                        style={styles.toggle}
-                        onPress={() => handleBackButtonClick()}
-                    >
-                        <CIcon
-                            name="keyboard-backspace"
-                            size={26}
-                            color={themecolor.TXTWHITE}
-                        />
-                    </TouchableOpacity>
-                </View>
-
-                <View style={{ ...styles.innerView }}>
-
-                    <View style={{ ...styles.ImgView }}>
-                        <Image
-                            source={require('../../assets/images/newlog.png')}
-                            style={{ width: "100%", height: "100%", resizeMode: 'contain', }}
-                        />
-                    </View>
-
-                    <View style={styles.mt20} />
-                    <View style={styles.mt10} />
-
-                    <View style={styles.innerContainer}>
-
-                        <View style={{ ...styles.innerView1 }}>
-                            <Text
-                                allowFontScaling={false}
-                                style={{ ...styles.txt, color: themecolor.TXTWHITE }}>
-                                We have sent you OTP to your registered Mobile Number to verify
-                            </Text>
-
-                            <View style={styles.mt10} />
-
-                            <View style={{ ...styles.otpView }}>
-                                <OTPInputView
-                                    pinCount={4}
-                                    style={{ width: '100%', height: 70, }}
-                                    autoFocusOnLoad
-                                    codeInputFieldStyle={{
-                                        ...styles.underlineStyleBase, backgroundColor: themecolor.OTPBOXCOLOR,
-                                        borderColor: themecolor.BOXBORDERCOLOR1, color: themecolor.TXTWHITE,
-                                    }}
-                                    codeInputHighlightStyle={{ ...styles.underlineStyleHighLighted, borderColor: themecolor.ADDTOCARTBUTTONCOLOR }}
-                                    onCodeFilled={(code => setOtp(code))} 
-                                />
-                            </View>
-
-
-                            <View style={styles.mt10} />
-
-                            <HalfSizeButton
-                                title="Sign Up"
-                                onPress={() => handleSignIn()}
-                                color={"#fff"}
-                                backgroundColor={themecolor.ADDTOCARTBUTTONCOLOR}
-                                borderColor={themecolor.ADDTOCARTBUTTONCOLOR}
+                    <View style={{ ...styles.BackIconView }}>
+                        <TouchableOpacity
+                            activeOpacity={0.5}
+                            style={styles.toggle}
+                            onPress={() => handleBackButtonClick()}
+                        >
+                            <CIcon
+                                name="keyboard-backspace"
+                                size={26}
+                                color={themecolor.TXTWHITE}
                             />
-
-                            <View style={styles.mt20} />
-
-                        </View>
+                        </TouchableOpacity>
                     </View>
 
+                    <View style={{ ...styles.innerView }}>
+
+                        <View style={{ ...styles.ImgView }}>
+                            <Image
+                                source={require('../../assets/images/newlog.png')}
+                                style={{ width: "100%", height: "100%", resizeMode: 'contain', }}
+                            />
+                        </View>
+
+                        <View style={styles.mt20} />
+                        <View style={styles.mt10} />
+
+                        <View style={styles.innerContainer}>
+
+                            <View style={{ ...styles.innerView1 }}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{ ...styles.txt, color: themecolor.TXTWHITE }}>
+                                    We have sent you OTP to your registered Mobile Number to verify
+                                </Text>
+
+                                <View style={styles.mt10} />
+
+                                <View style={{ ...styles.otpView }}>
+                                    <OTPInputView
+                                        pinCount={4}
+                                        style={{ width: '100%', height: 70, }}
+                                        autoFocusOnLoad
+                                        codeInputFieldStyle={{
+                                            ...styles.underlineStyleBase, backgroundColor: themecolor.OTPBOXCOLOR,
+                                            borderColor: themecolor.BOXBORDERCOLOR1, color: themecolor.TXTWHITE,
+                                        }}
+                                        codeInputHighlightStyle={{ ...styles.underlineStyleHighLighted, borderColor: themecolor.ADDTOCARTBUTTONCOLOR }}
+                                        onCodeFilled={(code => setOtp(code))}
+                                    />
+                                </View>
+
+
+                                <View style={styles.mt10} />
+
+                                <HalfSizeButton
+                                    title="Sign Up"
+                                    onPress={() => handleSignIn()}
+                                    color={"#fff"}
+                                    backgroundColor={themecolor.ADDTOCARTBUTTONCOLOR}
+                                    borderColor={themecolor.ADDTOCARTBUTTONCOLOR}
+                                />
+
+                                <View style={styles.mt20} />
+
+                            </View>
+                        </View>
+
+                    </View>
                 </View>
-            </View>
+            )}
 
             {showmodal && (
                 <VerifyModel

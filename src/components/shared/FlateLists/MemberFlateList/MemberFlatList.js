@@ -19,13 +19,13 @@ import { postMemberShipPayment } from '../../../../repository/MemberShipReposito
 
 const { width, height } = Dimensions.get('screen');
 
-function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail ,setLoader}) {
+function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail, setLoader }) {
     const navigation = useNavigation();
     const toast = useToast();
-    
+
     const access_key = 'rzp_test_cdnNWMaIkNop2J';
     const random_id = Math.random().toFixed(16).split('.')[1];
-   
+
     const handlePayNow = async () => {
         var options = {
             description: random_id,
@@ -49,50 +49,50 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
             },
         };
         RazorpayCheckout.open(options)
-            .then(async (data) => { 
+            .then(async (data) => {
                 setLoader(true)
                 if (data.razorpay_payment_id) {
 
-                // console.log("data.razorpay_payment_id....",data.razorpay_payment_id)
+                    // console.log("data.razorpay_payment_id....",data.razorpay_payment_id)
 
-                  var body = new FormData();
-                  body.append('payment_type', 'razorpay');
-                  body.append('razorToken', access_key);
-                  body.append('package_id', item.id);
-                  body.append('package_amount', parseInt(item.amount));
-                  body.append('razorpay_signature', data.razorpay_signature);
-                  body.append('razorpay_order_id', data.razorpay_order_id);
-                  body.append('razorpay_payment_id', data.razorpay_payment_id);
-                  body.append('zb_order_id', random_id);
+                    var body = new FormData();
+                    body.append('payment_type', 'razorpay');
+                    body.append('razorToken', access_key);
+                    body.append('package_id', item.id);
+                    body.append('package_amount', parseInt(item.amount));
+                    body.append('razorpay_signature', data.razorpay_signature);
+                    body.append('razorpay_order_id', data.razorpay_order_id);
+                    body.append('razorpay_payment_id', data.razorpay_payment_id);
+                    body.append('zb_order_id', random_id);
 
-                  var res = await postMemberShipPayment(body);
-                //   console.log("postMemberShipPayment....",res)
-                  if (res.status == true) {
-                    setLoader(false);
-                    // props.navigation.navigate('PaymentConfirmation', { data: detailData })
-                    props.navigation.navigate('Dashboard');
-                  } else {
-                    setLoader(false);
-                    toast.show(res.message, {
-                      type: 'warning',
-                      placement: 'bottom',
-                      duration: 1000,
-                      offset: 30,
-                      animationType: 'slide-in',
-                    });
-                  }
+                    var res = await postMemberShipPayment(body);
+                    //   console.log("postMemberShipPayment....",res)
+                    if (res.status == true) {
+                        setLoader(false);
+                        // props.navigation.navigate('PaymentConfirmation', { data: detailData })
+                        props.navigation.navigate('Dashboard');
+                    } else {
+                        setLoader(false);
+                        toast.show(res.message, {
+                            type: 'warning',
+                            placement: 'bottom',
+                            duration: 1000,
+                            offset: 30,
+                            animationType: 'slide-in',
+                        });
+                    }
                 } else {
-                  setLoader(false)
-                  toast.show(
-                    'Something Went wrong!, Please try after sometime.',
-                    {
-                      type: 'danger',
-                      placement: 'bottom',
-                      duration: 1000,
-                      offset: 30,
-                      animationType: 'slide-in',
-                    },
-                  );
+                    setLoader(false)
+                    toast.show(
+                        'Something Went wrong!, Please try after sometime.',
+                        {
+                            type: 'danger',
+                            placement: 'bottom',
+                            duration: 1000,
+                            offset: 30,
+                            animationType: 'slide-in',
+                        },
+                    );
                 }
             })
             .catch(error => {
@@ -110,7 +110,7 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
         <View
             style={{ ...styles.classContanier, backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1, }}
         >
-          
+
             <View style={{ ...styles.classImg }}>
                 <Image
                     source={{ uri: item.package_image }}
@@ -143,7 +143,7 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
                     <Text
                         allowFontScaling={false}
                         numberOfLines={1}
-                        style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>for {item.validation ==12 ?"1 Year" :item.validation==1? item.validation+" Month": item.validation+" Months"}  </Text>
+                        style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>for {item.validation == 12 ? "1 Year" : item.validation == 1 ? item.validation + " Month" : item.validation + " Months"}  </Text>
                 </Text>
             </View>
 
@@ -159,7 +159,7 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
                 allowFontScaling={false}
                 numberOfLines={1}
                 style={{ color: themecolor.TXTGREYS, ...styles.txt1, }}>
-               Ad free experience
+                Ad free experience
             </Text>
 
             <View style={styles.margT10} />
@@ -187,7 +187,7 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
                 <HalfSizeButton
                     title="Pay Now"
                     icon=""
-                    onPress={()=>handlePayNow()}
+                    onPress={() => handlePayNow()}
                     color="#fff"
                     backgroundColor={themecolor.ADDTOCARTBUTTONCOLOR}
                     borderColor={themecolor.BOXBORDERCOLOR1}
@@ -198,7 +198,7 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
     );
 }
 
-export function MemberFlatList(props) {
+function MemberFlatList(props) {
     const mode = useSelector(state => state.mode);
     const themecolor = new MyThemeClass(mode).getThemeColor();
 
@@ -215,3 +215,72 @@ export function MemberFlatList(props) {
         />
     );
 }
+
+function ActiveMemberShip(props) {
+    const mode = useSelector(state => state.mode);
+    const themecolor = new MyThemeClass(mode).getThemeColor();
+
+    var dataAll = props.data;
+
+    const Banner = ({ message, style }) => {
+        return (
+            <Text style={[styles.banner, style]}>
+                {message}
+            </Text>
+        );
+    };
+
+    return (
+        <View style={{ overflow: "hidden" }}>
+            <View style={{ ...styles.innerContanier, backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1, }}>
+                <View style={{ ...styles.acitiveImgView }}>
+                    <Image
+                        source={{ uri: dataAll.package_image }}
+                        resizeMode="cover"
+                        style={{ width: '100%', height: '100%', borderRadius: 7 }}
+                    />
+                </View>
+                <View style={styles.activeInnerCon} >
+                    <Text
+                        allowFontScaling={false}
+                        numberOfLines={1}
+                        style={{ color: themecolor.ADDTOCARTBUTTONCOLOR, ...styles.txt, }}>
+                        {dataAll.package_name}
+                    </Text>
+
+                    <View style={styles.margT} />
+
+                    <Text
+                        allowFontScaling={false}
+                        numberOfLines={1}
+                        style={{ color: themecolor.TXTWHITE, ...styles.classhead }}>
+                        <Text
+                            allowFontScaling={false}
+                            numberOfLines={1}
+                            style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>&#8377;</Text>
+                        {" "}
+                        {parseInt(dataAll.amount)}
+                        {" "}
+                        <Text
+                            allowFontScaling={false}
+                            numberOfLines={1}
+                            style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>for {dataAll.validation == 12 ? "1 Year" : dataAll.validation == 1 ? dataAll.validation + " Month" : dataAll.validation + " Months"}  </Text>
+                    </Text>
+
+                </View>
+
+            </View>
+
+            <Banner
+                message="Activated"
+                style={{
+                    color: themecolor.TXTWHITE1,
+                    backgroundColor: themecolor.TEXTGREEN,
+                    fontWeight: 'bold',
+                }}
+            />
+        </View>
+    )
+}
+
+export { MemberFlatList, ActiveMemberShip };

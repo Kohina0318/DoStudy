@@ -15,6 +15,7 @@ import DashboardShimmer from '../../components/shared/Shimmer/DashboardShimmer';
 import CarouselFile from '../../components/shared/Carousel/CarouselFile';
 import { DashBoardFlateList } from '../../components/shared/FlateLists/DashboardFlatList/DashBoardFlateList';
 import { getCarousel } from '../../repository/DashboardRepository/DashboardRep';
+import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
 
 export default function Dashboard(props) {
   const toast = useToast();
@@ -22,42 +23,42 @@ export default function Dashboard(props) {
   const mode = useSelector(state => state.mode);
   const themecolor = new MyThemeClass(mode).getThemeColor();
 
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(true);
   
 
   var data = [
     {
       id: 1,
       image: require('../../assets/images/classes.png'),
-      name: 'Class ',
+      name: 'Classes',
       onpress: "Classes",
       touch: false,
     },
     {
       id: 2,
       image: require('../../assets/images/preprasion.png'),
-      name: 'Pre Prasion',
+      name: 'Pre Prasions',
       onpress: "", 
       touch: false,
     },
     {
       id: 3,
       image: require('../../assets/images/courses.png'),
-      name: 'Course',
+      name: 'Courses',
       onpress: "",
       touch: false,
     },
     {
       id: 4,
       image: require('../../assets/images/englishBook.png'),
-      name: 'English Book',
+      name: 'English Books',
       onpress: "",
       touch: false,
     },
     {
       id: 5,
       image: require('../../assets/images/hindibook.png'),
-      name: 'Hindi Book',
+      name: 'Hindi Books',
       onpress: "",
       touch: false,
     },
@@ -78,14 +79,14 @@ export default function Dashboard(props) {
     {
       id: 8,
       image: require('../../assets/images/estore.png'),
-      name: 'E-Store',
+      name: 'E-Stores',
       onpress: "",
       touch: true,
     },
     {
       id: 9,
       image: require('../../assets/images/result.png'),
-      name: 'Result',
+      name: 'Results',
       onpress: "",
       touch: false,
     },
@@ -131,16 +132,18 @@ export default function Dashboard(props) {
       <Header title="Home" />
 
       {loader ? (
-        <DashboardShimmer />
+        // <DashboardShimmer />
+        <LoadingFullScreen  style={{ flex: 1 }} />
       ) : (
         <>
           <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={{ marginVertical: 5 }} />
+          {/* <View style={{ marginVertical: 5 }} /> */}
 
           <View
             style={{
               ...styles.container,
-              backgroundColor: themecolor.BOXBORDERCOLOR,
+              // backgroundColor: themecolor.BOXBORDERCOLOR,
+              backgroundColor: 'transparent',
             }}>
             <CarouselFile data={carouselData} />
           </View>

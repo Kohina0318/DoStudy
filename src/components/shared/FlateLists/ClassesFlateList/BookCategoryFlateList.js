@@ -20,7 +20,7 @@ function BookCategoryDataFlatList({ item, themecolor, boxSize }) {
   return (
     <TouchableOpacity activeOpacity={0.5}
       style={{...styles.subContanier,backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1,}}
-    onPress={() => navigation.navigate('Content', {Id: item.id,classId:item.class_id,subjectId:item.subject_id,Name:item.category_name,Image:item.image })}
+    onPress={() => navigation.navigate('Content', {Id: item.id,Name:item.category_name,Image:item.image })}
     >
       <Image
         source={{ uri: item.image }}
@@ -31,7 +31,7 @@ function BookCategoryDataFlatList({ item, themecolor, boxSize }) {
         allowFontScaling={false}
         numberOfLines={1}
         style={{color:themecolor.TXTWHITE,...styles.subhead}}>
-        {item.category_name}
+        {item.name}
       </Text>
       </View>
     </TouchableOpacity>
