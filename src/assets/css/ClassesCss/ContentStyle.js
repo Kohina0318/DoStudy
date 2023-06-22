@@ -154,7 +154,7 @@ pdf: {
   backgroundColor:"red"
 },
 widthVideo:{
-  width:width*0.83,
+  width:width*0.82,
   height:height*0.3
 },
 widthImg:{
