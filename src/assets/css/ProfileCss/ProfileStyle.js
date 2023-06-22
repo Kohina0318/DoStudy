@@ -12,13 +12,13 @@ const styles = StyleSheet.create({
       marginTop:5
   },
   innerView: {
-    width: width * 0.94,
+    width: width,
     marginTop: 6,
     padding: 13,
     borderRadius: 10,
     alignSelf: 'center',
     alignItems: 'center',
-    borderWidth: 0.5
+    // borderWidth: 0.5
   },
   dataListView:{
     width: width * 0.85,

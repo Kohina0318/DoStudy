@@ -36,6 +36,7 @@ export default function Profile(props) {
     let yourDate = new Date()
     var TodayDate = yourDate.toISOString().split('T')[0]
 
+
     const profileData = [
         {
             id: 1,
@@ -96,7 +97,7 @@ export default function Profile(props) {
         handleUserData();
     }, []);
 
-
+  
     return (
         <View style={{ backgroundColor: themecolor.THEMECOLOR, ...styles.bg }}>
             <Header title="Profile" />
@@ -111,8 +112,8 @@ export default function Profile(props) {
 
                     <View style={{
                         ...styles.innerView,
-                        backgroundColor: themecolor.BOXBORDERCOLOR,
-                        borderColor: themecolor.BOXBORDERCOLOR1,
+                        // backgroundColor: themecolor.BOXBORDERCOLOR,
+                        // borderColor: themecolor.BOXBORDERCOLOR1,
                     }}>
                         <View style={styles.viewDetails}>
                             <View style={{ ...styles.ImgView, borderColor: themecolor.BOXBORDERCOLOR1, }}>
@@ -147,7 +148,7 @@ export default function Profile(props) {
                                         allowFontScaling={false}
                                         style={{ ...styles.smallTxt, color: themecolor.TEXTRED }}
                                         numberOfLines={2}>
-                                        Your Package is expiried
+                                        Your Package is expired
                                     </Text>
                                     :
                                     <>
@@ -161,7 +162,7 @@ export default function Profile(props) {
                                             allowFontScaling={false}
                                             style={{ ...styles.smallTxt, color: themecolor.TXTWHITE }}
                                             numberOfLines={2}>
-                                            expiry at {" "}
+                                            Expiry at {" "}
                                             <Text
                                                 allowFontScaling={false}
                                                 style={{ ...styles.smallTxt, color: themecolor.TEXTRED }}

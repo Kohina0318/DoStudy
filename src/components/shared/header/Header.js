@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import CIcon from 'react-native-vector-icons/MaterialIcons';
 import { styles } from '../../../assets/css/HeaderCss/HeaderStyle'
 import { store } from '../../../../App';
+import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 const { width } = Dimensions.get('screen');
 
 export default function Header(props) {
@@ -39,7 +40,7 @@ export default function Header(props) {
         <View
           style={{ ...styles.headerInnerView }}>
 
-          <View style={{ width: width * 0.06, }}>
+          <View style={{...styles.iconViewCont}}>
             {props.backIcon ? (
               <TouchableOpacity
                 activeOpacity={0.5}
@@ -62,26 +63,32 @@ export default function Header(props) {
             )}
           </View>
 
-          <View style={{ ...styles.iconTitle, }}>
-            {props.title == 'Home' ? (
-              <View style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
-                {/* <Image
-                source={require('../../../assets/images/dostudy.jpg')}
-                style={{ width: 60, height: 70, resizeMode: 'contain', }}
-              /> */}
-                <Text allowFontScaling={false} style={{ ...styles.headText, color: themecolor.TXTWHITE }}>
-                  Do Study
-                </Text>
+          {props.title == 'Home' ? (
+            <>
+              <View style={{ ...styles.iconTitle1, }}>
+                <View style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
+                  <Image
+                    source={require('../../../assets/images/newlog.png')}
+                    style={{ width: 50, height: 50, resizeMode: 'contain',  }}
+                  />
+                </View>
               </View>
-            ) : (
+             <TouchableOpacity activeOpacity={0.5}
+              onPress={() => navigation.navigate('MemberShip')} style={{ ...styles.iconViewCont}}>
+                <MCI name="card-account-details-star-outline" size={23}   color={themecolor.TXTWHITE} />
+              </TouchableOpacity>
+            </>
+          ) : (
+            <View style={{ ...styles.iconTitle, }}>
               <Text
                 allowFontScaling={false}
-                style={{ ...styles.toolbarTitle, color: themecolor.TXTWHITE }}
+                style={{ ...styles.toolbarTitle, color: themecolor.TXTWHITE, right: 20 }}
                 numberOfLines={1}>
                 {props.title}
               </Text>
-            )}
-          </View>
+            </View>
+          )}
+
 
 
         </View>

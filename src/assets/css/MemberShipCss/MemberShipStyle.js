@@ -12,6 +12,18 @@ const styles = StyleSheet.create({
       marginTop:10,
       width: width * 0.94,
   },
+    innerContanier:{
+    width: width * 0.93,
+    margin: 3,
+    padding:13,
+    alignItems: 'center',
+    alignSelf: 'center',
+    flexDirection:"row",
+    borderColor: '#E9E9E9',
+    borderWidth: 0.5,
+    borderRadius: 10,
+    backgroundColor: '#FFF',
+  },
 
   classContanier:{
     width: width * 0.88,
@@ -50,7 +62,7 @@ const styles = StyleSheet.create({
     width:width*0.944, justifyContent:"flex-start", 
   },
    margT10:{
-    marginTop:20
+    marginTop:15
   },
   margT:{
     marginTop:5
@@ -63,6 +75,30 @@ const styles = StyleSheet.create({
   tabBorderLine: {
     width: "75%",
     borderWidth: 0.3,
+  },
+  acitiveImgView:{
+    width:width *  0.22, height:width*0.22 ,borderRadius: 10,justifyContent:"center",alignItems: 'center',padding:5,
+    alignSelf: 'center',
+  
+  },
+  activeInnerCon:{
+    marginTop:5,
+    left:20
+  },
+  banner: {
+    position: 'absolute',
+    right: -30,
+    top: 30,
+    width: 129,
+    transform: [{ rotate: "45deg" }],
+    backgroundColor: 'black',
+    color: 'white',
+    padding: 2,
+    textAlign: 'center',
+    fontSize: FontSize.labelText,
+    fontFamily:FontFamily.Popinsbold,
+    elevation:1,
+    fontWeight:'bold'
   },
   
   

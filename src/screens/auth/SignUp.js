@@ -21,6 +21,7 @@ import HalfSizeButton from '../../components/shared/button/halfSizeButton';
 import FA from 'react-native-vector-icons/FontAwesome';
 import { postSignUp } from '../../repository/AuthRepository/SignUpRepository';
 import VerifyModel from '../../components/shared/Model/VerifyModel';
+import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
 
 
 export default function SignUp(props) {
@@ -45,6 +46,7 @@ export default function SignUp(props) {
 
     const mode = useSelector(state => state.mode);
     const themecolor = new MyThemeClass(mode).getThemeColor();
+
     const [loader, setLoader] = useState(false);
 
     const [name, setName] = useState('');
@@ -59,6 +61,7 @@ export default function SignUp(props) {
 
 
     const handleSignUp = async () => {
+        setLoader(true)
         if (name == '') {
             toast.show('Full Name is required!', {
                 type: 'warning',
@@ -117,7 +120,7 @@ export default function SignUp(props) {
                 animationType: 'slide-in',
             });
         }
-        else if (conPassword != password ) {
+        else if (conPassword != password) {
             toast.show('Confirm Password does not match!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -137,9 +140,10 @@ export default function SignUp(props) {
 
                 const res = await postSignUp(formdata);
                 if (res.status == true) {
+                    setLoader(false)
                     navigation.navigate('VerifyOtp', { mobileNo: mobileNo, password: password })
                 } else {
-
+                    setLoader(false)
                     toast.show(res.message, {
                         type: 'danger',
                         placement: 'bottom',
@@ -149,6 +153,7 @@ export default function SignUp(props) {
                     });
                 }
             } catch (e) {
+                setLoader(false)
                 console.log('catch in ....login page', e);
                 toast.show('Something went wrong!, Try again later.', {
                     type: 'danger',
@@ -170,217 +175,221 @@ export default function SignUp(props) {
                 barStyle={themecolor.STATUSEBARCONTENT}
             />
 
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View
-                    style={{
-                        ...styles.container,
-                    }}>
+            {loader ? (
+                <LoadingFullScreen style={{ flex: 1 }} />
+            ) : (
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View
+                        style={{
+                            ...styles.container,
+                        }}>
 
-                    <View style={{ ...styles.BackIconView }}>
-                        <TouchableOpacity
-                            activeOpacity={0.5}
-                            style={styles.toggle}
-                            onPress={() => handleBackButtonClick()}
-                        >
-                            <CIcon
-                                name="keyboard-backspace"
-                                size={26}
-                                color={themecolor.TXTWHITE}
-                            />
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={{ ...styles.innerView }}>
-
-                        <View style={{ ...styles.ImgView }}>
-                            <Image
-                                source={require('../../assets/images/newlog.png')}
-                                style={{ width: "100%", height: "100%", resizeMode: 'contain', }}
-                            />
-                        </View>
-
-                        <View style={styles.mt20} />
-
-                        <View style={styles.innerContainer}>
-
-                            <View style={{ ...styles.innerView1 }}>
-                                <Text
-                                    allowFontScaling={false}
-                                    numberOfLines={1}
-                                    style={{ ...styles.headTxt, color: themecolor.TXTWHITE }}>
-                                    Create your Account
-                                </Text>
-
-                                <View style={styles.mt10} />
-
-                                <View style={{
-                                    ...styles.textInputView,
-                                    backgroundColor: themecolor.OTPBOXCOLOR,
-                                    borderColor: themecolor.BOXBORDERCOLOR1,
-                                }}>
-                                    <FA name="user" style={{ margin: 9 }} size={17} color={themecolor.ICONINPUT} />
-                                    <View style={{ ...styles.textViewWidth }}>
-                                        <TextInput
-                                            allowFontScaling={false}
-                                            value={name}
-                                            placeholderTextColor={themecolor.TXTGREYS}
-                                            placeholder="Full Name*"
-                                            onChangeText={text => setName(text)}
-                                            style={{
-                                                color: themecolor.TXTWHITE,
-                                                ...styles.textInput,
-                                            }}
-                                        />
-                                    </View>
-                                </View>
-
-                                <View style={styles.mt10} />
-
-                                <View style={{
-                                    ...styles.textInputView,
-                                    backgroundColor: themecolor.OTPBOXCOLOR,
-                                    borderColor: themecolor.BOXBORDERCOLOR1,
-                                }}>
-                                    <MaterialCommunityIcons name="cellphone" style={{ margin: 9 }} size={17} color={themecolor.ICONINPUT} />
-                                    <View style={{ ...styles.textViewWidth }}>
-                                        <TextInput
-                                            allowFontScaling={false}
-                                            value={mobileNo}
-                                            placeholderTextColor={themecolor.TXTGREYS}
-                                            placeholder="Mobile Number*"
-                                            keyboardType="numeric"
-                                            maxLength={10}
-                                            onChangeText={text => setMobileNo(text)}
-                                            style={{
-                                                color: themecolor.TXTWHITE,
-                                                ...styles.textInput,
-                                            }}
-                                        />
-                                    </View>
-                                </View>
-
-                                <View style={styles.mt10} />
-
-                                <View style={{
-                                    ...styles.textInputView,
-                                    backgroundColor: themecolor.OTPBOXCOLOR,
-                                    borderColor: themecolor.BOXBORDERCOLOR1,
-                                }}>
-                                    <Icon name="email" style={{ margin: 9 }} size={16} color={themecolor.ICONINPUT} />
-                                    <View style={{ ...styles.textViewWidth }}>
-                                        <TextInput
-                                            allowFontScaling={false}
-                                            value={email}
-                                            placeholderTextColor={themecolor.TXTGREYS}
-                                            placeholder="Email Address*"
-                                            keyboardType="email-address"
-                                            inputMode="email"
-                                            onChangeText={text => setEmail(text)}
-                                            style={{
-                                                color: themecolor.TXTWHITE,
-                                                ...styles.textInput,
-                                            }}
-                                        />
-                                    </View>
-                                </View>
-
-                                <View style={styles.mt10} />
-
-                                <View
-                                    style={{
-                                        ...styles.textInputView,
-                                        backgroundColor: themecolor.OTPBOXCOLOR,
-                                        borderColor: themecolor.BOXBORDERCOLOR1,
-                                    }}>
-                                    <TouchableOpacity activeOpacity={0.5} onPress={() => {
-                                        isPasswordSecure
-                                            ? setIsPasswordSecure(false)
-                                            : setIsPasswordSecure(true);
-                                    }} >
-                                        <MaterialCommunityIcons
-                                            name={isPasswordSecure ? 'eye-off' : 'eye'}
-                                            size={17}
-                                            style={{ margin: 9 }}
-                                            color={themecolor.ICONINPUT}
-                                        />
-                                    </TouchableOpacity>
-                                    <View style={{ ...styles.textViewWidth }}>
-                                        <TextInput
-                                            allowFontScaling={false}
-                                            value={password}
-                                            placeholderTextColor={themecolor.TXTGREYS}
-                                            placeholder="Password*"
-                                            autoCapitalize="none"
-                                            autoCorrect={false}
-                                            textContentType="newPassword"
-                                            secureTextEntry={isPasswordSecure}
-                                            enablesReturnKeyAutomatically
-                                            onChangeText={text => setPassword(text)}
-                                            style={{
-                                                color: themecolor.TXTWHITE,
-                                                ...styles.textInput,
-                                            }}
-                                        />
-                                    </View>
-                                </View>
-
-                                <View style={styles.mt10} />
-
-                                <View
-                                    style={{
-                                        ...styles.textInputView,
-                                        backgroundColor: themecolor.OTPBOXCOLOR,
-                                        borderColor: themecolor.BOXBORDERCOLOR1,
-                                    }}>
-                                    <TouchableOpacity activeOpacity={0.5} onPress={() => {
-                                        isPasswordSecure1
-                                            ? setIsPasswordSecure1(false)
-                                            : setIsPasswordSecure1(true);
-                                    }}>
-                                        <MaterialCommunityIcons
-                                            name={isPasswordSecure1 ? 'eye-off' : 'eye'}
-                                            size={17}
-                                            style={{ margin: 9 }}
-                                            color={themecolor.ICONINPUT}
-                                        />
-                                    </TouchableOpacity>
-                                    <View style={{ ...styles.textViewWidth }}>
-                                        <TextInput
-                                            allowFontScaling={false}
-                                            value={conPassword}
-                                            placeholderTextColor={themecolor.TXTGREYS}
-                                            placeholder="Confirm Password*"
-                                            autoCapitalize="none"
-                                            autoCorrect={false}
-                                            textContentType="newPassword"
-                                            secureTextEntry={isPasswordSecure1}
-                                            enablesReturnKeyAutomatically
-                                            onChangeText={text => setConPassword(text)}
-                                            style={{
-                                                color: themecolor.TXTWHITE,
-                                                ...styles.textInput,
-                                            }}
-                                        />
-                                    </View>
-                                </View>
-
-                                <View style={styles.mt10} />
-
-                                <HalfSizeButton
-                                    title="Sent OTP"
-                                    // onPress={() => navigation.navigate('VerifyOtp', { mobileNo: mobileNo, })}
-                                    onPress={() => handleSignUp()}
-                                    color={"#fff"}
-                                    backgroundColor={themecolor.ADDTOCARTBUTTONCOLOR}
-                                    borderColor={themecolor.ADDTOCARTBUTTONCOLOR}
+                        <View style={{ ...styles.BackIconView }}>
+                            <TouchableOpacity
+                                activeOpacity={0.5}
+                                style={styles.toggle}
+                                onPress={() => handleBackButtonClick()}
+                            >
+                                <CIcon
+                                    name="keyboard-backspace"
+                                    size={26}
+                                    color={themecolor.TXTWHITE}
                                 />
-
-                            </View>
+                            </TouchableOpacity>
                         </View>
 
+                        <View style={{ ...styles.innerView }}>
+
+                            <View style={{ ...styles.ImgView }}>
+                                <Image
+                                    source={require('../../assets/images/newlog.png')}
+                                    style={{ width: "100%", height: "100%", resizeMode: 'contain', }}
+                                />
+                            </View>
+
+                            <View style={styles.mt20} />
+
+                            <View style={styles.innerContainer}>
+
+                                <View style={{ ...styles.innerView1 }}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        numberOfLines={1}
+                                        style={{ ...styles.headTxt, color: themecolor.TXTWHITE }}>
+                                        Create your Account
+                                    </Text>
+
+                                    <View style={styles.mt10} />
+
+                                    <View style={{
+                                        ...styles.textInputView,
+                                        backgroundColor: themecolor.OTPBOXCOLOR,
+                                        borderColor: themecolor.BOXBORDERCOLOR1,
+                                    }}>
+                                        <FA name="user" style={{ margin: 9 }} size={17} color={themecolor.ICONINPUT} />
+                                        <View style={{ ...styles.textViewWidth }}>
+                                            <TextInput
+                                                allowFontScaling={false}
+                                                value={name}
+                                                placeholderTextColor={themecolor.TXTGREYS}
+                                                placeholder="Full Name*"
+                                                onChangeText={text => setName(text)}
+                                                style={{
+                                                    color: themecolor.TXTWHITE,
+                                                    ...styles.textInput,
+                                                }}
+                                            />
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.mt10} />
+
+                                    <View style={{
+                                        ...styles.textInputView,
+                                        backgroundColor: themecolor.OTPBOXCOLOR,
+                                        borderColor: themecolor.BOXBORDERCOLOR1,
+                                    }}>
+                                        <MaterialCommunityIcons name="cellphone" style={{ margin: 9 }} size={17} color={themecolor.ICONINPUT} />
+                                        <View style={{ ...styles.textViewWidth }}>
+                                            <TextInput
+                                                allowFontScaling={false}
+                                                value={mobileNo}
+                                                placeholderTextColor={themecolor.TXTGREYS}
+                                                placeholder="Mobile Number*"
+                                                keyboardType="numeric"
+                                                maxLength={10}
+                                                onChangeText={text => setMobileNo(text)}
+                                                style={{
+                                                    color: themecolor.TXTWHITE,
+                                                    ...styles.textInput,
+                                                }}
+                                            />
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.mt10} />
+
+                                    <View style={{
+                                        ...styles.textInputView,
+                                        backgroundColor: themecolor.OTPBOXCOLOR,
+                                        borderColor: themecolor.BOXBORDERCOLOR1,
+                                    }}>
+                                        <Icon name="email" style={{ margin: 9 }} size={16} color={themecolor.ICONINPUT} />
+                                        <View style={{ ...styles.textViewWidth }}>
+                                            <TextInput
+                                                allowFontScaling={false}
+                                                value={email}
+                                                placeholderTextColor={themecolor.TXTGREYS}
+                                                placeholder="Email Address*"
+                                                keyboardType="email-address"
+                                                inputMode="email"
+                                                onChangeText={text => setEmail(text)}
+                                                style={{
+                                                    color: themecolor.TXTWHITE,
+                                                    ...styles.textInput,
+                                                }}
+                                            />
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.mt10} />
+
+                                    <View
+                                        style={{
+                                            ...styles.textInputView,
+                                            backgroundColor: themecolor.OTPBOXCOLOR,
+                                            borderColor: themecolor.BOXBORDERCOLOR1,
+                                        }}>
+                                        <TouchableOpacity activeOpacity={0.5} onPress={() => {
+                                            isPasswordSecure
+                                                ? setIsPasswordSecure(false)
+                                                : setIsPasswordSecure(true);
+                                        }} >
+                                            <MaterialCommunityIcons
+                                                name={isPasswordSecure ? 'eye-off' : 'eye'}
+                                                size={17}
+                                                style={{ margin: 9 }}
+                                                color={themecolor.ICONINPUT}
+                                            />
+                                        </TouchableOpacity>
+                                        <View style={{ ...styles.textViewWidth }}>
+                                            <TextInput
+                                                allowFontScaling={false}
+                                                value={password}
+                                                placeholderTextColor={themecolor.TXTGREYS}
+                                                placeholder="Password*"
+                                                autoCapitalize="none"
+                                                autoCorrect={false}
+                                                textContentType="newPassword"
+                                                secureTextEntry={isPasswordSecure}
+                                                enablesReturnKeyAutomatically
+                                                onChangeText={text => setPassword(text)}
+                                                style={{
+                                                    color: themecolor.TXTWHITE,
+                                                    ...styles.textInput,
+                                                }}
+                                            />
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.mt10} />
+
+                                    <View
+                                        style={{
+                                            ...styles.textInputView,
+                                            backgroundColor: themecolor.OTPBOXCOLOR,
+                                            borderColor: themecolor.BOXBORDERCOLOR1,
+                                        }}>
+                                        <TouchableOpacity activeOpacity={0.5} onPress={() => {
+                                            isPasswordSecure1
+                                                ? setIsPasswordSecure1(false)
+                                                : setIsPasswordSecure1(true);
+                                        }}>
+                                            <MaterialCommunityIcons
+                                                name={isPasswordSecure1 ? 'eye-off' : 'eye'}
+                                                size={17}
+                                                style={{ margin: 9 }}
+                                                color={themecolor.ICONINPUT}
+                                            />
+                                        </TouchableOpacity>
+                                        <View style={{ ...styles.textViewWidth }}>
+                                            <TextInput
+                                                allowFontScaling={false}
+                                                value={conPassword}
+                                                placeholderTextColor={themecolor.TXTGREYS}
+                                                placeholder="Confirm Password*"
+                                                autoCapitalize="none"
+                                                autoCorrect={false}
+                                                textContentType="newPassword"
+                                                secureTextEntry={isPasswordSecure1}
+                                                enablesReturnKeyAutomatically
+                                                onChangeText={text => setConPassword(text)}
+                                                style={{
+                                                    color: themecolor.TXTWHITE,
+                                                    ...styles.textInput,
+                                                }}
+                                            />
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.mt10} />
+
+                                    <HalfSizeButton
+                                        title="Sent OTP"
+                                        // onPress={() => navigation.navigate('VerifyOtp', { mobileNo: mobileNo, })}
+                                        onPress={() => handleSignUp()}
+                                        color={"#fff"}
+                                        backgroundColor={themecolor.ADDTOCARTBUTTONCOLOR}
+                                        borderColor={themecolor.ADDTOCARTBUTTONCOLOR}
+                                    />
+
+                                </View>
+                            </View>
+
+                        </View>
                     </View>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            )}
 
             {showmodal && (
                 <VerifyModel

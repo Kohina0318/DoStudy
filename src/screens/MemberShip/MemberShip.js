@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Dimensions, Text, BackHandler
+    Dimensions, Text, BackHandler,ScrollView
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -10,8 +10,8 @@ import Header from '../../components/shared/header/Header';
 import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
 import NoDataMsg from '../../components/shared/NoData/NoDataMsg';
 import { styles } from '../../assets/css/MemberShipCss/MemberShipStyle';
-import { getPackage } from '../../repository/MemberShipRepository/MemberShipRep';
-import { MemberFlatList } from '../../components/shared/FlateLists/MemberFlateList/MemberFlatList';
+import { getActivePackage, getPackage } from '../../repository/MemberShipRepository/MemberShipRep';
+import { ActiveMemberShip, MemberFlatList } from '../../components/shared/FlateLists/MemberFlateList/MemberFlatList';
 import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRepo';
 
 
@@ -38,6 +38,7 @@ export default function MemberShip(props) {
     const themecolor = new MyThemeClass(mode).getThemeColor();
 
     const [loader, setLoader] = useState(true);
+    const [activePackageData, setActivePackageData] = useState([]);
     const [data, setData] = useState([]);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -65,6 +66,25 @@ export default function MemberShip(props) {
         }
     };
 
+    const handlActivePackage = async () => {
+        try {
+            var res = await getActivePackage();
+            if (res.status === true) {
+                setActivePackageData(res.data);
+               }
+        } catch (e) {
+            console.log('errrror in..handlActivePackage page-->', e);
+            toast.show('Something went wrong!, Try again later.', {
+                type: 'danger',
+                placement: 'bottom',
+                duration: 1000,
+                offset: 30,
+                animationType: 'slide-in',
+            });
+        }
+    };
+
+
     const handlPackages = async () => {
         try {
             var res = await getPackage();
@@ -90,6 +110,7 @@ export default function MemberShip(props) {
 
     useEffect(() => {
         handleUserData();
+        handlActivePackage()
         handlPackages()
     }, [])
 
@@ -104,7 +125,7 @@ export default function MemberShip(props) {
             {loader ? (
                 <LoadingFullScreen style={{ flex: 1 }} />
             ) : (
-                <>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <View
                         style={{
                             ...styles.container,
@@ -112,6 +133,10 @@ export default function MemberShip(props) {
 
                         {data.length > 0 ? (
                             <>
+                                <ActiveMemberShip data={data[0]} />
+
+                                <View style={styles.margT} />
+
                                 <MemberFlatList data={data} userName={name} userEmail={email} userPhoneNo={phone} setLoader={setLoader} />
                                 <View style={styles.margT} />
                             </>
@@ -119,8 +144,8 @@ export default function MemberShip(props) {
                             <NoDataMsg title="No Data Found!" />
                         )}
                     </View>
-                    <View style={{ marginVertical: 40 }} />
-                </>
+                    <View style={{ marginVertical: 10 }} />
+                </ScrollView>
             )}
         </View>
     );

@@ -8,16 +8,17 @@ const styles = StyleSheet.create({
   bg: {flex: 1,},
   container: {
     width:width,
-    height:height*0.31,
+    // height:height*0.31,
     marginBottom:8
   },
   container1: {
     width: width ,
-    padding: 12,
-    paddingBottom:27,
-    display:"flex",
-    justifyContent:"center",
-    alignItems:"center"
+    // padding: 12,
+    paddingBottom:5,
+    // display:"flex",
+    // justifyContent:"center",
+    alignItems:"center",
+    marginTop:-22
   },
   image: {
     width: width,

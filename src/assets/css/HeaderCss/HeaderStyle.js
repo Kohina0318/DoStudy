@@ -69,6 +69,9 @@ export const styles = StyleSheet.create({
   iconTitle: {
     width: width * 0.87,
   },
+  iconTitle1: {
+    width: width * 0.8,
+  },
   headText: {
     fontSize: FontSize.labelText5,
     fontFamily: Fonts.PopinsMedium,
@@ -82,6 +85,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf:"center",
+  },
+  iconViewCont:{
+    width: width * 0.1,alignItems:"center",alignSelf:"center",borderRadius:50,padding:5
   },
   iconText:{
     width: width * 0.08, alignSelf:"center",borderRadius:15

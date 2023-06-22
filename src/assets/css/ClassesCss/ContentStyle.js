@@ -155,10 +155,21 @@ pdf: {
 },
 widthVideo:{
   width:width*0.83,
+  height:height*0.3
 },
 widthImg:{
   width:width*0.85,
   height: width *0.52,
+},
+
+fullVideoContain:{
+  flex: 1, backgroundColor: "#000",width:width,height:height, alignSelf:'center',justifyContent:"center",padding:10
+},
+fullVideoInnerCon:{
+  width:"100%",height:"100%", alignSelf:'center',justifyContent:"center",alignContent:"center",
+},
+fulllVideoView:{
+  backgroundColor: "#000", width: "100%", height: "100%" ,
 }
 
   

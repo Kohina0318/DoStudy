@@ -126,7 +126,7 @@ export default function Content(props) {
 
     const handleContent = async () => {
         try {
-            var res = await getContent(props.route.params.classId, props.route.params.subjectId, props.route.params.Id);
+            var res = await getContent(props.route.params.Id);
             if (res.status === true) {
                 setData(res.data);
                 setLoader(false)

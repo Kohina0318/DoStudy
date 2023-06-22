@@ -14,17 +14,17 @@ import { styles } from '../../../../assets/css/ClassesCss/CategoryStyle';
 
 const { width, height } = Dimensions.get('screen');
 
-function SubjectCategoryDataFlateList({ item, themecolor, boxSize }) {
+function SubjectCategoryDataFlateList({ item, themecolor,subjectId }) {
   const navigation = useNavigation();
 
   return (
-      <TouchableOpacity activeOpacity={0.5} disabled={item.touch}
+      <TouchableOpacity activeOpacity={0.5} 
         style={{ ...styles.classContanier, backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1, }}
-        onPress={() => navigation.navigate(item.onpress, item.itemToSend)}
+        onPress={() => navigation.navigate("BookCategory", {Id:item.id,subjectId:subjectId, Name:item.category_name})}
       >
         <View style={{ ...styles.classImg }}>
           <Image
-            source={item.image}
+            source={{uri:item.image}}
             resizeMode="contain"
             style={{ width: '100%', height: '100%' }}
           />
@@ -36,7 +36,7 @@ function SubjectCategoryDataFlateList({ item, themecolor, boxSize }) {
           allowFontScaling={false}
           numberOfLines={1}
           style={{ color: themecolor.TXTWHITE, ...styles.classhead }}>
-          {item.name}
+          {item.category_name}
         </Text>
       </TouchableOpacity>
   );
@@ -50,7 +50,7 @@ export function SubjectCategoryFlateList(props) {
     <FlatList
       data={props.data}
       renderItem={({ item }) => (
-        <SubjectCategoryDataFlateList item={item} themecolor={themecolor} boxSize={props.boxSize} />
+        <SubjectCategoryDataFlateList item={item} themecolor={themecolor} boxSize={props.boxSize}  subjectId={props.subjectId}/>
       )}
       numColumns={2}
       showsVerticalScrollIndicator={false}

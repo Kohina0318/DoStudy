@@ -22,6 +22,7 @@ import Ii from 'react-native-vector-icons/Ionicons';
 import { useToast } from 'react-native-toast-notifications';
 import { removeDatafromAsync } from '../../repository/AsyncStorageServices';
 import { postSignOut } from '../../repository/AuthRepository/SignOutRepository';
+import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRepo';
 
 const { width } = Dimensions.get('window');
 
@@ -31,6 +32,31 @@ export default function DrawerContent(props) {
 
   const mode = useSelector(state => state.mode);
   const themecolor = new MyThemeClass(mode).getThemeColor();
+  const [data, setData] = useState([]);
+
+  const handleUserData = async () => {
+    try {
+      var res = await getProfileInfo();
+      if (res.status === true) {
+        setData(res.data)
+      }
+      else {
+        toast.show(res.message, {
+          type: 'warning',
+          placement: 'bottom',
+          duration: 1000,
+          offset: 30,
+          animationType: 'slide-in',
+        });
+      }
+    } catch (e) {
+    }
+  };
+
+  useEffect(() => {
+    handleUserData();
+  }, []);
+
 
 
   const handleConfirmLogout = () => {
@@ -92,12 +118,25 @@ export default function DrawerContent(props) {
         borderColor: themecolor.BOXBORDERCOLOR1,
       }}>
       <View style={MainNavigatorstyle.userinfo1}>
-        <View style={{ ...MainNavigatorstyle.ImageRView }}>
-          <ImageR
-            style={{ ...MainNavigatorstyle.userimg }}
-            source={require('../../assets/images/newlog.png')}
-          />
-        </View>
+
+        {data.length > 0 ?
+          <View style={{ ...MainNavigatorstyle.ImageRView }}>
+            <ImageR
+              style={{ ...MainNavigatorstyle.userimg }}
+              // source={require('../../assets/images/newlog.png')}
+              source={{ uri: data[0].profile_photo }}
+            />
+            <View style={{ marginTop: 7 }} />
+            <Text
+              allowFontScaling={false}
+              style={{
+                ...MainNavigatorstyle.labelstylecss1,
+                color: themecolor.ADDTOCARTBUTTONCOLOR,
+              }}>
+              Hi, {data[0].name}
+            </Text>
+          </View>
+          : <></>}
 
 
 
@@ -115,6 +154,20 @@ export default function DrawerContent(props) {
                 color: themecolor.TXTWHITE,
               }}>
               Home
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigate('Profile')}
+            style={MainNavigatorstyle.viewstyle1}>
+            <FA name="user-o" size={20} color={themecolor.BACKICON} />
+            <Text
+              allowFontScaling={false}
+              style={{
+                ...MainNavigatorstyle.labelstylecss,
+                color: themecolor.TXTWHITE,
+              }}>
+              Profile
             </Text>
           </TouchableOpacity>
 

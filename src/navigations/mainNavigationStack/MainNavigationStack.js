@@ -28,6 +28,7 @@ import VerifyOtp from '../../screens/auth/VerifyOtp';
 import VerifyOtpForgotPswd from '../../screens/auth/VerifyOtpForgotPswd';
 import ChangePswdByForgot from '../../screens/auth/ChangePswdByForgot';
 import MemberShip from '../../screens/MemberShip/MemberShip';
+import FullVideoContainDetail from '../../screens/classes/FullVideoContainDetail';
 
 
 function MainNavigationStack(props) {
@@ -81,6 +82,11 @@ function MainNavigationStack(props) {
         <Stack.Screen
           name="ContentDetail"
           component={ContentDetail}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="FullVideoContainDetail"
+          component={FullVideoContainDetail}
           options={{ headerShown: false }}
         />
         <Stack.Screen
