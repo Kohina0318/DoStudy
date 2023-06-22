@@ -16,14 +16,38 @@ const styles = StyleSheet.create({
     width:width*0.944, justifyContent:"flex-start", 
   },
   datalistView: {
-    width: width * 0.95,
+    width: width * 0.94,
     marginTop: 6,
     padding: 13,
     borderRadius: 10,
     alignSelf: 'center',
     alignItems: 'center',
     borderWidth: 0.5,
+    display:"flex",
     marginBottom: 1,
+  },
+  datalistView1: {
+    width: width * 0.94,
+    marginTop: 6,
+    padding: 15,
+    borderRadius: 10,
+    alignSelf: 'center',
+    alignItems: 'center',
+    flexDirection:'row',
+    borderWidth: 0.5,
+    display:"flex",
+    marginBottom: 1,
+  },
+  innerViewCon1:{
+    width:"90%",
+  },
+  innerViewCon2:{
+    width:"10%",
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent:"center",
+    padding:10,
+    borderRadius:50
   },
   heading:{
     fontSize: FontSize.labelText4,
@@ -51,6 +75,9 @@ const styles = StyleSheet.create({
   },
   mt5:{
     marginTop:7
+  },
+  mtt5:{
+    marginTop:4
   },
   mt15:{
     marginTop:15
@@ -127,8 +154,7 @@ pdf: {
   backgroundColor:"red"
 },
 widthVideo:{
-  width:width*0.85,
-  margin:10
+  width:width*0.83,
 },
 widthImg:{
   width:width*0.85,

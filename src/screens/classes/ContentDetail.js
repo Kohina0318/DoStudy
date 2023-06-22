@@ -288,7 +288,7 @@ export default function ContentDetail(props) {
                                             padding: 20
                                         }}
                                     >
-                                        <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
+                                        <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center',display:"flex" }}>
                                             {contantUrlType === 'mp4' ?
                                                 <View style={{ ...styles.widthVideo }}>
                                                     <VideoPlayer
@@ -299,6 +299,8 @@ export default function ContentDetail(props) {
                                                         ref={(ref) => { player = ref }}
                                                         muted={false}
                                                         paused={false}
+                                                        showDuration={true}
+                                                        pauseOnPress={true}
                                                     />
                                                 </View>
                                                 :
@@ -308,7 +310,7 @@ export default function ContentDetail(props) {
                                                             uri: contantUrl,
                                                             cache: true,
                                                         }}
-                                                        spacing={0}
+                                                        spacing={1}
                                                         trustAllCerts={Platform.OS === 'ios'}
                                                         onLoadComplete={(numberOfPages, filePath) => {
                                                             console.log(`number of pages: ${numberOfPages}`);

@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from '../../../../assets/css/ClassesCss/ContentStyle';
 import AD from 'react-native-vector-icons/AntDesign';
+import FA from 'react-native-vector-icons/FontAwesome';
 
 
 function ContentDataFlateList({ item, themecolor }) {
@@ -20,37 +21,35 @@ function ContentDataFlateList({ item, themecolor }) {
 
 
     return (
-        <View 
+        <TouchableOpacity activeOpacity={0.5}
             style={{
-                ...styles.datalistView,
+                ...styles.datalistView1,
                 backgroundColor: themecolor.BOXBORDERCOLOR,
                 borderColor: themecolor.BOXBORDERCOLOR1,
             }}
+            onPress={() => navigation.navigate('ContentDetail', { Id:item.id, UnitNo:item.unit_no,UnitName:item.unit_name,UnitImage:item.image })}
         >
-            <View>
-            <Text
-              allowFontScaling={false}
-              style={{ ...styles.txt, color: themecolor.ADDTOCARTBUTTONCOLOR }}
-              numberOfLines={2}>
-              {item.unit_no}
-            </Text>
-          </View>
-            <View style={{...styles.mt5}}>
+            <View style={{ ...styles.innerViewCon1 }}>
                 <Text
                     allowFontScaling={false}
-                    numberOfLines={1}
-                    style={{ ...styles.txt1 ,color: themecolor.TXTWHITE }}>
+                    style={{ ...styles.txt, color: themecolor.ADDTOCARTBUTTONCOLOR }}
+                    numberOfLines={2}>
+                    {item.unit_no}
+                </Text>
+                <View style={{ ...styles.mtt5 }} />
+                <Text
+                    allowFontScaling={false}
+                    style={{ ...styles.txt1, color: themecolor.TXTWHITE }}>
                     {item.unit_name}
                 </Text>
+
             </View>
 
-            <TouchableOpacity activeOpacity={0.5}  style={{...styles.mt5, ...styles.buttonView,
-              backgroundColor: themecolor.ADDTOCARTBUTTONCOLOR,}}
-                   onPress={() => navigation.navigate('ContentDetail', { Id:item.id, UnitNo:item.unit_no,UnitName:item.unit_name,UnitImage:item.image })}>
-            <Text allowFontScaling={false} style={{...styles.buttontxt}}>View <AD name="arrowright" size={15} /> </Text>
-            </TouchableOpacity>
+            <View style={{ ...styles.innerViewCon2 }}>
+                <FA name="angle-right" size={25} color={themecolor.TXTWHITE} />
+            </View>
 
-        </View>
+        </TouchableOpacity>
     );
 }
 
