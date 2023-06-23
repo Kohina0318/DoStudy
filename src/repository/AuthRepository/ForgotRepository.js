@@ -1,8 +1,9 @@
+import { getAppToken } from "../CommonRepository";
 import { SERVER_URL } from "../SERVER_URL";
 
 const postforgotByNumber = async formdata => {
   try {
-    const response = await fetch(`${await SERVER_URL()}/login/forget`, {
+    const response = await fetch(`${await SERVER_URL()}/api/forgot-pswd`, {
       method: 'POST',
       headers: {'Content-Type': 'multipart/form-data',
       Authorization: `${await getAppToken()}`},
@@ -17,7 +18,7 @@ const postforgotByNumber = async formdata => {
 
 const postVerifyOtpForgot = async formdata => {
   try {
-    const response = await fetch(`${await SERVER_URL()}/login/forget`, {
+    const response = await fetch(`${await SERVER_URL()}/api/forgot-verify-otp`, {
       method: 'POST',
       headers: {'Content-Type': 'multipart/form-data',
       Authorization: `${await getAppToken()}`},
@@ -32,7 +33,7 @@ const postVerifyOtpForgot = async formdata => {
 
 const postforgotPassword = async formdata => {
   try {
-    const response = await fetch(`${await SERVER_URL()}/login/forget`, {
+    const response = await fetch(`${await SERVER_URL()}/api/forgot-change-pswd`, {
       method: 'POST',
       headers: {'Content-Type': 'multipart/form-data',
       Authorization: `${await getAppToken()}`},

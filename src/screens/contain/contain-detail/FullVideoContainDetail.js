@@ -4,12 +4,9 @@ import {
     Dimensions, Text, BackHandler, StatusBar
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
+import { MyThemeClass } from '../../../components/Theme/ThemeDarkLightColor';
 import { useToast } from 'react-native-toast-notifications';
-import Header from '../../components/shared/header/Header';
-import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
-import NoDataMsg from '../../components/shared/NoData/NoDataMsg';
-import { styles } from '../../assets/css/ClassesCss/ContentStyle';
+import { styles } from '../../../assets/css/ClassesCss/ContentStyle';
 
 import VideoPlayerControl from 'react-native-video-controls';
 
@@ -45,12 +42,12 @@ export default function FullVideoContainDetail(props) {
             />
 
             <View style={{ ...styles.fullVideoInnerCon }} >
-                <VideoPlayerControl source={{ uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"}}
+                <VideoPlayerControl source={{ uri: props.route.params.contantUrl}}
                     ref={ref =>
                         this.player = ref
                     }
                     // onEnterFullscreen={() => alert('hi')}
-                    onBack={() => props.navigation.goBack()}
+                    onBack={() => handleBackButtonClick()}
                     style={{ ...styles.fulllVideoView , position: 'absolute',}}
                     controls={true}
                     paused={false}

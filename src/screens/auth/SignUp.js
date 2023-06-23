@@ -63,6 +63,7 @@ export default function SignUp(props) {
     const handleSignUp = async () => {
         setLoader(true)
         if (name == '') {
+            setLoader(false)
             toast.show('Full Name is required!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -72,6 +73,7 @@ export default function SignUp(props) {
             });
         }
         else if (mobileNo == '') {
+            setLoader(false)
             toast.show('Mobile number is required!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -80,6 +82,7 @@ export default function SignUp(props) {
                 animationType: 'slide-in',
             });
         } else if (mobileNo.length < 10) {
+            setLoader(false)
             toast.show('Please enter valid mobile number!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -88,6 +91,7 @@ export default function SignUp(props) {
                 animationType: 'slide-in',
             });
         } else if (email == '') {
+            setLoader(false)
             toast.show('Email is required!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -96,6 +100,7 @@ export default function SignUp(props) {
                 animationType: 'slide-in',
             });
         } else if (!email.includes('@') || !email.includes('gmail.com')) {
+            setLoader(false)
             toast.show('Please enter valid email address!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -104,6 +109,7 @@ export default function SignUp(props) {
                 animationType: 'slide-in',
             });
         } else if (password == '') {
+            setLoader(false)
             toast.show('Password is required!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -112,6 +118,7 @@ export default function SignUp(props) {
                 animationType: 'slide-in',
             });
         } else if (conPassword == '') {
+            setLoader(false)
             toast.show('Confirm Password is required!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -121,6 +128,7 @@ export default function SignUp(props) {
             });
         }
         else if (conPassword != password) {
+            setLoader(false)
             toast.show('Confirm Password does not match!', {
                 type: 'warning',
                 placement: 'bottom',

@@ -13,22 +13,23 @@ import Splash from '../../screens/intro/Splash';
 import DrawerNavigation from '../drawer/DrawerNavigation';
 import Subjects from '../../screens/classes/Subjects';
 import BookCategory from '../../screens/classes/BookCategory'
-import Content from '../../screens/classes/Content';
-import ContentDetail from '../../screens/classes/ContentDetail';
+import Content from '../../screens/contain/Content';
+import ContentDetail from '../../screens/contain/contain-detail/ContentDetail';
 import Classes from '../../screens/classes/Classes';
 import SubjectCategory from '../../screens/classes/SubjectCategory';
 import Profile from '../../screens/profile/Profile';
 import Support from '../../screens/support/Support';
 import SignIn from '../../screens/auth/SignIn';
 import SignUp from '../../screens/auth/SignUp';
-import ForgotPswd from '../../screens/auth/ForgotPswd';
+import ForgotPswd from '../../screens/auth/ForgotPassword/ForgotPswd';
 import EditProfile from '../../screens/profile/EditProfile';
 import ChangePswd from '../../screens/profile/ChangePswd';
 import VerifyOtp from '../../screens/auth/VerifyOtp';
-import VerifyOtpForgotPswd from '../../screens/auth/VerifyOtpForgotPswd';
-import ChangePswdByForgot from '../../screens/auth/ChangePswdByForgot';
+import VerifyOtpForgotPswd from '../../screens/auth/ForgotPassword/VerifyOtpForgotPswd';
+import ChangePswdByForgot from '../../screens/auth/ForgotPassword/ChangePswdByForgot';
 import MemberShip from '../../screens/MemberShip/MemberShip';
-import FullVideoContainDetail from '../../screens/classes/FullVideoContainDetail';
+import FullVideoContainDetail from '../../screens/contain/contain-detail/FullVideoContainDetail';
+import FullPdfContainDetail from '../../screens/contain/contain-detail/FullPdfContainDetail';
 
 
 function MainNavigationStack(props) {
@@ -87,6 +88,11 @@ function MainNavigationStack(props) {
          <Stack.Screen
           name="FullVideoContainDetail"
           component={FullVideoContainDetail}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="FullPdfContainDetail"
+          component={FullPdfContainDetail}
           options={{ headerShown: false }}
         />
         <Stack.Screen

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Dimensions, Text, BackHandler,ScrollView
+    Dimensions, Text, BackHandler, ScrollView, StatusBar
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -71,7 +71,7 @@ export default function MemberShip(props) {
             var res = await getActivePackage();
             if (res.status === true) {
                 setActivePackageData(res.data);
-               }
+            }
         } catch (e) {
             console.log('errrror in..handlActivePackage page-->', e);
             toast.show('Something went wrong!, Try again later.', {
@@ -119,6 +119,12 @@ export default function MemberShip(props) {
     return (
         <View style={{ ...styles.bg, backgroundColor: themecolor.THEMECOLOR }}>
 
+            <StatusBar
+                translucent
+                backgroundColor="transparent"
+                barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
+            />
+
             <Header title="MemberShip" backIcon={true}
                 onPressBack={() => handleBackButtonClick()} />
 
@@ -133,7 +139,10 @@ export default function MemberShip(props) {
 
                         {data.length > 0 ? (
                             <>
-                                <ActiveMemberShip data={data[0]} />
+                                {activePackageData.length > 0 ?
+                                    <ActiveMemberShip data={activePackageData[0]} />
+                                    : <></>
+                                }
 
                                 <View style={styles.margT} />
 

@@ -8,18 +8,19 @@ import {
     TextInput
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
+import { MyThemeClass } from '../../../components/Theme/ThemeDarkLightColor';
 import { useToast } from 'react-native-toast-notifications';
-import { styles } from '../../assets/css/AuthCss/SignInStyle';
+import { styles } from '../../../assets/css/AuthCss/SignInStyle';
 import { useNavigation } from '@react-navigation/native';
 import CIcon from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AD from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import HalfSizeButton from '../../components/shared/button/halfSizeButton';
+import HalfSizeButton from '../../../components/shared/button/halfSizeButton';
 import FA from 'react-native-vector-icons/FontAwesome';
 import OTPInputView from '@twotalltotems/react-native-otp-input'
-import { postVerifyOtpForgot } from '../../repository/AuthRepository/ForgotRepository';
+import { postVerifyOtpForgot } from '../../../repository/AuthRepository/ForgotRepository';
+import LoadingFullScreen from '../../../components/shared/Loader/LoadingFullScreen';
 
 
 export default function VerifyOtpForgotPswd(props) {
@@ -48,10 +49,10 @@ export default function VerifyOtpForgotPswd(props) {
 
     const [otp, setOtp] = useState("");
 
-    const HandleVerifyOtp=async()=>{
-        // navigation.navigate("ChangePswdByForgot")
-
+    const HandleVerifyOtp = async () => {
+        setLoader(true)
         if (otp == '') {
+            setLoader(false)
             toast.show('OTP is required!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -59,7 +60,7 @@ export default function VerifyOtpForgotPswd(props) {
                 offset: 30,
                 animationType: 'slide-in',
             });
-        }else{
+        } else {
             try {
                 let formdata = new FormData();
                 formdata.append('phone', props.route.params.mobileNo);
@@ -67,9 +68,10 @@ export default function VerifyOtpForgotPswd(props) {
 
                 const res = await postVerifyOtpForgot(formdata);
                 if (res.status == true) {
-                     navigation.navigate("ChangePswdByForgot", { mobileNo: mobileNo,otp:otp})
+                    setLoader(false)
+                    navigation.navigate("ChangePswdByForgot", { mobileNo: props.route.params.mobileNo, otp: otp ,comeIn:props.route.params.comeIn})
                 } else {
-
+                    setLoader(false)
                     toast.show(res.message, {
                         type: 'danger',
                         placement: 'bottom',
@@ -79,6 +81,7 @@ export default function VerifyOtpForgotPswd(props) {
                     });
                 }
             } catch (e) {
+                setLoader(false)
                 console.log('catch in ....login page', e);
                 toast.show('Something went wrong!, Try again later.', {
                     type: 'danger',
@@ -89,7 +92,7 @@ export default function VerifyOtpForgotPswd(props) {
                 });
             }
         }
-    } 
+    }
 
     return (
         <View style={{ backgroundColor: themecolor.LOGINTHEMECOLOR, ...styles.bg }}>
@@ -99,49 +102,52 @@ export default function VerifyOtpForgotPswd(props) {
                 barStyle={themecolor.STATUSEBARCONTENT}
             />
 
-            <View
-                style={{
-                    ...styles.container,
-                }}>
+            {loader ? (
+                <LoadingFullScreen style={{ flex: 1 }} />
+            ) : (
+                <View
+                    style={{
+                        ...styles.container,
+                    }}>
 
-                <View style={{ ...styles.BackIconView }}>
-                    <TouchableOpacity
-                        activeOpacity={0.5}
-                        style={styles.toggle}
-                        onPress={() => handleBackButtonClick()}
-                    >
-                        <CIcon
-                            name="keyboard-backspace"
-                            size={26}
-                            color={themecolor.TXTWHITE}
-                        />
-                    </TouchableOpacity>
-                </View>
-
-                <View style={{ ...styles.innerView }}>
-
-                    <View style={{ ...styles.ImgView }}>
-                        <Image
-                            source={require('../../assets/images/newlog.png')}
-                            style={{ width: "100%", height: "100%", resizeMode: 'contain', }}
-                        />
+                    <View style={{ ...styles.BackIconView }}>
+                        <TouchableOpacity
+                            activeOpacity={0.5}
+                            style={styles.toggle}
+                            onPress={() => handleBackButtonClick()}
+                        >
+                            <CIcon
+                                name="keyboard-backspace"
+                                size={26}
+                                color={themecolor.TXTWHITE}
+                            />
+                        </TouchableOpacity>
                     </View>
 
-                    <View style={styles.mt20} />
+                    <View style={{ ...styles.innerView }}>
 
-                    <View style={styles.innerContainer}>
+                        <View style={{ ...styles.ImgView }}>
+                            <Image
+                                source={require('../../../assets/images/newlog.png')}
+                                style={{ width: "100%", height: "100%", resizeMode: 'contain', }}
+                            />
+                        </View>
 
-                        <View style={{ ...styles.innerView1 }}>
-                            <Text
-                                allowFontScaling={false}
-                                numberOfLines={1}
-                                style={{ ...styles.headTxt, color: themecolor.TXTWHITE }}>
-                                Please Enter your OTP to Forgot your Password
-                            </Text>
+                        <View style={styles.mt20} />
 
-                            <View style={styles.mt10} />
+                        <View style={styles.innerContainer}>
 
-                                 <View style={{ ...styles.otpView }}>
+                            <View style={{ ...styles.innerView1 }}>
+                                <Text
+                                    allowFontScaling={false}
+                                    numberOfLines={1}
+                                    style={{ ...styles.headTxt, color: themecolor.TXTWHITE }}>
+                                    Please Enter your OTP to Forgot your Password
+                                </Text>
+
+                                <View style={styles.mt10} />
+
+                                <View style={{ ...styles.otpView }}>
                                     <OTPInputView
                                         pinCount={4}
                                         style={{ width: '100%', height: 70, }}
@@ -154,23 +160,24 @@ export default function VerifyOtpForgotPswd(props) {
                                         onCodeFilled={(code => setOtp(code))}
                                     />
                                 </View>
-                    
 
-                            <View style={styles.mt10} />
+
+                                <View style={styles.mt10} />
 
                                 <HalfSizeButton
                                     title="Forgot Password"
-                                    onPress={()=>HandleVerifyOtp()}
+                                    onPress={() => HandleVerifyOtp()}
                                     color={"#fff"}
                                     backgroundColor={themecolor.ADDTOCARTBUTTONCOLOR}
                                     borderColor={themecolor.ADDTOCARTBUTTONCOLOR}
                                 />
-                                 
-                        </View>
-                    </View>
 
+                            </View>
+                        </View>
+
+                    </View>
                 </View>
-            </View>
+            )}
 
         </View>
     );

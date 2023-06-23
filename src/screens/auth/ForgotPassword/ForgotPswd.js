@@ -8,17 +8,18 @@ import {
     TextInput
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
+import { MyThemeClass } from '../../../components/Theme/ThemeDarkLightColor';
 import { useToast } from 'react-native-toast-notifications';
-import { styles } from '../../assets/css/AuthCss/SignInStyle';
+import { styles } from '../../../assets/css/AuthCss/SignInStyle';
 import { useNavigation } from '@react-navigation/native';
 import CIcon from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AD from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import HalfSizeButton from '../../components/shared/button/halfSizeButton';
+import HalfSizeButton from '../../../components/shared/button/halfSizeButton';
 import FA from 'react-native-vector-icons/FontAwesome';
-import { postforgotByNumber} from '../../repository/AuthRepository/ForgotRepository';
+import { postforgotByNumber } from '../../../repository/AuthRepository/ForgotRepository';
+import LoadingFullScreen from '../../../components/shared/Loader/LoadingFullScreen';
 
 
 export default function ForgotPswd(props) {
@@ -47,9 +48,11 @@ export default function ForgotPswd(props) {
 
     const [mobileNo, setMobileNo] = useState('');
 
-    const HandleSendOtp=async()=>{
-        // navigation.navigate("VerifyOtpForgotPswd")
+
+    const HandleSendOtp = async () => {
+        setLoader(true)
         if (mobileNo == '') {
+            setLoader(false)
             toast.show('Mobile number is required!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -58,6 +61,7 @@ export default function ForgotPswd(props) {
                 animationType: 'slide-in',
             });
         } else if (mobileNo.length < 10) {
+            setLoader(false)
             toast.show('Please enter valid mobile number!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -65,16 +69,17 @@ export default function ForgotPswd(props) {
                 offset: 30,
                 animationType: 'slide-in',
             });
-        }else{
+        } else {
             try {
                 let formdata = new FormData();
                 formdata.append('phone', mobileNo);
 
                 const res = await postforgotByNumber(formdata);
                 if (res.status == true) {
-                     navigation.navigate("VerifyOtpForgotPswd", { mobileNo: mobileNo})
+                    setLoader(false)
+                    navigation.navigate("VerifyOtpForgotPswd", { mobileNo: mobileNo, comeIn: props.route.params.comeIn })
                 } else {
-
+                    setLoader(false)
                     toast.show(res.message, {
                         type: 'danger',
                         placement: 'bottom',
@@ -84,6 +89,7 @@ export default function ForgotPswd(props) {
                     });
                 }
             } catch (e) {
+                setLoader(false)
                 console.log('catch in ....login page', e);
                 toast.show('Something went wrong!, Try again later.', {
                     type: 'danger',
@@ -104,49 +110,53 @@ export default function ForgotPswd(props) {
                 barStyle={themecolor.STATUSEBARCONTENT}
             />
 
-            <View
-                style={{
-                    ...styles.container,
-                }}>
+            {loader ? (
+                <LoadingFullScreen style={{ flex: 1 }} />
+            ) : (
 
-                <View style={{ ...styles.BackIconView }}>
-                    <TouchableOpacity
-                        activeOpacity={0.5}
-                        style={styles.toggle}
-                        onPress={() => handleBackButtonClick()}
-                    >
-                        <CIcon
-                            name="keyboard-backspace"
-                            size={26}
-                            color={themecolor.TXTWHITE}
-                        />
-                    </TouchableOpacity>
-                </View>
+                <View
+                    style={{
+                        ...styles.container,
+                    }}>
 
-                <View style={{ ...styles.innerView }}>
-
-                    <View style={{ ...styles.ImgView }}>
-                        <Image
-                            source={require('../../assets/images/newlog.png')}
-                            style={{ width: "100%", height: "100%", resizeMode: 'contain', }}
-                        />
+                    <View style={{ ...styles.BackIconView }}>
+                        <TouchableOpacity
+                            activeOpacity={0.5}
+                            style={styles.toggle}
+                            onPress={() => handleBackButtonClick()}
+                        >
+                            <CIcon
+                                name="keyboard-backspace"
+                                size={26}
+                                color={themecolor.TXTWHITE}
+                            />
+                        </TouchableOpacity>
                     </View>
 
-                    <View style={styles.mt20} />
+                    <View style={{ ...styles.innerView }}>
 
-                    <View style={styles.innerContainer}>
+                        <View style={{ ...styles.ImgView }}>
+                            <Image
+                                source={require('../../../assets/images/newlog.png')}
+                                style={{ width: "100%", height: "100%", resizeMode: 'contain', }}
+                            />
+                        </View>
 
-                        <View style={{ ...styles.innerView1 }}>
-                            <Text
-                                allowFontScaling={false}
-                                numberOfLines={1}
-                                style={{ ...styles.headTxt, color: themecolor.TXTWHITE }}>
-                                Forgot your Password
-                            </Text>
+                        <View style={styles.mt20} />
 
-                            <View style={styles.mt10} />
+                        <View style={styles.innerContainer}>
 
-                            <View style={{
+                            <View style={{ ...styles.innerView1 }}>
+                                <Text
+                                    allowFontScaling={false}
+                                    numberOfLines={1}
+                                    style={{ ...styles.headTxt, color: themecolor.TXTWHITE }}>
+                                    Forgot your Password
+                                </Text>
+
+                                <View style={styles.mt10} />
+
+                                <View style={{
                                     ...styles.textInputView,
                                     backgroundColor: themecolor.OTPBOXCOLOR,
                                     borderColor: themecolor.BOXBORDERCOLOR1,
@@ -169,22 +179,23 @@ export default function ForgotPswd(props) {
                                     </View>
                                 </View>
 
-                           
-                            <View style={styles.mt10} />
 
-                            <HalfSizeButton
-                                title="Send OTP"
-                                onPress={()=>HandleSendOtp()}
-                                color={"#fff"}
-                                backgroundColor={themecolor.ADDTOCARTBUTTONCOLOR}
-                                borderColor={themecolor.ADDTOCARTBUTTONCOLOR}
-                            />
+                                <View style={styles.mt10} />
 
+                                <HalfSizeButton
+                                    title="Send OTP"
+                                    onPress={() => HandleSendOtp()}
+                                    color={"#fff"}
+                                    backgroundColor={themecolor.ADDTOCARTBUTTONCOLOR}
+                                    borderColor={themecolor.ADDTOCARTBUTTONCOLOR}
+                                />
+
+                            </View>
                         </View>
-                    </View>
 
+                    </View>
                 </View>
-            </View>
+            )}
 
         </View>
     );

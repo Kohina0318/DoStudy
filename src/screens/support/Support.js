@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
     View,
-    Text,
+    Text, StatusBar
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -21,7 +21,14 @@ export default function Support(props) {
     const [loader, setLoader] = useState(false);
 
     return (
-        <View style={{ backgroundColor: themecolor.THEMECOLOR, ...styles.bg}}>
+        <View style={{ backgroundColor: themecolor.THEMECOLOR, ...styles.bg }}>
+
+            <StatusBar
+                translucent
+                backgroundColor="transparent"
+                barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
+            />
+
             <Header title="Support" />
 
             {loader ? (
