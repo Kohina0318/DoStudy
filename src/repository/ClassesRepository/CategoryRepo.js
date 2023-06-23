@@ -1,5 +1,8 @@
+import { ToastAndroid } from "react-native";
+import { navigateToClearStack } from "../../navigations/NavigationDrw/NavigationService";
 import { getAppToken } from "../CommonRepository";
 import { SERVER_URL } from "../SERVER_URL";
+import { removeDatafromAsync } from "../AsyncStorageServices";
 
 const getAllCategory = async (cid,sid) => {
   try {
@@ -9,7 +12,23 @@ const getAllCategory = async (cid,sid) => {
       Authorization: `${await getAppToken()}` },
     });
     const result = await response.json();
-    return result;
+    if (result.token_status == 'false') {
+      await removeDatafromAsync('@UserData');
+      await removeDatafromAsync('@Token');
+
+      ToastAndroid.showWithGravityAndOffset(
+        `${'Token Expired'}`,
+        ToastAndroid.TOP,
+        ToastAndroid.LONG,
+        10,
+        10,
+      )
+      navigateToClearStack('SignIn');
+      return result;
+
+    } else {
+      return result;
+    }
   } catch (err) {
     console.log('error in getAllCategory...in CategoryRepo ', err);
   }
@@ -24,7 +43,23 @@ const getCategoryTopics = async (cid,sid) => {
       Authorization: `${await getAppToken()}` },
     });
     const result = await response.json();
-    return result;
+    if (result.token_status == 'false') {
+      await removeDatafromAsync('@UserData');
+      await removeDatafromAsync('@Token');
+
+      ToastAndroid.showWithGravityAndOffset(
+        `${'Token Expired'}`,
+        ToastAndroid.TOP,
+        ToastAndroid.LONG,
+        10,
+        10,
+      )
+      navigateToClearStack('SignIn');
+      return result;
+
+    } else {
+      return result;
+    }
   } catch (err) {
     console.log('error in getCategoryTopics...in CategoryRepo ', err);
   }

@@ -1,3 +1,6 @@
+import { ToastAndroid } from "react-native";
+import { navigateToClearStack } from "../../navigations/NavigationDrw/NavigationService";
+import { removeDatafromAsync } from "../AsyncStorageServices";
 import { getAppToken } from "../CommonRepository";
 import { SERVER_URL } from "../SERVER_URL";
 
@@ -9,7 +12,25 @@ const getPackage = async () => {
       Authorization: `${await getAppToken()}` },
     });
     const result = await response.json();
-    return result;
+
+    if (result.token_status == 'false') {
+      await removeDatafromAsync('@UserData');
+      await removeDatafromAsync('@Token');
+
+      ToastAndroid.showWithGravityAndOffset(
+        `${'Token Expired'}`,
+        ToastAndroid.TOP,
+        ToastAndroid.LONG,
+        10,
+        10,
+      )
+      navigateToClearStack('SignIn');
+      return result;
+
+    } else {
+      return result;
+    }
+
   } catch (err) {
     console.log('error in getPackage...in MemberShipRepository ', err);
   }
@@ -23,7 +44,24 @@ const getActivePackage = async () => {
       Authorization: `${await getAppToken()}` },
     });
     const result = await response.json();
-    return result;
+    if (result.token_status == 'false') {
+      await removeDatafromAsync('@UserData');
+      await removeDatafromAsync('@Token');
+
+      ToastAndroid.showWithGravityAndOffset(
+        `${'Token Expired'}`,
+        ToastAndroid.TOP,
+        ToastAndroid.LONG,
+        10,
+        10,
+      )
+      navigateToClearStack('SignIn');
+      return result;
+
+    } else {
+      return result;
+    }
+
   } catch (err) {
     console.log('error in getActivePackage...in MemberShipRepository ', err);
   }
@@ -41,7 +79,25 @@ const postMemberShipPayment = async (formdata) => {
       },
     );
     const result = await response.json();
-    return result;
+
+    if (result.token_status == 'false') {
+      await removeDatafromAsync('@UserData');
+      await removeDatafromAsync('@Token');
+
+      ToastAndroid.showWithGravityAndOffset(
+        `${'Token Expired'}`,
+        ToastAndroid.TOP,
+        ToastAndroid.LONG,
+        10,
+        10,
+      )
+      navigateToClearStack('SignIn');
+      return result;
+
+    } else {
+      return result;
+    }
+
   } catch (err) {
     console.log('error in postMemberShipPayment...in MemberShipRep ', err);
   }
