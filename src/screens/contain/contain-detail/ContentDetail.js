@@ -357,7 +357,7 @@ export default function ContentDetail(props) {
                                 </View>
                             }
 
-                            <View style={{ marginVertical: 90 }} />
+                            <View style={{ marginVertical: 20 }} />
                         </View>
                     </ScrollView>
 
