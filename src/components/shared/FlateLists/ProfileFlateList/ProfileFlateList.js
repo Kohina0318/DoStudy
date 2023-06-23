@@ -5,7 +5,7 @@ import {
     FlatList,
     Text,
     Image,
-    Alert,
+    Alert,Linking
 } from 'react-native';
 
 import { MyThemeClass } from '../../../Theme/ThemeDarkLightColor';
@@ -76,7 +76,7 @@ function ProfileDataFlateList({ item, themecolor }) {
             style={{
                 ...styles.dataListView,
             }}
-            onPress={() => item.onpress1 ? handleConfirmLogout() : navigation.navigate(item.onpress)}
+            onPress={() => item.onpress1 ? handleConfirmLogout() : item.onpress2 ? Linking.openURL('https://www.google.com/'): navigation.navigate(item.onpress)}
         >
             <View style={{ ...styles.innerlistRow }}>
                 <Text

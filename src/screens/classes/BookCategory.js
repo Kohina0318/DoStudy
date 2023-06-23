@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Dimensions, Text, BackHandler
+    Dimensions, Text, BackHandler,StatusBar
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -9,7 +9,7 @@ import { useToast } from 'react-native-toast-notifications';
 import Header from '../../components/shared/header/Header';
 import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
 import NoDataMsg from '../../components/shared/NoData/NoDataMsg';
-import { BookCategoryFlateList} from '../../components/shared/FlateLists/ClassesFlateList/BookCategoryFlateList';
+import { BookCategoryFlateList } from '../../components/shared/FlateLists/ClassesFlateList/BookCategoryFlateList';
 import { getBookCategory, getCategoryTopics } from '../../repository/ClassesRepository/CategoryRepo';
 import { styles } from '../../assets/css/ClassesCss/CategoryStyle';
 
@@ -42,13 +42,13 @@ export default function BookCategory(props) {
 
     const handleCategoryTopics = async () => {
         try {
-            var res = await getCategoryTopics(props.route.params.Id,props.route.params.subjectId);
+            var res = await getCategoryTopics(props.route.params.Id, props.route.params.subjectId);
             console.log(res)
-          
+
             if (res.status === true) {
                 setData(res.data);
                 setLoader(false)
-            }else{
+            } else {
                 setLoader(false)
             }
         } catch (e) {
@@ -71,6 +71,11 @@ export default function BookCategory(props) {
 
     return (
         <View style={{ ...styles.bg, backgroundColor: themecolor.THEMECOLOR }}>
+            <StatusBar
+                translucent
+                backgroundColor="transparent"
+                barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
+            />
 
             <Header title={props.route.params.Name} backIcon={true}
                 onPressBack={() => handleBackButtonClick()} />

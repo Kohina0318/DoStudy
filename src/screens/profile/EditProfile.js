@@ -5,7 +5,7 @@ import {
     BackHandler,
     TextInput,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity, StatusBar
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -102,6 +102,7 @@ export default function EditProfile(props) {
     const handleEditProfile = async () => {
         setLoader(true);
         if (mobileNo == '') {
+            setLoader(false)
             toast.show('Mobile number is required!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -110,6 +111,7 @@ export default function EditProfile(props) {
                 animationType: 'slide-in',
             });
         } else if (mobileNo.length < 10) {
+            setLoader(false)
             toast.show('Please enter valid mobile number!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -118,6 +120,7 @@ export default function EditProfile(props) {
                 animationType: 'slide-in',
             });
         } else if (email == '') {
+            setLoader(false)
             toast.show('Email is required!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -126,6 +129,7 @@ export default function EditProfile(props) {
                 animationType: 'slide-in',
             });
         } else if (!email.includes('@') || !email.includes('gmail.com')) {
+            setLoader(false)
             toast.show('Please enter valid email address!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -156,7 +160,7 @@ export default function EditProfile(props) {
                         index: 0,
                         routes: [{ name: 'Dashboard' }],
                     });
-                    
+
                     toast.show("Edit Profile Successfully.", {
                         type: 'success',
                         placement: 'bottom',
@@ -168,6 +172,7 @@ export default function EditProfile(props) {
 
                 }
             } catch (e) {
+                setLoader(false)
                 console.log('catch in ....Edit Profile page', e);
                 toast.show('Something went wrong!, Try again later.', {
                     type: 'danger',
@@ -214,6 +219,13 @@ export default function EditProfile(props) {
 
     return (
         <View style={{ backgroundColor: themecolor.THEMECOLOR, ...styles.bg }}>
+
+            <StatusBar
+                translucent
+                backgroundColor="transparent"
+                barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
+            />
+
             <Header title="EditProfile" backIcon={true}
                 onPressBack={() => handleBackButtonClick()} />
 

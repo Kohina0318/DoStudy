@@ -95,7 +95,7 @@ export default function BottomNavigationStack(props) {
         }}
       />
 
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Help & Support"
         component={Support}
         options={{
@@ -130,7 +130,7 @@ export default function BottomNavigationStack(props) {
             ),
           headerShown: false,
         }}
-      />
+      /> */}
 
 
       <Tab.Screen

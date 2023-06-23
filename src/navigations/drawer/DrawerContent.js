@@ -23,6 +23,8 @@ import { useToast } from 'react-native-toast-notifications';
 import { removeDatafromAsync } from '../../repository/AsyncStorageServices';
 import { postSignOut } from '../../repository/AuthRepository/SignOutRepository';
 import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRepo';
+import RatingModel from '../../components/shared/Model/RatingModel';
+import { postRatingUs } from '../../repository/RateUsRepository/RateUsRepo';
 
 const { width } = Dimensions.get('window');
 
@@ -33,6 +35,9 @@ export default function DrawerContent(props) {
   const mode = useSelector(state => state.mode);
   const themecolor = new MyThemeClass(mode).getThemeColor();
   const [data, setData] = useState([]);
+
+  const [showmodal, setShowmodal] = useState(false);
+  const [startRating, setStarRating] = useState('');
 
   const handleUserData = async () => {
     try {
@@ -56,7 +61,6 @@ export default function DrawerContent(props) {
   useEffect(() => {
     handleUserData();
   }, []);
-
 
 
   const handleConfirmLogout = () => {
@@ -106,6 +110,37 @@ export default function DrawerContent(props) {
     }
   };
 
+  const HandleRatingUs = async () => {
+    if (startRating == '') {
+      toast.show('Fill Stars is required!', {
+        type: 'warning',
+        placement: 'bottom',
+        duration: 1000,
+        offset: 30,
+        animationType: 'slide-in',
+      });
+    } else {
+      try {
+        let formdata = new FormData();
+        formdata.append('no_of_rating', startRating);
+
+        const res = await postRatingUs(formdata);
+        console.log("res...",res)
+        if (res.status == true) {
+          setShowmodal(!showmodal)
+        }
+      } catch (e) {
+        console.log('catch in ....login page', e);
+        toast.show('Something went wrong!, Try again later.', {
+          type: 'danger',
+          placement: 'bottom',
+          duration: 1000,
+          offset: 30,
+          animationType: 'slide-in',
+        });
+      }
+    }
+  }
 
 
 
@@ -172,7 +207,7 @@ export default function DrawerContent(props) {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigate('Support')}
+            onPress={() => Linking.openURL('https://www.google.com/')}
             style={MainNavigatorstyle.viewstyle1}>
             <Ii name="ios-chatbubble-ellipses-outline" size={22} color={themecolor.BACKICON} />
             <Text
@@ -186,7 +221,7 @@ export default function DrawerContent(props) {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => Linking.openURL('https://www.google.com/')}
+            onPress={() => { setShowmodal(!showmodal); navigation.dispatch(DrawerActions.closeDrawer()) }}
             style={MainNavigatorstyle.viewstyle1}>
             <FA name="star-o" size={22} color={themecolor.BACKICON} />
             <Text
@@ -195,7 +230,7 @@ export default function DrawerContent(props) {
                 ...MainNavigatorstyle.labelstylecss,
                 color: themecolor.TXTWHITE,
               }}>
-              Rate at
+              Rating Us
             </Text>
           </TouchableOpacity>
 
@@ -218,6 +253,15 @@ export default function DrawerContent(props) {
 
         </ScrollView>
 
+        {showmodal && (
+          <RatingModel
+            showmodal={showmodal}
+            setShowmodal={setShowmodal}
+            starRating={startRating}
+            setStarRating={setStarRating}
+            press={HandleRatingUs}
+          />
+        )}
 
         <View style={MainNavigatorstyle.view2}>
           <View

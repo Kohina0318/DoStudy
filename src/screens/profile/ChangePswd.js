@@ -6,7 +6,7 @@ import {
     TextInput,
     ScrollView,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,StatusBar
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -53,7 +53,9 @@ export default function ChangePswd(props) {
 
 
     const handleSubmit = async () => {
+        setLoader(true)
         if (oldPswd == '') {
+            setLoader(false)
             toast.show('old Password is required!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -62,6 +64,7 @@ export default function ChangePswd(props) {
                 animationType: 'slide-in',
             });
         } else if (newPswd == '') {
+            setLoader(false)
             toast.show('New Password is required!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -70,6 +73,7 @@ export default function ChangePswd(props) {
                 animationType: 'slide-in',
             });
         } else if (confirmNewPswd == '') {
+            setLoader(false)
             toast.show('Confirm New Password is required!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -80,15 +84,17 @@ export default function ChangePswd(props) {
         } else {
             try {
                 let formdata = new FormData();
-                formdata.append('password', oldPswd);
+                formdata.append('old_password', oldPswd);
                 formdata.append('password1', newPswd);
                 formdata.append('password2', confirmNewPswd);
 
                 var res = await postChangePswd(formdata);
+                console.log("postChangePswd...",res)
 
                 if (res.status === true) {
+                    setLoader(false)
                     navigation.navigate("Dashboard")
-                    toast.show(res.meassage, {
+                    toast.show("Password change Successfully.", {
                         type: 'success',
                         placement: 'bottom',
                         duration: 1000,
@@ -97,6 +103,7 @@ export default function ChangePswd(props) {
                     });
                 }
                 else {
+                    setLoader(false)
                     toast.show(res.message, {
                         type: 'warning',
                         placement: 'bottom',
@@ -107,6 +114,7 @@ export default function ChangePswd(props) {
                 }
 
             } catch (e) {
+                setLoader(false)
                 console.log('errrror in..getManageAddress page in address-->', e);
                 toast.show('Something went wrong!, Try again later.', {
                     type: 'danger',
@@ -122,6 +130,13 @@ export default function ChangePswd(props) {
 
     return (
         <View style={{ backgroundColor: themecolor.THEMECOLOR, ...styles.bg }}>
+
+            <StatusBar
+                translucent
+                backgroundColor="transparent"
+                barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
+            />
+
             <Header title="Change Password" backIcon={true}
                 onPressBack={() => handleBackButtonClick()} />
 
@@ -159,7 +174,7 @@ export default function ChangePswd(props) {
                                     borderColor: themecolor.BOXBORDERCOLOR1,
                                     backgroundColor: themecolor.BOXBORDERCOLOR,
                                 }}>
-                                <View style={{...styles.pswdchangeWidth}}>
+                                <View style={{ ...styles.pswdchangeWidth }}>
                                     <TextInput
                                         allowFontScaling={false}
                                         value={oldPswd}
@@ -203,7 +218,7 @@ export default function ChangePswd(props) {
                                     borderColor: themecolor.BOXBORDERCOLOR1,
                                     backgroundColor: themecolor.BOXBORDERCOLOR,
                                 }}>
-                                <View style={{ ...styles.pswdchangeWidth}}>
+                                <View style={{ ...styles.pswdchangeWidth }}>
                                     <TextInput
                                         allowFontScaling={false}
                                         value={newPswd}
@@ -282,16 +297,16 @@ export default function ChangePswd(props) {
 
                         <View style={{ ...styles.Mv5 }} />
 
-                        <TouchableOpacity activeOpacity={0.5} style={{...styles.forgot,}} onPress={() => navigation.navigate('ForgotPswd')}>
-                                <Text
-                                    allowFontScaling={false}
-                                    style={{
-                                        ...styles.forgotTxt,
-                                        color: themecolor.BACKICON,
-                                    }}>
-                                    Forgot Password?
-                                </Text>
-                            </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.5} style={{ ...styles.forgot, }} onPress={() => navigation.navigate('ForgotPswd',{comeIn:"ChangePassword"})}>
+                            <Text
+                                allowFontScaling={false}
+                                style={{
+                                    ...styles.forgotTxt,
+                                    color: themecolor.BACKICON,
+                                }}>
+                                Forgot Password?
+                            </Text>
+                        </TouchableOpacity>
 
                     </View>
                 </ScrollView>
@@ -308,7 +323,7 @@ export default function ChangePswd(props) {
                     <HalfSizeButton
                         title="Update Password"
                         icon=""
-                        onPress={()=>handleSubmit()}
+                        onPress={() => handleSubmit()}
                         color="#fff"
                         backgroundColor={themecolor.ADDTOCARTBUTTONCOLOR}
                         borderColor={themecolor.BOXBORDERCOLOR1}

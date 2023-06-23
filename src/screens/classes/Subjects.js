@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Dimensions, Text, BackHandler
+    Dimensions, Text, BackHandler,StatusBar
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -45,7 +45,7 @@ export default function Subjects(props) {
             if (res.status === true) {
                 setData(res.data);
                 setLoader(false)
-            }else{
+            } else {
                 setLoader(false)
             }
         } catch (e) {
@@ -68,6 +68,12 @@ export default function Subjects(props) {
 
     return (
         <View style={{ ...styles.bg, backgroundColor: themecolor.THEMECOLOR }}>
+
+            <StatusBar
+                translucent
+                backgroundColor="transparent"
+                barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
+            />
 
             <Header title={props.route.params.Name} backIcon={true}
                 onPressBack={() => handleBackButtonClick()} />

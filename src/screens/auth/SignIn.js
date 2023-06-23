@@ -56,6 +56,7 @@ export default function SignIn(props) {
     const handleSignIn = async () => {
         setLoader(true);
         if (mobileNo == '') {
+            setLoader(false)
             toast.show('Mobile number is required!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -64,6 +65,7 @@ export default function SignIn(props) {
                 animationType: 'slide-in',
             });
         } else if (mobileNo.length < 10) {
+            setLoader(false)
             toast.show('Please enter valid mobile number!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -72,6 +74,7 @@ export default function SignIn(props) {
                 animationType: 'slide-in',
             });
         } else if (password == '') {
+            setLoader(false)
             toast.show('Password is required!', {
                 type: 'warning',
                 placement: 'bottom',
@@ -250,7 +253,7 @@ export default function SignIn(props) {
 
                                 <View style={styles.mt10} />
 
-                                <TouchableOpacity activeOpacity={0.5} style={styles.forgot} onPress={() => navigation.navigate('ForgotPswd')}>
+                                <TouchableOpacity activeOpacity={0.5} style={styles.forgot} onPress={() => navigation.navigate('ForgotPswd', {comeIn:"SignIn"})}>
                                     <Text
                                         allowFontScaling={false}
                                         style={{

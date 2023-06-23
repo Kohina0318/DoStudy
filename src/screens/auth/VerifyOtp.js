@@ -51,6 +51,7 @@ export default function VerifyOtp(props) {
     const handleSignIn = async () => {
         setLoader(true)
         if (otp == '') {
+            setLoader(false)
             toast.show('OTP is required!', {
                 type: 'warning',
                 placement: 'bottom',

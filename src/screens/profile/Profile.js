@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Text, Image, Alert
+    Text, Image, Alert,StatusBar, Linking,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -10,7 +10,6 @@ import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen'
 import { useToast } from 'react-native-toast-notifications';
 import { styles } from '../../assets/css/ProfileCss/ProfileStyle';
 import { useNavigation } from '@react-navigation/native';
-import HalfSizeButton from '../../components/shared/button/halfSizeButton';
 import { ProfileFlateList } from '../../components/shared/FlateLists/ProfileFlateList/ProfileFlateList';
 import AD from 'react-native-vector-icons/AntDesign';
 import FA from 'react-native-vector-icons/FontAwesome';
@@ -41,26 +40,26 @@ export default function Profile(props) {
         {
             id: 1,
             name: "Edit Profile",
-            icon: <MCI name="account-edit-outline" size={20} />,
+            icon: <MCI name="account-edit-outline" size={20}   color={themecolor.BACKICON}/>,
             onpress: "EditProfile",
         },
         {
             id: 2,
             name: "Change Password",
-            icon: <EP name="location" size={18} />,
+            icon: <EP name="location" size={18}   color={themecolor.BACKICON}/>,
             onpress: "ChangePswd",
         },
         {
             id: 3,
             name: "MemberShip",
-            icon: <MCI name="card-account-details-star-outline" size={19} />,
+            icon: <MCI name="card-account-details-star-outline" size={19}   color={themecolor.BACKICON}/>,
             onpress: "MemberShip",
         },
         {
             id: 4,
             name: "Help & Support",
             icon: <Ii name="ios-chatbubble-ellipses-outline" size={20} color={themecolor.BACKICON} />,
-            onpress: "Support",
+            onpress2: "Help & Support" ,
         },
         {
             id: 5,
@@ -100,6 +99,13 @@ export default function Profile(props) {
   
     return (
         <View style={{ backgroundColor: themecolor.THEMECOLOR, ...styles.bg }}>
+
+            <StatusBar
+                translucent
+                backgroundColor="transparent"
+                barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
+            />
+
             <Header title="Profile" />
 
             {loader ? (

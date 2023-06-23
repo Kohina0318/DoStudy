@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Dimensions, Text, BackHandler, Image, TouchableOpacity, ScrollView
+    Dimensions, Text, BackHandler, Image, TouchableOpacity, ScrollView, ImageBackground, StatusBar
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
+import { MyThemeClass } from '../../../components/Theme/ThemeDarkLightColor';
 import { useToast } from 'react-native-toast-notifications';
-import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
-import { styles } from '../../assets/css/ClassesCss/ContentStyle';
-import Header from '../../components/shared/header/Header';
-import HalfSizeButton from '../../components/shared/button/halfSizeButton';
+import LoadingFullScreen from '../../../components/shared/Loader/LoadingFullScreen';
+import { styles } from '../../../assets/css/ClassesCss/ContentStyle';
+import Header from '../../../components/shared/header/Header';
+import HalfSizeButton from '../../../components/shared/button/halfSizeButton';
 import Tts from 'react-native-tts';
-import { getContentDetail } from '../../repository/ClassesRepository/ContentRep';
+import { getContentDetail } from '../../../repository/ClassesRepository/ContentRep';
 import IC from 'react-native-vector-icons/Ionicons';
 import VideoPlayer from 'react-native-video-player';
-import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRepo';
+import { getProfileInfo } from '../../../repository/ProfileRepository/EditProfileRepo';
 import LinearGradient from "react-native-linear-gradient";
 import FA from 'react-native-vector-icons/Feather';
+import Ii from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-import Video from "react-native-video";
-import VideoPlayerControl from 'react-native-video-controls';
 import Pdf from 'react-native-pdf';
 
-const { width } = Dimensions.get('screen');
+const { width, height } = Dimensions.get('screen');
 
 export default function ContentDetail(props) {
 
@@ -139,6 +138,11 @@ export default function ContentDetail(props) {
 
     return (
         <View style={{ ...styles.bg, backgroundColor: themecolor.THEMECOLOR }}>
+            <StatusBar
+                translucent
+                backgroundColor="transparent"
+                barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
+            />
 
             <Header title={props.route.params.UnitNo} backIcon={true}
                 onPressBack={() => handleBackButtonClick()} />
@@ -225,58 +229,47 @@ export default function ContentDetail(props) {
                                             <View style={styles.mt15} />
                                             <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center', display: "flex" }}>
                                                 {contantUrlType === 'mp4' ?
-                                                    <View style={{ ...styles.widthVideo }}>
-
-                                                        <VideoPlayer
-                                                            video={{ uri: contantUrl }}
-                                                            videoWidth={1500}
-                                                            videoHeight={1000}
-                                                            thumbnail={{ uri: props.route.params.UnitImage }}
-                                                            ref={(ref) => { player = ref }}
-                                                            muted={false}
-                                                            paused={false}
-                                                            showDuration={true}
-                                                            pauseOnPress={true}
-                                                            disableFullscreen={true}
-                                                        />
-{/* 
-                                                        <Image
-                                                            source={{ uri: props.route.params.UnitImage }}
-                                                            style={{ ...styles.widthVideo }}
-                                                            resizeMode='contain'
-                                                        /> */}
-                                                        
-                                                        <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('FullVideoContainDetail', { contantUrl: contantUrl })}>
-                                                            <Text allowFontScaling={false}
-                                                                style={{
-                                                                    ...styles.txt1,
-                                                                    color: themecolor.ADDTOCARTBUTTONCOLOR,
-                                                                }}>View in Full Page</Text>
+                                                    <>
+                                                        <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('FullVideoContainDetail', { contantUrl: contantUrl })} style={{ ...styles.widthVideoBlackPadding, }}>
+                                                            <ImageBackground source={{ uri: props.route.params.UnitImage }} resizeMode='contain' style={{ ...styles.widthVideo1 }}>
+                                                                <View style={{ ...styles.VideoPlay }}>
+                                                                    <Ii name="play" size={25} color={themecolor.TXTWHITE1} />
+                                                                </View>
+                                                            </ImageBackground>
                                                         </TouchableOpacity>
-                                                    </View>
+                                                        {/* <View style={{ ...styles.widthVideo }}>
+                                                            <VideoPlayer
+                                                                video={{ uri: contantUrl }}
+                                                                videoWidth={1500}
+                                                                videoHeight={1000}
+                                                                thumbnail={{ uri: props.route.params.UnitImage }}
+                                                                ref={(ref) => { player = ref }}
+                                                                muted={false}
+                                                                paused={false}
+                                                                showDuration={true}
+                                                                pauseOnPress={true}
+                                                                disableFullscreen={true}
+                                                            />
+                                                        </View> */}
+                                                    </>
                                                     :
                                                     contantUrlType === 'pdf' ?
-                                                        <Pdf
-                                                            source={{
-                                                                uri: contantUrl,
-                                                                cache: true,
-                                                            }}
-                                                            spacing={1}
-                                                            trustAllCerts={Platform.OS === 'ios'}
-                                                            onLoadComplete={(numberOfPages, filePath) => {
-                                                                console.log(`number of pages: ${numberOfPages}`);
-                                                            }}
-                                                            onPageChanged={(page, numberOfPages) => {
-                                                                console.log(`current page: ${page}`);
-                                                            }}
-                                                            onError={error => {
-                                                                console.log(error);
-                                                            }}
-                                                            onPressLink={uri => {
-                                                                console.log(`Link presse: ${uri}`);
-                                                            }}
-                                                            style={{ ...styles.pdf, backgroundColor: themecolor.THEMECOLOR }}
-                                                        />
+                                                        <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('FullPdfContainDetail', { contantUrl: contantUrl, UnitNo: props.route.params.UnitNo })}>
+                                                            <Image
+                                                                source={require('../../../assets/images/pdf.png')}
+                                                                style={{ ...styles.pdfImg }}
+                                                                resizeMode='contain'
+                                                            />
+                                                            <Text
+                                                                allowFontScaling={false}
+                                                                style={{
+                                                                    ...styles.txt1, textAlign: 'center',
+                                                                    color: themecolor.ADDTOCARTBUTTONCOLOR,
+                                                                }}>View PDF</Text>
+
+                                                            <View style={styles.mt15} />
+                                                        </TouchableOpacity>
+
                                                         :
                                                         <></>
                                                 }
@@ -316,7 +309,6 @@ export default function ContentDetail(props) {
                                         <View style={styles.mt15} />
                                     </>
                                 )}
-
 
                             </View>
 
@@ -365,34 +357,45 @@ export default function ContentDetail(props) {
                                 </View>
                             }
 
-                            <View style={{ marginVertical:90 }} />
+                            <View style={{ marginVertical: 90 }} />
                         </View>
                     </ScrollView>
 
-                    <View
-                        style={{
-                            ...styles.touchview,
-                        }}>
-                        <View style={{ ...styles.mainView, backgroundColor: themecolor.LOGINTHEMECOLOR1, borderColor: themecolor.BOXBORDERCOLOR1 }}>
-                            {speckerOnStop === 1 ?
-                                <HalfSizeButton
-                                    title=""
-                                    icon={<IC name="ios-volume-mute-outline" size={35} color={themecolor.TEXTRED} />}
-                                    onPress={() => handleStopVoice()}
-                                    backgroundColor={'transparent'}
-                                    borderColor={'transparent'}
-                                />
-                                : <HalfSizeButton
-                                    title=""
-                                    icon={<IC name="ios-volume-high-outline" size={35} color={themecolor.BACKICON} />}
-                                    onPress={() => handleVoice()}
-                                    backgroundColor={'transparent'}
-                                    borderColor={'transparent'}
-                                />
-                            }
-                        </View>
+                    {packageType == 1 ? (
+                        TodayDate >= packageExpiry ?
+                            <></>
+                            :
+                            <View
+                                style={{
+                                    ...styles.touchview,
+                                }}>
+                                <View style={{ ...styles.mainView, backgroundColor: themecolor.LOGINTHEMECOLOR1, borderColor: themecolor.BOXBORDERCOLOR1 }}>
+                                    {speckerOnStop === 1 ?
+                                        <HalfSizeButton
+                                            title=""
+                                            icon={<IC name="ios-volume-mute-outline" size={35} color={themecolor.TEXTRED} />}
+                                            onPress={() => handleStopVoice()}
+                                            backgroundColor={'transparent'}
+                                            borderColor={'transparent'}
+                                        />
+                                        : <HalfSizeButton
+                                            title=""
+                                            icon={<IC name="ios-volume-high-outline" size={35} color={themecolor.BACKICON} />}
+                                            onPress={() => handleVoice()}
+                                            backgroundColor={'transparent'}
+                                            borderColor={'transparent'}
+                                        />
+                                    }
+                                </View>
 
-                    </View>
+                            </View>
+
+                    )
+                        :
+                        <></>
+                    }
+
+
 
                 </>
             )
