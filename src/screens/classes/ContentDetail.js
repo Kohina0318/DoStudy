@@ -170,7 +170,7 @@ export default function ContentDetail(props) {
                                     allowFontScaling={false}
                                     style={{
                                         ...styles.UnitHeading,
-                                        color: themecolor.TXTWHITE,
+                                        color: themecolor.TXTWHITE, width: "80%"
                                     }}>
                                     {props.route.params.UnitName}
                                 </Text>
@@ -209,8 +209,6 @@ export default function ContentDetail(props) {
                                                 />
 
                                             </View>
-
-
                                             <View style={styles.mt15} />
                                         </>
                                         :
@@ -222,6 +220,67 @@ export default function ContentDetail(props) {
                                                     ...styles.txt,
                                                     color: themecolor.TXTWHITE,
                                                 }}>{description}</Text>
+
+                                            <View style={styles.mt15} />
+                                            <View style={styles.mt15} />
+                                            <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center', display: "flex" }}>
+                                                {contantUrlType === 'mp4' ?
+                                                    <View style={{ ...styles.widthVideo }}>
+
+                                                        <VideoPlayer
+                                                            video={{ uri: contantUrl }}
+                                                            videoWidth={1500}
+                                                            videoHeight={1000}
+                                                            thumbnail={{ uri: props.route.params.UnitImage }}
+                                                            ref={(ref) => { player = ref }}
+                                                            muted={false}
+                                                            paused={false}
+                                                            showDuration={true}
+                                                            pauseOnPress={true}
+                                                            disableFullscreen={true}
+                                                        />
+{/* 
+                                                        <Image
+                                                            source={{ uri: props.route.params.UnitImage }}
+                                                            style={{ ...styles.widthVideo }}
+                                                            resizeMode='contain'
+                                                        /> */}
+                                                        
+                                                        <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('FullVideoContainDetail', { contantUrl: contantUrl })}>
+                                                            <Text allowFontScaling={false}
+                                                                style={{
+                                                                    ...styles.txt1,
+                                                                    color: themecolor.ADDTOCARTBUTTONCOLOR,
+                                                                }}>View in Full Page</Text>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                    :
+                                                    contantUrlType === 'pdf' ?
+                                                        <Pdf
+                                                            source={{
+                                                                uri: contantUrl,
+                                                                cache: true,
+                                                            }}
+                                                            spacing={1}
+                                                            trustAllCerts={Platform.OS === 'ios'}
+                                                            onLoadComplete={(numberOfPages, filePath) => {
+                                                                console.log(`number of pages: ${numberOfPages}`);
+                                                            }}
+                                                            onPageChanged={(page, numberOfPages) => {
+                                                                console.log(`current page: ${page}`);
+                                                            }}
+                                                            onError={error => {
+                                                                console.log(error);
+                                                            }}
+                                                            onPressLink={uri => {
+                                                                console.log(`Link presse: ${uri}`);
+                                                            }}
+                                                            style={{ ...styles.pdf, backgroundColor: themecolor.THEMECOLOR }}
+                                                        />
+                                                        :
+                                                        <></>
+                                                }
+                                            </View>
 
                                         </>
                                 ) : (
@@ -269,90 +328,21 @@ export default function ContentDetail(props) {
                                         <TouchableOpacity activeOpacity={0.5}
                                             onPress={() => navigation.navigate('MemberShip')}
                                             style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
-                                            <FA name="lock" color={themecolor.BACKICON} size={25} />
+                                            <FA name="lock" color={themecolor.BACKICON} size={30} />
+                                            <View style={styles.mt15} />
                                             <Text
                                                 selectable={true}
                                                 allowFontScaling={false}
                                                 style={{
-                                                    ...styles.txt,
+                                                    ...styles.txt1,
                                                     color: themecolor.BACKICON,
-                                                    top: 5
+
                                                 }}>continue to purchase MemberShip</Text>
                                         </TouchableOpacity>
 
                                     </View>
                                     :
-                                    <View
-                                        style={{
-                                            ...styles.datalistView,
-                                            backgroundColor: themecolor.BOXBORDERCOLOR,
-                                            borderColor: themecolor.BOXBORDERCOLOR1,
-                                            padding: 20
-                                        }}
-                                    >
-                                        <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center', display: "flex" }}>
-                                            {contantUrlType === 'mp4' ?
-                                                <View style={{ ...styles.widthVideo }}>
-
-                                                    <VideoPlayer
-                                                        video={{ uri: contantUrl }}
-                                                        videoWidth={1500}
-                                                        videoHeight={1000}
-                                                        thumbnail={{ uri: props.route.params.UnitImage }}
-                                                        ref={(ref) => { player = ref }}
-                                                        muted={false}
-                                                        paused={false}
-                                                        showDuration={true}
-                                                        pauseOnPress={true}
-                                                        disableFullscreen={true}
-                                                    />
-                                                    {/* <VideoPlayerControl source={{ uri: contantUrl }}  
-                                                        ref={ref =>
-                                                            this.player = ref
-                                                        } 
-                                                        onEnterFullscreen={()=>alert('hi')}   
-                                                        style={{ ...styles.widthVideo }}
-                                                        controls={true}
-                                                        paused={false}
-                                                        fullscreen={true}
-                                                        resizeMode="cover"
-                                                    /> */}
-                                                    <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('FullVideoContainDetail', { contantUrl: contantUrl })}>
-                                                        <Text allowFontScaling={false}
-                                                            style={{
-                                                                ...styles.txt1,
-                                                                color: themecolor.ADDTOCARTBUTTONCOLOR,
-                                                            }}>View in Full Page</Text>
-                                                    </TouchableOpacity>
-                                                </View>
-                                                :
-                                                contantUrlType === 'pdf' ?
-                                                    <Pdf
-                                                        source={{
-                                                            uri: contantUrl,
-                                                            cache: true,
-                                                        }}
-                                                        spacing={1}
-                                                        trustAllCerts={Platform.OS === 'ios'}
-                                                        onLoadComplete={(numberOfPages, filePath) => {
-                                                            console.log(`number of pages: ${numberOfPages}`);
-                                                        }}
-                                                        onPageChanged={(page, numberOfPages) => {
-                                                            console.log(`current page: ${page}`);
-                                                        }}
-                                                        onError={error => {
-                                                            console.log(error);
-                                                        }}
-                                                        onPressLink={uri => {
-                                                            console.log(`Link presse: ${uri}`);
-                                                        }}
-                                                        style={{ ...styles.pdf, backgroundColor: themecolor.THEMECOLOR }}
-                                                    />
-                                                    :
-                                                    <></>
-                                            }
-                                        </View>
-                                    </View>
+                                    <></>
                             )
                                 :
                                 <View style={styles.m20}>
@@ -360,12 +350,13 @@ export default function ContentDetail(props) {
                                     <TouchableOpacity activeOpacity={0.5}
                                         onPress={() => navigation.navigate('MemberShip')}
                                         style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
-                                        <FA name="lock" color={themecolor.BACKICON} size={25} />
+                                        <FA name="lock" color={themecolor.BACKICON} size={30} />
+                                        <View style={styles.mt15} />
                                         <Text
                                             selectable={true}
                                             allowFontScaling={false}
                                             style={{
-                                                ...styles.txt,
+                                                ...styles.txt1,
                                                 color: themecolor.BACKICON,
                                                 top: 5
                                             }}>continue to purchase MemberShip</Text>
@@ -374,7 +365,7 @@ export default function ContentDetail(props) {
                                 </View>
                             }
 
-                            <View style={{ marginVertical: 77 }} />
+                            <View style={{ marginVertical:90 }} />
                         </View>
                     </ScrollView>
 
