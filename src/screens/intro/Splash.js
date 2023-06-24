@@ -3,6 +3,8 @@ import { Dimensions, Image, StatusBar, View, StyleSheet, Text } from 'react-nati
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
 import { useSelector } from 'react-redux';
 import { getUserData } from '../../repository/CommonRepository';
+import { StoreDatatoAsync } from '../../repository/AsyncStorageServices';
+import { getSettingDetails } from '../../repository/SettingRepository/SettingRepo';
 
 const { width } = Dimensions.get('window');
 
@@ -11,6 +13,8 @@ export default function Splash(props) {
   const mode = useSelector(state => state.mode);
   const themecolor = new MyThemeClass(mode).getThemeColor()
 
+  const [loader, setLoader] = useState(true);
+  const [appLogo, setAppLogo] = useState('');
   const [UserData, setUserData] = useState([]);
 
   useEffect(() => {
@@ -19,20 +23,34 @@ export default function Splash(props) {
         var userData = await getUserData();
         if (userData == null || userData == '' || userData == undefined) {
           setUserData([])
+          var res = await getSettingDetails();
+          if (res.status === true) {
+            setLoader(false)
+            var applog = res.data.logo.url
+            setAppLogo(applog)
+            await StoreDatatoAsync('@AppLogo', JSON.stringify(applog));
+          }
           setTimeout(async () => {
             props.navigation.reset({
               index: 0,
               routes: [{ name: 'SignIn' }],
             });
-          }, 1000)
+          }, 3000)
         } else {
           setUserData(Object.values(userData));
+          var res = await getSettingDetails();
+          if (res.status === true) {
+            setLoader(false)
+            var applog = res.data.logo.url
+            setAppLogo(applog)
+            await StoreDatatoAsync('@AppLogo', JSON.stringify(applog));
+          }
           setTimeout(async () => {
             props.navigation.reset({
               index: 0,
               routes: [{ name: 'Dashboard' }],
             });
-          }, 2000)
+          }, 3000)
 
         }
       } catch (e) {
@@ -42,26 +60,6 @@ export default function Splash(props) {
     temp()
   }, [props]);
 
-
-  // React.useEffect(() => {
-  //   setTimeout(async () => {
-  //     if (UserData.length > 0) {
-  //       props.navigation.reset({
-  //         index: 0,
-  //         routes: [{ name: 'Dashboard' }],
-  //       });
-  //     }else{
-  //       props.navigation.reset({
-  //         index: 0,
-  //         routes: [{ name: 'SignIn' }],
-  //       });
-  //     }
-  //   }, 1000)
-
-  //   return () => {
-
-  //   }
-  // }, [])
 
 
   return (
@@ -76,16 +74,20 @@ export default function Splash(props) {
         backgroundColor="transparent"
         barStyle={themecolor.STATUSEBARCONTENT}
       />
-      <Image
-        style={{
-          width: width * 0.7,
-          resizeMode: 'contain',
-          alignSelf: 'center',
-          flex: 1,
-          zIndex: 9999,
-        }}
-        source={require('../../assets/images/newlog.png')}
-      />
+
+      {loader ?
+        (<View style={{ flex: 1, }}></View>) : (
+          <Image
+            style={{
+              width: width * 0.7,
+              resizeMode: 'contain',
+              alignSelf: 'center',
+              flex: 1,
+              zIndex: 9999,
+            }}
+            source={{ uri: appLogo }}
+          />
+        )}
 
     </View>
   );

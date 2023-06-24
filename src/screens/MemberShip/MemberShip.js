@@ -13,6 +13,7 @@ import { styles } from '../../assets/css/MemberShipCss/MemberShipStyle';
 import { getActivePackage, getPackage } from '../../repository/MemberShipRepository/MemberShipRep';
 import { ActiveMemberShip, MemberFlatList } from '../../components/shared/FlateLists/MemberFlateList/MemberFlatList';
 import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRepo';
+import { getSettingDetails } from '../../repository/SettingRepository/SettingRepo';
 
 
 const { width } = Dimensions.get('screen');
@@ -43,6 +44,9 @@ export default function MemberShip(props) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+    const [appLogo, setAppLogo] = useState('');
+    const [appName, setAppName] = useState('');
+    const [accesskey, setAccesskey] = useState('');
 
     const handleUserData = async () => {
         try {
@@ -63,6 +67,28 @@ export default function MemberShip(props) {
             }
         } catch (e) {
             console.log("Error..in Profile...", e)
+        }
+    };
+
+    const handleSettingDetails = async () => {
+        try {
+            var res = await getSettingDetails();
+            if (res.status === true) {
+                setAppLogo(res.data.logo.url)
+                setAppName(res.data.logo.app_name)
+                setAccesskey(res.data.razorpay.key)
+            }
+            else {
+                toast.show(res.message, {
+                    type: 'warning',
+                    placement: 'bottom',
+                    duration: 1000,
+                    offset: 30,
+                    animationType: 'slide-in',
+                });
+            }
+        } catch (e) {
+            console.log("Error..in  getSettingDetails...", e)
         }
     };
 
@@ -109,7 +135,8 @@ export default function MemberShip(props) {
 
 
     useEffect(() => {
-        handleUserData();
+        handleUserData();  
+        handleSettingDetails()
         handlActivePackage()
         handlPackages()
     }, [])
@@ -125,7 +152,7 @@ export default function MemberShip(props) {
                 barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
             />
 
-            <Header title="MemberShip" backIcon={true}
+            <Header title="Membership" backIcon={true}
                 onPressBack={() => handleBackButtonClick()} />
 
             {loader ? (
@@ -146,7 +173,7 @@ export default function MemberShip(props) {
 
                                 <View style={styles.margT} />
 
-                                <MemberFlatList data={data} userName={name} userEmail={email} userPhoneNo={phone} setLoader={setLoader} />
+                                <MemberFlatList data={data} userName={name} userEmail={email} userPhoneNo={phone} appLogo={appLogo} appName={appName} accesskey={accesskey} setLoader={setLoader} />
                                 <View style={styles.margT} />
                             </>
                         ) : (

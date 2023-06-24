@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef ,useEffect} from 'react';
 import {
     View, Text, BackHandler,
     StatusBar,
@@ -19,6 +19,7 @@ import OTPInputView from '@twotalltotems/react-native-otp-input'
 import { postVerifyOtp } from '../../repository/AuthRepository/SignUpRepository';
 import { StoreDatatoAsync } from '../../repository/AsyncStorageServices';
 import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
+import { getAppLogoAsync } from '../../repository/CommonRepository';
 
 export default function VerifyOtp(props) {
 
@@ -43,10 +44,31 @@ export default function VerifyOtp(props) {
     const themecolor = new MyThemeClass(mode).getThemeColor();
 
     const [loader, setLoader] = useState(false);
-
+    const [appLogoAsync, setAppLogoAsync] = useState('');
 
     const [otp, setOtp] = useState("");
     const [showmodal, setShowmodal] = useState(false);
+
+    useEffect(() => {
+        async function temp() {
+            try {
+                var userData = await getAppLogoAsync();
+                if (userData == null || userData == '' || userData == undefined) {
+                    setAppLogoAsync('')
+                    setLoader(false)
+                } else {
+
+                    setAppLogoAsync(userData);
+                    setLoader(false)
+                }
+            } catch (e) {
+                setLoader(false)
+                setAppLogoAsync('')
+            }
+        }
+        temp()
+    }, [props]);
+
 
     const handleSignIn = async () => {
         setLoader(true)
@@ -146,7 +168,7 @@ export default function VerifyOtp(props) {
 
                         <View style={{ ...styles.ImgView }}>
                             <Image
-                                source={require('../../assets/images/newlog.png')}
+                                source={{uri:appLogoAsync}}
                                 style={{ width: "100%", height: "100%", resizeMode: 'contain', }}
                             />
                         </View>

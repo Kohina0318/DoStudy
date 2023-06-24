@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Dimensions, Text, BackHandler,StatusBar
+    Dimensions, Text, BackHandler,StatusBar,ScrollView
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -84,6 +84,7 @@ export default function BookCategory(props) {
                 <LoadingFullScreen style={{ flex: 1 }} />
             ) : (
                 <>
+                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View
                         style={{
                             ...styles.container,
@@ -96,7 +97,7 @@ export default function BookCategory(props) {
                         )}
 
                     </View>
-
+                    </ScrollView>
                 </>
             )}
         </View>

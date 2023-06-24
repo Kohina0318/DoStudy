@@ -6,19 +6,22 @@ const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   bg: {flex: 1,},
+  bdContainter:{
+    justifyContent: 'center',
+      alignSelf: 'center',
+  },
   container: {
     width:width,
     // height:height*0.31,
     marginBottom:8
   },
   container1: {
-    width: width ,
-    // padding: 12,
-    paddingBottom:5,
-    // display:"flex",
-    // justifyContent:"center",
+    width:width *0.95,
+    height: height*0.3,
+    justifyContent:"center",
     alignItems:"center",
-    marginTop:-22
+    borderRadius:11,
+    borderWidth:1
   },
   image: {
     width: width,
@@ -110,7 +113,32 @@ const styles = StyleSheet.create({
     },
     mainViewCon:{
       display: 'flex', flexDirection: "column", alignItems: "center"
+    },
+    adsContainer: {
+      width:width *0.95,
+      justifyContent:"center",
+      alignSelf:"center",
+      borderRadius:10
+    },
+    adsContainer1: {
+      width:width *0.95,
+      height: height*0.1,
+      justifyContent:"center",
+      alignItems:"center",
+      borderRadius:11,
+      borderWidth:1
+      
+    },
+    adsimage: {
+      width: "100%",
+      height: "100%",
+      resizeMode:"cover",
+      borderRadius:10,
+    },
+    mgT10:{
+      marginTop:10
     }
+  
 
 });
 

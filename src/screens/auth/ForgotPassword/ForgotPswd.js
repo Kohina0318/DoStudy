@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import {
     View,
     Text, BackHandler,
@@ -20,6 +20,7 @@ import HalfSizeButton from '../../../components/shared/button/halfSizeButton';
 import FA from 'react-native-vector-icons/FontAwesome';
 import { postforgotByNumber } from '../../../repository/AuthRepository/ForgotRepository';
 import LoadingFullScreen from '../../../components/shared/Loader/LoadingFullScreen';
+import { getAppLogoAsync } from '../../../repository/CommonRepository';
 
 
 export default function ForgotPswd(props) {
@@ -44,9 +45,30 @@ export default function ForgotPswd(props) {
 
     const mode = useSelector(state => state.mode);
     const themecolor = new MyThemeClass(mode).getThemeColor();
-    const [loader, setLoader] = useState(false);
+    const [loader, setLoader] = useState(true);
+    const [appLogoAsync, setAppLogoAsync] = useState('');
 
     const [mobileNo, setMobileNo] = useState('');
+
+    useEffect(() => {
+        async function temp() {
+            try {
+                var userData = await getAppLogoAsync();
+                if (userData == null || userData == '' || userData == undefined) {
+                    setAppLogoAsync('')
+                    setLoader(false)
+                } else {
+
+                    setAppLogoAsync(userData);
+                    setLoader(false)
+                }
+            } catch (e) {
+                setLoader(false)
+                setAppLogoAsync('')
+            }
+        }
+        temp()
+    }, [props]);
 
 
     const HandleSendOtp = async () => {
@@ -137,7 +159,7 @@ export default function ForgotPswd(props) {
 
                         <View style={{ ...styles.ImgView }}>
                             <Image
-                                source={require('../../../assets/images/newlog.png')}
+                                source={{ uri: appLogoAsync }}
                                 style={{ width: "100%", height: "100%", resizeMode: 'contain', }}
                             />
                         </View>

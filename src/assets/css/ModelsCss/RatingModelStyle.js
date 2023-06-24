@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        height:height*0.3
+        // height:height*0.3
       },
       ModelVideoCenter: {
         justifyContent: 'center',
@@ -57,6 +57,20 @@ const styles = StyleSheet.create({
       },
       backgroundVideo: {
         height: 250,
+      },
+      textInput: {
+        fontSize: FontSize.labelText3,
+        height: 43,
+        fontFamily: FontFamily.PopinsRegular,
+        left:10
+      },
+      textInputView: {
+        width: width * 0.6,
+        flexDirection: 'row',
+        borderRadius: 10,
+        alignItems: 'center',
+        alignSelf: 'center',
+        borderWidth: 0.8,
       },
                   
 });

@@ -49,6 +49,10 @@ const styles = StyleSheet.create({
     fontFamily:FontFamily.PopinsExtraBold,
     fontWeight: 'bold',
   },
+  classheadd:{
+    fontSize: FontSize.labelText5,
+    fontFamily:FontFamily.PopinsExtraBold,
+  },
   txt:{
     fontSize: FontSize.labelText5,
     fontFamily:FontFamily.PopinsRegular,

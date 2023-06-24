@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Dimensions, Text, BackHandler,StatusBar
+    Dimensions, Text, BackHandler, StatusBar,ScrollView
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -11,8 +11,6 @@ import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen'
 import { styles } from '../../assets/css/ClassesCss/CategoryStyle';
 import { SubjectCategoryFlateList } from '../../components/shared/FlateLists/ClassesFlateList/SubjectCategoryFlateList';
 import { getAllCategory } from '../../repository/ClassesRepository/CategoryRepo';
-
-
 
 const { width } = Dimensions.get('screen');
 
@@ -131,14 +129,15 @@ export default function SubjectCategory(props) {
                 <LoadingFullScreen style={{ flex: 1 }} />
             ) : (
                 <>
-                    <View
-                        style={{
-                            ...styles.container,
-                        }}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View
+                            style={{
+                                ...styles.container,
+                            }}>
 
-                        <SubjectCategoryFlateList data={data} subjectId={props.route.params.Id} />
-                    </View>
-
+                            <SubjectCategoryFlateList data={data} subjectId={props.route.params.Id} />
+                        </View>
+                    </ScrollView>
                 </>
             )}
         </View>

@@ -24,7 +24,7 @@ import { removeDatafromAsync } from '../../repository/AsyncStorageServices';
 import { postSignOut } from '../../repository/AuthRepository/SignOutRepository';
 import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRepo';
 import RatingModel from '../../components/shared/Model/RatingModel';
-import { postRatingUs } from '../../repository/RateUsRepository/RateUsRepo';
+import { getRatingReview, postRatingUs } from '../../repository/RateUsRepository/RateUsRepo';
 
 const { width } = Dimensions.get('window');
 
@@ -38,6 +38,9 @@ export default function DrawerContent(props) {
 
   const [showmodal, setShowmodal] = useState(false);
   const [startRating, setStarRating] = useState('');
+  const [startRating1, setStarRating1] = useState('');
+  const [commentRating, setCommentRating] = useState('');
+  const [commentRating1, setCommentRating1] = useState('');
 
   const handleUserData = async () => {
     try {
@@ -58,8 +61,31 @@ export default function DrawerContent(props) {
     }
   };
 
+  const handleRatingReview = async () => {
+    try {
+      var res = await getRatingReview();
+      if (res.status === true) {
+        setStarRating(res.data[0].no_of_rating);
+        setStarRating1(res.data[0].no_of_rating);
+        setCommentRating(res.data[0].remark)
+        setCommentRating1(res.data[0].remark)
+      } 
+    } catch (e) {
+      console.log('errrror in..getRatingReview page-->', e);
+      toast.show('Something went wrong!, Try again later.', {
+        type: 'danger',
+        placement: 'bottom',
+        duration: 1000,
+        offset: 30,
+        animationType: 'slide-in',
+      });
+    }
+  };
+
+
   useEffect(() => {
     handleUserData();
+    handleRatingReview();
   }, []);
 
 
@@ -119,13 +145,21 @@ export default function DrawerContent(props) {
         offset: 30,
         animationType: 'slide-in',
       });
+    } else if (commentRating == '') {
+      toast.show('Comment is required!', {
+        type: 'warning',
+        placement: 'bottom',
+        duration: 1000,
+        offset: 30,
+        animationType: 'slide-in',
+      });
     } else {
       try {
         let formdata = new FormData();
         formdata.append('no_of_rating', startRating);
+        formdata.append('remark', commentRating);
 
         const res = await postRatingUs(formdata);
-        console.log("res...",res)
         if (res.status == true) {
           setShowmodal(!showmodal)
         }
@@ -258,6 +292,10 @@ export default function DrawerContent(props) {
             showmodal={showmodal}
             setShowmodal={setShowmodal}
             starRating={startRating}
+            starRating1={startRating1}
+            commentRating={commentRating}
+            commentRating1={commentRating1}
+            setCommentRating={setCommentRating}
             setStarRating={setStarRating}
             press={HandleRatingUs}
           />

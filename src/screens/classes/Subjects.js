@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Dimensions, Text, BackHandler,StatusBar
+    Dimensions, Text, BackHandler, StatusBar, ScrollView
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -82,19 +82,20 @@ export default function Subjects(props) {
                 <LoadingFullScreen style={{ flex: 1 }} />
             ) : (
                 <>
-                    <View
-                        style={{
-                            ...styles.container,
-                        }}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View
+                            style={{
+                                ...styles.container,
+                            }}>
 
-                        {data.length > 0 ? (
-                            <SubjectFlateList data={data} />
-                        ) : (
-                            <NoDataMsg title="No Data Found!" />
-                        )}
+                            {data.length > 0 ? (
+                                <SubjectFlateList data={data} />
+                            ) : (
+                                <NoDataMsg title="No Data Found!" />
+                            )}
 
-                    </View>
-
+                        </View>
+                    </ScrollView>
                 </>
             )}
         </View>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Text, Image, Alert,StatusBar, Linking,
+    Text, Image, Alert, StatusBar, Linking,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -40,26 +40,26 @@ export default function Profile(props) {
         {
             id: 1,
             name: "Edit Profile",
-            icon: <MCI name="account-edit-outline" size={20}   color={themecolor.BACKICON}/>,
+            icon: <MCI name="account-edit-outline" size={20} color={themecolor.BACKICON} />,
             onpress: "EditProfile",
         },
         {
             id: 2,
             name: "Change Password",
-            icon: <EP name="location" size={18}   color={themecolor.BACKICON}/>,
+            icon: <EP name="location" size={18} color={themecolor.BACKICON} />,
             onpress: "ChangePswd",
         },
         {
             id: 3,
             name: "MemberShip",
-            icon: <MCI name="card-account-details-star-outline" size={19}   color={themecolor.BACKICON}/>,
+            icon: <MCI name="card-account-details-star-outline" size={19} color={themecolor.BACKICON} />,
             onpress: "MemberShip",
         },
         {
             id: 4,
             name: "Help & Support",
             icon: <Ii name="ios-chatbubble-ellipses-outline" size={20} color={themecolor.BACKICON} />,
-            onpress2: "Help & Support" ,
+            onpress2: "Help & Support",
         },
         {
             id: 5,
@@ -67,6 +67,7 @@ export default function Profile(props) {
             icon: <AD name="logout" size={18} color={themecolor.BACKICON} />,
             onpress1: 'Sign Out'
         },
+        
     ];
 
     const handleUserData = async () => {
@@ -96,7 +97,7 @@ export default function Profile(props) {
         handleUserData();
     }, []);
 
-  
+
     return (
         <View style={{ backgroundColor: themecolor.THEMECOLOR, ...styles.bg }}>
 
@@ -140,16 +141,9 @@ export default function Profile(props) {
                                 numberOfLines={2}>
                                 {data.email}
                             </Text> */}
-                            {data.package_type == 0 ?
-                                <Text
-                                    allowFontScaling={false}
-                                    style={{ ...styles.headTxt, color: themecolor.TEXTGREEN }}
-                                    numberOfLines={2}>
-                                    Free
-                                </Text>
-                                :
-                                TodayDate >= packageExpiry ?
 
+                            {data.package_type == 1 ?
+                                TodayDate >= packageExpiry ?
                                     <Text
                                         allowFontScaling={false}
                                         style={{ ...styles.smallTxt, color: themecolor.TEXTRED }}
@@ -176,6 +170,13 @@ export default function Profile(props) {
                                         </Text>
 
                                     </>
+                                :
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{ ...styles.headTxt, color: themecolor.TEXTGREEN }}
+                                    numberOfLines={2}>
+                                    Free
+                                </Text>
 
                             }
                         </View>

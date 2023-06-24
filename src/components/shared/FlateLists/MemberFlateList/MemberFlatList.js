@@ -19,22 +19,21 @@ import { postMemberShipPayment } from '../../../../repository/MemberShipReposito
 
 const { width, height } = Dimensions.get('screen');
 
-function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail, setLoader }) {
+function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail, setLoader, appLogo, appName, accesskey }) {
     const navigation = useNavigation();
     const toast = useToast();
 
-    const access_key = 'rzp_test_cdnNWMaIkNop2J';
+    // const access_key = 'rzp_test_cdnNWMaIkNop2J';
     const random_id = Math.random().toFixed(16).split('.')[1];
 
     const handlePayNow = async () => {
         var options = {
             description: random_id,
-            image:
-                'https://img.freepik.com/free-vector/stem-education-logo-with-icon-ornament-elements_1308-67352.jpg?size=626&ext=jpg',
+            image: appLogo,
             currency: 'INR',
-            key: access_key, // Your api key
+            key: accesskey, // Your api key
             amount: parseInt(item.amount) * 100,
-            name: 'OEN Study',
+            name: appName,
             handler: function (response) {
                 console.log(response.razorpay_payment_id);
             },
@@ -57,7 +56,7 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
 
                     var body = new FormData();
                     body.append('payment_type', 'razorpay');
-                    body.append('razorToken', access_key);
+                    body.append('razorToken', accesskey);
                     body.append('package_id', item.id);
                     body.append('package_amount', parseInt(item.amount));
                     body.append('razorpay_signature', data.razorpay_signature);
@@ -143,8 +142,18 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
                     <Text
                         allowFontScaling={false}
                         numberOfLines={1}
+                        style={{ color: themecolor.TXTGREYS, ...styles.classheadd, textDecorationLine: 'line-through' }}> {parseInt(item.total_amt)} </Text>
+                    {" "}
+                    <Text
+                        allowFontScaling={false}
+                        numberOfLines={1}
                         style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>for {item.validation == 12 ? "1 Year" : item.validation == 1 ? item.validation + " Month" : item.validation + " Months"}  </Text>
                 </Text>
+
+                <Text
+                    allowFontScaling={false}
+                    numberOfLines={1}
+                    style={{ color: themecolor.TEXTRED, ...styles.txt1, }}> ( {parseInt(item.discount_per)}% discount ) </Text>
             </View>
 
             <View style={styles.margT10} />
@@ -206,7 +215,7 @@ function MemberFlatList(props) {
         <FlatList
             data={props.data}
             renderItem={({ item }) => (
-                <MemberDataFlatList item={item} themecolor={themecolor} userName={props.userName} userEmail={props.userEmail} userPhoneNo={props.userPhoneNo} setLoader={props.setLoader} />
+                <MemberDataFlatList item={item} themecolor={themecolor} userName={props.userName} userEmail={props.userEmail} userPhoneNo={props.userPhoneNo} appLogo={props.appLogo} appName={props.appName} accesskey={props.accesskey} setLoader={props.setLoader} />
             )}
             horizontal={true}
             showsVerticalScrollIndicator={false}

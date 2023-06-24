@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, Dimensions, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MyThemeClass } from '../../Theme/ThemeDarkLightColor';
 import { useSelector } from 'react-redux';
@@ -17,7 +17,8 @@ export default RatingModel = props => {
   return (
     <Modal animationType="slide" transparent={true} visible={modalVisible}
       onRequestClose={() => {
-        props.setStarRating(0)
+        props.setStarRating(props.starRating1)
+        props.setCommentRating(props.commentRating1)
         props.setShowmodal(!props.showmodal)
         setModalVisible(!modalVisible);
       }}>
@@ -26,7 +27,7 @@ export default RatingModel = props => {
           <View style={styles.ModalViewWidth}>
             <View style={styles.ModelVideoCenter}>
               <Text allowFontScaling={false} style={{ ...styles.submittext, color: themecolor.TXTWHITE }}>
-                Rate Us 
+                Rating us
               </Text>
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', width: width * 0.9 }}>
@@ -42,6 +43,26 @@ export default RatingModel = props => {
                 />
               </View>
             </View>
+            <View style={styles.MV2} />
+
+            <View style={{
+              ...styles.textInputView,
+              backgroundColor: themecolor.OTPBOXCOLOR,
+              borderColor: themecolor.BOXBORDERCOLOR1,
+            }}>
+              <TextInput
+                allowFontScaling={false}
+                value={props.commentRating}
+                placeholderTextColor={themecolor.TXTGREYS}
+                placeholder="Comment"
+                onChangeText={text => props.setCommentRating(text)}
+                style={{
+                  color: themecolor.TXTWHITE,
+                  ...styles.textInput,
+                }}
+              />
+            </View>
+
             <View style={styles.MV2} />
 
             <View style={styles.FLexCenter}>

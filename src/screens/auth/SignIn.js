@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View, Text, BackHandler,
     StatusBar,
     TouchableOpacity,
     Image,
-    TextInput, ScrollView
+    TextInput, ScrollView,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -20,6 +20,7 @@ import { postSignIn } from '../../repository/AuthRepository/SignInRepository';
 import { StoreDatatoAsync } from '../../repository/AsyncStorageServices';
 import VerifyModel from '../../components/shared/Model/VerifyModel';
 import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
+import { getAppLogoAsync, getUserData } from '../../repository/CommonRepository';
 
 
 export default function SignIn(props) {
@@ -43,14 +44,36 @@ export default function SignIn(props) {
     var navigation = useNavigation();
     const mode = useSelector(state => state.mode);
     const themecolor = new MyThemeClass(mode).getThemeColor();
-   
-    const [loader, setLoader] = useState(false);
+
+    const [loader, setLoader] = useState(true);
+    const [appLogoAsync, setAppLogoAsync] = useState('');
+
 
     const [mobileNo, setMobileNo] = useState('');
     const [password, setPassword] = useState('');
 
     const [showmodal, setShowmodal] = useState(false);
     const [isPasswordSecure, setIsPasswordSecure] = useState(true);
+
+    useEffect(() => {
+        async function temp() {
+            try {
+                var userData = await getAppLogoAsync();
+                if (userData == null || userData == '' || userData == undefined) {
+                    setAppLogoAsync('')
+                    setLoader(false)
+                } else {
+
+                    setAppLogoAsync(userData);
+                    setLoader(false)
+                }
+            } catch (e) {
+                setLoader(false)
+                setAppLogoAsync('')
+            }
+        }
+        temp()
+    }, [props]);
 
 
     const handleSignIn = async () => {
@@ -157,7 +180,7 @@ export default function SignIn(props) {
 
                         <View style={{ ...styles.ImgView }}>
                             <Image
-                                source={require('../../assets/images/newlog.png')}
+                                source={{ uri: appLogoAsync }}
                                 style={{ width: "100%", height: "100%", resizeMode: 'contain', }}
                             />
                         </View>
@@ -253,7 +276,7 @@ export default function SignIn(props) {
 
                                 <View style={styles.mt10} />
 
-                                <TouchableOpacity activeOpacity={0.5} style={styles.forgot} onPress={() => navigation.navigate('ForgotPswd', {comeIn:"SignIn"})}>
+                                <TouchableOpacity activeOpacity={0.5} style={styles.forgot} onPress={() => navigation.navigate('ForgotPswd', { comeIn: "SignIn" })}>
                                     <Text
                                         allowFontScaling={false}
                                         style={{

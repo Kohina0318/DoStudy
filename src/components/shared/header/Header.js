@@ -15,12 +15,33 @@ import CIcon from 'react-native-vector-icons/MaterialIcons';
 import { styles } from '../../../assets/css/HeaderCss/HeaderStyle'
 import { store } from '../../../../App';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
+import { getAppLogoAsync } from '../../../repository/CommonRepository';
 const { width } = Dimensions.get('screen');
 
 export default function Header(props) {
   const navigation = useNavigation();
   const mode = useSelector(state => state.mode);
   const themecolor = new MyThemeClass(mode).getThemeColor();
+  const [appLogoAsync, setAppLogoAsync] = useState('');
+
+
+  useEffect(() => {
+    async function temp() {
+        try {
+            var userData = await getAppLogoAsync();
+            if (userData == null || userData == '' || userData == undefined) {
+                setAppLogoAsync('')
+            } else {
+
+                setAppLogoAsync(userData);
+            }
+        } catch (e) {
+            setAppLogoAsync('')
+        }
+    }
+    temp()
+}, [props]);
+
 
   return (
     <View
@@ -68,7 +89,7 @@ export default function Header(props) {
               <View style={{ ...styles.iconTitle1, }}>
                 <View style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
                   <Image
-                    source={require('../../../assets/images/newlog.png')}
+                    source={{uri: appLogoAsync}}
                     style={{ width: 50, height: 50, resizeMode: 'contain',  }}
                   />
                 </View>

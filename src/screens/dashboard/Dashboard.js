@@ -16,6 +16,8 @@ import CarouselFile from '../../components/shared/Carousel/CarouselFile';
 import { DashBoardFlateList } from '../../components/shared/FlateLists/DashboardFlatList/DashBoardFlateList';
 import { getCarousel } from '../../repository/DashboardRepository/DashboardRep';
 import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
+import { getSettingDetails } from '../../repository/SettingRepository/SettingRepo';
+import AdsCarouselFile from '../../components/shared/Carousel/AdsCarouselFile';
 
 export default function Dashboard(props) {
   const toast = useToast();
@@ -24,7 +26,7 @@ export default function Dashboard(props) {
   const themecolor = new MyThemeClass(mode).getThemeColor();
 
   const [loader, setLoader] = useState(true);
-  
+
 
   var data = [
     {
@@ -37,8 +39,8 @@ export default function Dashboard(props) {
     {
       id: 2,
       image: require('../../assets/images/preprasion.png'),
-      name: 'Pre Prasions',
-      onpress: "", 
+      name: 'Preparation',
+      onpress: "",
       touch: false,
     },
     {
@@ -93,33 +95,56 @@ export default function Dashboard(props) {
   ]
 
   const [carouselData, setCarouselData] = useState([]);
+  const [adsData, setAdsData] = useState([]);
 
-    const handleCarousel = async () => {
-        try {
-          var res = await getCarousel();
-          if (res.status === true) {
-            setCarouselData(res.data);
-            setLoader(false)
-          } else {
-            setLoader(false)
-          }
-        } catch (e) {
-          setLoader(false)
-          console.log('errrror in..handleCarousel page-->', e);
-          toast.show('Something went wrong!, Try again later.', {
-            type: 'danger',
-            placement: 'bottom',
-            duration: 1000,
-            offset: 30,
-            animationType: 'slide-in',
-          });
-        }
-      };
-    
-      useEffect(() => {
-        handleCarousel()
-      }, [])
-    
+  const handleCarousel = async () => {
+    try {
+      var res = await getCarousel();
+      if (res.status === true) {
+        setCarouselData(res.data);
+        setLoader(false)
+      } else {
+        setLoader(false)
+      }
+    } catch (e) {
+      setLoader(false)
+      console.log('errrror in..handleCarousel page-->', e);
+      toast.show('Something went wrong!, Try again later.', {
+        type: 'danger',
+        placement: 'bottom',
+        duration: 1000,
+        offset: 30,
+        animationType: 'slide-in',
+      });
+    }
+  };
+
+  const handleSettingDetails = async () => {
+    try {
+      var res = await getSettingDetails();
+      if (res.status === true) {
+        var AdsData = res.data.ads;
+        setAdsData(Object.values(AdsData))
+      }
+      else {
+        toast.show(res.message, {
+          type: 'warning',
+          placement: 'bottom',
+          duration: 1000,
+          offset: 30,
+          animationType: 'slide-in',
+        });
+      }
+    } catch (e) {
+      console.log("Error..in  getSettingDetails...", e)
+    }
+  };
+
+  useEffect(() => {
+    handleCarousel()
+    handleSettingDetails()
+  }, [])
+
 
   return (
     <View style={{ ...styles.bg, backgroundColor: themecolor.THEMECOLOR }}>
@@ -132,25 +157,35 @@ export default function Dashboard(props) {
       <Header title="Home" />
 
       {loader ? (
-        // <DashboardShimmer />
-        <LoadingFullScreen  style={{ flex: 1 }} />
+        <LoadingFullScreen style={{ flex: 1 }} />
       ) : (
         <>
           <ScrollView showsVerticalScrollIndicator={false}>
-          {/* <View style={{ marginVertical: 5 }} /> */}
+            <View style={{ ...styles.bdContainter }} >
 
-          <View
-            style={{
-              ...styles.container,
-              // backgroundColor: themecolor.BOXBORDERCOLOR,
-              backgroundColor: 'transparent',
-            }}>
-            <CarouselFile data={carouselData} />
-          </View>
+              <View  style={styles.mgT10}/>
 
-          <View style={{ ...styles.ViewHeading }}>
-            <DashBoardFlateList data={data} />
-          </View>
+            <View style={{
+                ...styles.adsContainer,
+              }}>
+                <CarouselFile data={carouselData} />
+              </View>
+
+              <View  style={styles.mgT10}/>
+
+              <View style={{ ...styles.ViewHeading }}>
+                <DashBoardFlateList data={data} />
+              </View>
+
+              <View style={{
+                ...styles.adsContainer,
+              }}>
+                <AdsCarouselFile data={adsData}/>
+              </View>
+
+            </View>
+            
+          <View style={{ marginVertical: 5 }} />
           </ScrollView>
         </>
       )}
