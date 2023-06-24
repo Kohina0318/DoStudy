@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Dimensions, Text, BackHandler,StatusBar
+    Dimensions, Text, BackHandler,StatusBar,ScrollView
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -73,13 +73,14 @@ export default function Classes(props) {
                 barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
             />
 
-            <Header title="Class" backIcon={true}
+            <Header title="Classes" backIcon={true}
                 onPressBack={() => handleBackButtonClick()} />
 
             {loader ? (
                 <LoadingFullScreen style={{ flex: 1 }} />
             ) : (
                 <>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <View
                         style={{
                             ...styles.container,
@@ -92,6 +93,7 @@ export default function Classes(props) {
                         )}
 
                     </View>
+                    </ScrollView>
 
                 </>
             )}

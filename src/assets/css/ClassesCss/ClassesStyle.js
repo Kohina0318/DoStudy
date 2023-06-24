@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
   classImg:{
-    width:width * 0.4, height:height*0.09 
+    width:width * 0.4, height:height*0.15 
   },
   classMT5:{
     marginTop: 5

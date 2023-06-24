@@ -1,13 +1,14 @@
 import React from 'react';
-import {View,Dimensions,Image} from 'react-native';
+import {View,Dimensions,Image,Linking} from 'react-native';
 import {styles} from '../../../assets/css/DashBoardCss/DashboardStyle';
 import Carousel from 'react-native-banner-carousel';
 import {useSelector} from 'react-redux';
 import { MyThemeClass } from '../../Theme/ThemeDarkLightColor';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const { width, height } = Dimensions.get('screen');
 
-export default function CarouselFile(props) {
+export default function AdsCarouselFile(props) {
     const mode = useSelector(state => state.mode);
   const themecolor = new MyThemeClass(mode).getThemeColor();
 
@@ -15,9 +16,9 @@ export default function CarouselFile(props) {
 
   const renderItem = (item, index) => {
     return (
-      <View style={{...styles.container1,borderColor: themecolor.BOXBORDERCOLOR1,}} key={index}>
-        <Image source={{uri: item.banner}} style={styles.adsimage} />
-      </View>
+      <TouchableOpacity activeOpacity={0.8} onPress={()=>Linking.openURL(item.url)} style={{...styles.adsContainer1,borderColor: themecolor.BOXBORDERCOLOR1,}} key={index}>
+        <Image source={{uri: item.image}} style={styles.adsimage} />
+      </TouchableOpacity>
     );
   };
   return (

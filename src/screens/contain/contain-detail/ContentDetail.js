@@ -113,16 +113,20 @@ export default function ContentDetail(props) {
     const handleVoice = async () => {
         Tts.setDefaultRate(0.4);
         Tts.addEventListener('tts-progress', (event) => { setStringStopLength(event.end) });
-        Tts.setDefaultLanguage('hin-IND')
-        // Tts.setDefaultVoice('en-IN-Wavenet-C')
+        Tts.setDefaultLanguage('hi-IN')
+        Tts.setDefaultVoice('hi-in-x-hid-local')
+        Tts.setDefaultRate(0.3);
+        Tts.setDefaultPitch(1.0);
         if (stringStopLength > 0) {
             Tts.speak(description1);
         }
         else {
-            Tts.speak(description);
+           Tts.speak(description);
+      
         }
         setSpeckerOnStop(1)
     }
+
     const handleStopVoice = async () => {
         Tts.stop();
         var data = description1.slice(stringStopLength);
@@ -237,21 +241,7 @@ export default function ContentDetail(props) {
                                                                 </View>
                                                             </ImageBackground>
                                                         </TouchableOpacity>
-                                                        {/* <View style={{ ...styles.widthVideo }}>
-                                                            <VideoPlayer
-                                                                video={{ uri: contantUrl }}
-                                                                videoWidth={1500}
-                                                                videoHeight={1000}
-                                                                thumbnail={{ uri: props.route.params.UnitImage }}
-                                                                ref={(ref) => { player = ref }}
-                                                                muted={false}
-                                                                paused={false}
-                                                                showDuration={true}
-                                                                pauseOnPress={true}
-                                                                disableFullscreen={true}
-                                                            />
-                                                        </View> */}
-                                                    </>
+                                                       </>
                                                     :
                                                     contantUrlType === 'pdf' ?
                                                         <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('FullPdfContainDetail', { contantUrl: contantUrl, UnitNo: props.route.params.UnitNo })}>

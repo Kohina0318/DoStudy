@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
     View,
     Text, BackHandler,
@@ -22,6 +22,7 @@ import FA from 'react-native-vector-icons/FontAwesome';
 import { postSignUp } from '../../repository/AuthRepository/SignUpRepository';
 import VerifyModel from '../../components/shared/Model/VerifyModel';
 import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
+import { getAppLogoAsync } from '../../repository/CommonRepository';
 
 
 export default function SignUp(props) {
@@ -47,7 +48,8 @@ export default function SignUp(props) {
     const mode = useSelector(state => state.mode);
     const themecolor = new MyThemeClass(mode).getThemeColor();
 
-    const [loader, setLoader] = useState(false);
+    const [loader, setLoader] = useState(true);
+    const [appLogoAsync, setAppLogoAsync] = useState('');
 
     const [name, setName] = useState('');
     const [mobileNo, setMobileNo] = useState('');
@@ -58,6 +60,26 @@ export default function SignUp(props) {
     const [showmodal, setShowmodal] = useState(false);
     const [isPasswordSecure, setIsPasswordSecure] = useState(true);
     const [isPasswordSecure1, setIsPasswordSecure1] = useState(true);
+
+    useEffect(() => {
+        async function temp() {
+            try {
+                var userData = await getAppLogoAsync();
+                if (userData == null || userData == '' || userData == undefined) {
+                    setAppLogoAsync('')
+                    setLoader(false)
+                } else {
+
+                    setAppLogoAsync(userData);
+                    setLoader(false)
+                }
+            } catch (e) {
+                setLoader(false)
+                setAppLogoAsync('')
+            }
+        }
+        temp()
+    }, [props]);
 
 
     const handleSignUp = async () => {
@@ -210,7 +232,7 @@ export default function SignUp(props) {
 
                             <View style={{ ...styles.ImgView }}>
                                 <Image
-                                    source={require('../../assets/images/newlog.png')}
+                                    source={{ uri: appLogoAsync }}
                                     style={{ width: "100%", height: "100%", resizeMode: 'contain', }}
                                 />
                             </View>

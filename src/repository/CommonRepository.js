@@ -18,4 +18,13 @@ const getAppToken = async () => {
     }
   };
 
-export {getAppToken,getUserData};
+  const getAppLogoAsync = async () => {
+    try {
+      var getData =  await getDatafromAsync('@AppLogo');
+      return getData;
+    } catch (e) {
+      console.log('erro in getAppLogoAsync', e);
+    }
+  };
+
+export {getAppToken,getUserData,getAppLogoAsync };

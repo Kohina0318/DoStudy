@@ -60,6 +60,7 @@ export default function EditProfile(props) {
         uri: 'https://picsum.photos/200/300?random=1',
     });
     const [image, setImage] = useState('');
+    const [image1, setImage1] = useState('');
 
 
     const handleUserData = async () => {
@@ -151,7 +152,7 @@ export default function EditProfile(props) {
                 formdata.append('country', country)
                 formdata.append('classno', classNo)
                 formdata.append('school', school)
-                formdata.append('profile_photo', image)
+                formdata.append('profile_photo', image1)
 
                 const res = await postEditProfile(formdata);
                 if (res.status == true) {
@@ -209,6 +210,7 @@ export default function EditProfile(props) {
                 }
                 // console.log(response)
                 setImage(source.base64);
+                setImage1(source.base64);
             }
         });
     };
@@ -226,7 +228,7 @@ export default function EditProfile(props) {
                 barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
             />
 
-            <Header title="EditProfile" backIcon={true}
+            <Header title="Edit Profile" backIcon={true}
                 onPressBack={() => handleBackButtonClick()} />
 
             {loader ? (
