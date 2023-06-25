@@ -111,7 +111,6 @@ export default function ContentDetail(props) {
     }, []);
 
     const handleVoice = async () => {
-        Tts.setDefaultRate(0.4);
         Tts.addEventListener('tts-progress', (event) => { setStringStopLength(event.end) });
         Tts.setDefaultLanguage('hi-IN')
         Tts.setDefaultVoice('hi-in-x-hid-local')
@@ -121,8 +120,8 @@ export default function ContentDetail(props) {
             Tts.speak(description1);
         }
         else {
-           Tts.speak(description);
-      
+            Tts.speak(description);
+
         }
         setSpeckerOnStop(1)
     }
@@ -138,6 +137,51 @@ export default function ContentDetail(props) {
     if (contantUrl != "") {
         contantUrlType = contantUrl.split('.').pop()
     }
+
+    const [activeIndex, setActiveIndex] = useState(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [recognizedText, setRecognizedText] = useState('');
+
+    var textData = ''
+
+    if (description != "") {
+        textData = description.split('.');
+    }
+
+    useEffect(() => {
+        Tts.addEventListener('tts-finish', handleTTSFinish);
+
+        return () => {
+            Tts.removeEventListener('tts-finish', handleTTSFinish);
+        };
+    }, []);
+
+    const handleTTSFinish = () => {
+        if (activeIndex !== null && activeIndex < textData.length - 1) {
+            // Move to the next text if available
+            handlePlay(activeIndex + 1);
+        } else {
+            // All texts have been spoken or paused
+            setIsPlaying(false);
+            setActiveIndex(null);
+        }
+    };
+
+
+    const handleTextClick = (index) => {
+        setActiveIndex(index);
+        setRecognizedText('');
+        if (index >= 0 && index < textData.length) {
+            Tts.stop();
+            Tts.setDefaultLanguage('hi-IN')
+            Tts.setDefaultVoice('hi-in-x-hid-local')
+            Tts.setDefaultRate(0.3);
+            Tts.setDefaultPitch(1.0);
+
+            Tts.speak(textData[index]);
+        }
+    };
+
 
 
     return (
@@ -197,7 +241,7 @@ export default function ContentDetail(props) {
                                                     ellipsizeMode='tail'
                                                     style={{
                                                         ...styles.txt,
-                                                        color: themecolor.TXTWHITE,
+                                                        color: themecolor.TXTWHITE, letterSpacing: 1
                                                     }}>{description}</Text>
                                                 <View style={styles.mt5} />
                                                 <Text
@@ -221,13 +265,30 @@ export default function ContentDetail(props) {
                                         </>
                                         :
                                         <>
-                                            <Text
+                                            {/* <Text
                                                 selectable={true}
                                                 allowFontScaling={false}
                                                 style={{
                                                     ...styles.txt,
-                                                    color: themecolor.TXTWHITE,
-                                                }}>{description}</Text>
+                                                    color: themecolor.TXTWHITE, letterSpacing: 1
+                                                }}>{description}</Text> */}
+
+                                            {description != "" ?
+                                                    textData.map((text, index) => (
+                                                        <TouchableOpacity key={index} onPress={() => handleTextClick(index)} >
+                                                            <Text
+                                                                style={{
+                                                                    ...styles.txt,
+                                                                    letterSpacing: 1,
+                                                                    fontWeight: activeIndex === index ? 'bold' : 'normal',
+                                                                    color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
+                                                                }}
+                                                            >
+                                                                {text}.
+                                                            </Text>
+                                                        </TouchableOpacity>
+                                                    ))
+                                                : <></>}
 
                                             <View style={styles.mt15} />
                                             <View style={styles.mt15} />
@@ -241,7 +302,7 @@ export default function ContentDetail(props) {
                                                                 </View>
                                                             </ImageBackground>
                                                         </TouchableOpacity>
-                                                       </>
+                                                    </>
                                                     :
                                                     contantUrlType === 'pdf' ?
                                                         <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('FullPdfContainDetail', { contantUrl: contantUrl, UnitNo: props.route.params.UnitNo })}>
