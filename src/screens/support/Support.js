@@ -1,235 +1,367 @@
-import React, {useState, useEffect} from 'react';
-
-// import all the components we are going to use
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TextInput,
-  Keyboard,
-  TouchableOpacity,
-} from 'react-native';
-import Slider from '@react-native-community/slider';
+import React, { useState, useEffect,useRef } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { WebView } from 'react-native-webview';
+import MaterialIcons from 'react-native-vector-icons/Ionicons';
 import Tts from 'react-native-tts';
 
-const Support = () => {
-  const [voices, setVoices] = useState([]);
-  const [ttsStatus, setTtsStatus] = useState('initiliazing');
-  const [selectedVoice, setSelectedVoice] = useState(null);
-  const [speechRate, setSpeechRate] = useState(0.5);
-  const [speechPitch, setSpeechPitch] = useState(1);
-  const [
-    text,
-    setText
-  ] = useState('Enter Text like Hello About React');
+const HTMLParagraph = ({ html }) => {
+  const [highlightedWord, setHighlightedWord] = useState(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const webViewRef = useRef(null);
 
   useEffect(() => {
-    Tts.addEventListener(
-      'tts-start',
-      (_event) => setTtsStatus('started')
-    );
-    Tts.addEventListener(
-      'tts-finish',
-      (_event) => setTtsStatus('finished')
-    );
-    Tts.addEventListener(
-      'tts-cancel',
-      (_event) => setTtsStatus('cancelled')
-    );
-    Tts.setDefaultRate(speechRate);
-    Tts.setDefaultPitch(speechPitch);
-    Tts.getInitStatus().then(initTts);
+    const onTtsFinish = () => {
+      setIsSpeaking(false);
+      setHighlightedWord(null);
+    };
+
+    Tts.addEventListener('tts-finish', onTtsFinish);
+
     return () => {
-      Tts.removeEventListener(
-        'tts-start',
-        (_event) => setTtsStatus('started')
-      );
-      Tts.removeEventListener(
-        'tts-finish',
-        (_event) => setTtsStatus('finished'),
-      );
-      Tts.removeEventListener(
-        'tts-cancel',
-        (_event) => setTtsStatus('cancelled'),
-      );
+      Tts.removeEventListener('tts-finish', onTtsFinish);
     };
   }, []);
 
-  const initTts = async () => {
-    const voices = await Tts.voices();
-    const availableVoices = voices
-      .filter((v) => !v.networkConnectionRequired && !v.notInstalled)
-      .map((v) => {
-        return {id: v.id, name: v.name, language: v.language};
-      });
-    let selectedVoice = null;
-    if (voices && voices.length > 0) {
-      selectedVoice = voices[0].id;
-      try {
-        await Tts.setDefaultLanguage(voices[0].language);
-      } catch (err) {
-        //Samsung S9 has always this error:
-        //"Language is not supported"
-        console.log(`setDefaultLanguage error `, err);
-      }
-      await Tts.setDefaultVoice(voices[0].id);
-      setVoices(availableVoices);
-      setSelectedVoice(selectedVoice);
-      setTtsStatus('initialized');
-    } else {
-      setTtsStatus('initialized');
-    }
+  const handleWordPress = (word) => {
+    setHighlightedWord(word);
+    Tts.speak(word);
   };
 
-  const readText = async () => {
+  // const handleWebViewMessage = (event) => {
+  //   const word = event.nativeEvent.data;
+  //   console.log("hgjjkkjk...",event)
+  //   handleWordPress(word);
+  // };
+
+  const handleParagraphPress = (paragraph) => {
     Tts.stop();
-    Tts.speak(text);
+    setHighlightedWord(null);
+    const paragraphText = paragraph.replace(/<[^>]+>/g, '');
+    Tts.speak(paragraphText);
   };
 
-  const updateSpeechRate = async (rate) => {
-    await Tts.setDefaultRate(rate);
-    setSpeechRate(rate);
-  };
+  const handleWebViewMessage = (event) => {
+    const message = event.nativeEvent.data;
+    const data = JSON.parse(message);
 
-  const updateSpeechPitch = async (rate) => {
-    await Tts.setDefaultPitch(rate);
-    setSpeechPitch(rate);
-  };
-
-  const onVoicePress = async (voice) => {
-    try {
-      await Tts.setDefaultLanguage(voice.language);
-      console.log(voice)
-    } catch (err) {
-      // Samsung S9 has always this error: 
-      // "Language is not supported"
-      console.log(`setDefaultLanguage error `, err);
+    if (data.type === 'highlight') {
+      setHighlightedWord(data.word);
+    } else if (data.type === 'speak') {
+      Tts.stop();
+      setIsSpeaking(true);
+      Tts.speak(data.word);
     }
-    await Tts.setDefaultVoice(voice.id);
-    setSelectedVoice(voice.id);
   };
 
-  const renderVoiceItem = ({item}) => {
-    return (
-      <TouchableOpacity
-        style={{
-          backgroundColor: selectedVoice === item.id ? 
-          '#DDA0DD' : '#5F9EA0',
-        }}
-        onPress={() => onVoicePress(item)}>
-        <Text style={styles.buttonTextStyle}>
-          {`${item.language} - ${item.name || item.id}`}
-        </Text>
-      </TouchableOpacity>
-    );
+  const handleLineByLineSpeech = () => {
+    webViewRef.current.injectJavaScript(`
+      const paragraphs = Array.from(document.getElementsByTagName('p'));
+      paragraphs.forEach((paragraph) => {
+        const text = paragraph.textContent;
+        window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'speak', word: text }));
+      });
+    `);
+    Tts.stop();
+    setHighlightedWord(null);
+    html.split('</p>').forEach((paragraph) => {
+      const paragraphText = paragraph.replace(/<[^>]+>/g, '');
+      Tts.speak(paragraphText);
+    });
   };
+
+  // const handleLineByLineSpeech = () => {
+  //   Tts.stop();
+  //   setHighlightedWord(null);
+  //   html.split('</p>').forEach((paragraph) => {
+  //     const paragraphText = paragraph.replace(/<[^>]+>/g, '');
+  //     Tts.speak(paragraphText);
+  //   });
+  // };
+
+  const handleStopSpeech = () => {
+    Tts.stop();
+    setHighlightedWord('');
+  };
+
+  const processedHtml = html.replace(/<p>/g, '<p onClick="onParagraphPress(this)">');
+
+  const injectedJavaScript = `
+    function onParagraphPress(paragraph) {
+      const text = paragraph.textContent;
+      window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'highlight', word: text }));
+      window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'speak', word: text }));
+    }
+  `;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
-        <Text style={styles.titleText}>
-          Text to Speech Conversion with Natural Voices
-        </Text>
-        <View style={styles.sliderContainer}>
-          <Text style={styles.sliderLabel}>
-            {`Speed: ${speechRate.toFixed(2)}`}
-          </Text>
-          <Slider
-            style={styles.slider}
-            minimumValue={0.01}
-            maximumValue={0.99}
-            value={speechRate}
-            onSlidingComplete={updateSpeechRate}
-          />
-        </View>
-        <View style={styles.sliderContainer}>
-          <Text style={styles.sliderLabel}>
-            {`Pitch: ${speechPitch.toFixed(2)}`}
-          </Text>
-          <Slider
-            style={styles.slider}
-            minimumValue={0.5}
-            maximumValue={2}
-            value={speechPitch}
-            onSlidingComplete={updateSpeechPitch}
-          />
-        </View>
-        <Text style={styles.sliderContainer}>
-          {`Selected Voice: ${selectedVoice || ''}`}
-        </Text>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(text) => setText(text)}
-          value={text}
-          onSubmitEditing={Keyboard.dismiss}
-        />
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          onPress={readText}>
-          <Text style={styles.buttonTextStyle}>
-            Click to Read Text ({`Status: ${ttsStatus || ''}`})
-          </Text>
+    <View>
+      <View style={{ alignItems: 'center', marginTop: 20 }}>
+        <TouchableOpacity onPress={handleLineByLineSpeech}>
+          <MaterialIcons name="ios-volume-high-outline" size={40} color="black" />
         </TouchableOpacity>
-        <Text style={styles.sliderLabel}>
-          Select the Voice from below
-        </Text>
-        <FlatList
-          style={{width: '100%', marginTop: 5}}
-          keyExtractor={(item) => item.id}
-          renderItem={renderVoiceItem}
-          extraData={selectedVoice}
-          data={voices}
-        />
       </View>
-    </SafeAreaView>
+      <WebView
+        ref={webViewRef}
+        originWhitelist={['*']}
+        source={{ html: processedHtml }}
+        onMessage={handleWebViewMessage}
+        injectedJavaScript={injectedJavaScript}
+      />
+      <TouchableOpacity onPress={handleStopSpeech}>
+        <Text style={{ textAlign: 'center', marginTop: 10 }}>
+          Stop Speech
+        </Text>
+      </TouchableOpacity>
+      {html.split('</p>').map((paragraph, index) => {
+        const cleanedParagraph = paragraph.replace(/<[^>]+>/g, '');
+        return (
+          <TouchableOpacity
+            key={index}
+            onPress={() => handleParagraphPress(paragraph)}
+          >
+            <Text
+              style={{
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                color: cleanedParagraph.includes(highlightedWord) ? '#fff' : '#000',
+                backgroundColor:
+                  cleanedParagraph.includes(highlightedWord) ? 'blue' : 'transparent',
+              }}
+            >
+              {cleanedParagraph}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+};
+
+const Support = () => {
+  const htmlContent = `
+    <p>बोलना वाक-शक्ति द्वारा ध्वनियों को जोड़कर बने एक विस्तृत शब्दकोश के शब्दों का प्रयोग कर के करी गई संचार की क्रिया को कहते हैं।</p>
+    <p>Speech is a human vocal communication using language. </p>
+    <p>This is the third paragraph.</p>
+    <p>Each language uses phonetic combinations of vowel and consonant sounds that form the sound of its words, and using those words in their semantic</p>
+    <p>आमतौर पर प्रभावशाली संचार के लिये बोलने में कम-से-कम १, ००० शब्दों का प्रयोग देखा गया है। </p>
+    <p> हर शब्द को स्वर और व्यंजन वर्णों का स्वानिक मिश्रण कर के बनाया जाता है</p>
+  `;
+
+  return (
+    <View>
+      <HTMLParagraph html={htmlContent} />
+    </View>
   );
 };
 
 export default Support;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    padding: 5,
-  },
-  titleText: {
-    fontSize: 22,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  buttonStyle: {
-    justifyContent: 'center',
-    marginTop: 15,
-    padding: 10,
-    backgroundColor: '#8ad24e',
-  },
-  buttonTextStyle: {
-    color: '#fff',
-    textAlign: 'center',
-  },
-  sliderContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 300,
-    padding: 5,
-  },
-  sliderLabel: {
-    textAlign: 'center',
-    marginRight: 20,
-  },
-  slider: {
-    flex: 1,
-  },
-  textInput: {
-    borderColor: 'gray',
-    borderWidth: 1,
-    color: 'black',
-    width: '100%',
-    textAlign: 'center',
-    height: 40,
-  },
-})
+
+// import React, { useState, useEffect } from 'react';
+// import { View, Text, TouchableOpacity } from 'react-native';
+// import { WebView } from 'react-native-webview';
+// import Tts from 'react-native-tts';
+
+// const HTMLParagraph = ({ html }) => {
+//   const [highlightedWord, setHighlightedWord] = useState('');
+//   const [isSpeaking, setIsSpeaking] = useState(false);
+//   const [isLineByLineSpeech, setIsLineByLineSpeech] = useState(false);
+//  const [activeIndex, setActiveIndex] = useState(null);
+
+
+
+//   useEffect(() => {
+//     const onTtsFinish = () => {
+//       setIsSpeaking(false);
+//       setHighlightedWord('');
+//     };
+
+//     Tts.addEventListener('tts-finish', onTtsFinish);
+
+//     return () => {
+//       Tts.removeEventListener('tts-finish', onTtsFinish);
+//     };
+//   }, []);
+
+//   const handleWordPress = (word) => {
+//     setHighlightedWord(word);
+//     Tts.speak(word);
+//   };
+
+//   const handleWebViewMessage = (event) => {
+//     const word = event.nativeEvent.data;
+//     handleWordPress(word);
+//   };
+
+//   const handleParagraphPress = (paragraph) => {
+//     setIsLineByLineSpeech(false);
+//     Tts.stop();
+// setHighlightedWord('');
+//     const paragraphText = paragraph.replace(/<[^>]+>/g, '');
+//     Tts.speak(paragraphText);
+//   };
+
+//   const handleLineByLineSpeech = () => {
+//     setIsLineByLineSpeech(!isLineByLineSpeech);
+//     setIsSpeaking(false);
+//     Tts.stop();
+//     setHighlightedWord('');
+//     html.split('</p>').forEach((paragraph) => {
+//       const paragraphText = paragraph.replace(/<[^>]+>/g, '');
+//       Tts.speak(paragraphText);
+//     });
+//   };
+
+//   return (
+//     <View>
+//       <WebView
+//         originWhitelist={['*']}
+//         source={{ html }}
+//         onMessage={handleWebViewMessage}
+//       />
+//       <Text style={{ textAlign: 'center' }}>
+//         Highlighted Word: {highlightedWord}
+//       </Text>
+//       <TouchableOpacity onPress={handleLineByLineSpeech}>
+//         <Text style={{ textAlign: 'center', marginTop: 10 }}>
+//           Line By Line Speech
+//         </Text>
+//       </TouchableOpacity>
+//       {html.split('</p>').map((paragraph, index) => {
+//         const cleanedParagraph = paragraph.replace(/<[^>]+>/g, '');
+//         return (
+//           <TouchableOpacity
+//             key={index}
+//             onPress={() => handleParagraphPress(paragraph)}
+//           >
+//             <Text
+//               style={{
+//                 paddingHorizontal: 10,
+//                 paddingVertical: 5,
+//                 backgroundColor:
+//                   cleanedParagraph.includes(highlightedWord) ? 'blue' : 'transparent',
+//               }}
+//             >
+//               {cleanedParagraph}
+//             </Text>
+//           </TouchableOpacity>
+//         );
+//       })}
+//     </View>
+//   );
+// };
+
+// const Support = () => {
+//   const htmlContent = `
+//     <p>This is the first paragraph.</p>
+//     <p>This is the second paragraph.</p>
+//     <p>This is the third paragraph.</p>
+//     <p>This is the fourth paragraph.</p>
+//     <p>This is the fifth paragraph.</p>
+//     <p>This is the sixth paragraph.</p>
+//   `;
+
+//   return (
+//     <View>
+//       <HTMLParagraph html={htmlContent} />
+//     </View>
+//   );
+// };
+
+// export default Support;
+
+
+// import React, { useState, useEffect } from 'react';
+// import { View, Text, TouchableOpacity } from 'react-native';
+// import Tts from 'react-native-tts';
+
+// const Support = () => {
+//   const [activeIndex, setActiveIndex] = useState(null);
+//   const [isPlaying, setIsPlaying] = useState(false);
+//   const [recognizedText, setRecognizedText] = useState('');
+
+//   const textData = [
+//     'बोलना वाक-शक्ति द्वारा ध्वनियों को जोड़कर बने एक विस्तृत शब्दकोश के शब्दों का प्रयोग कर के करी गई संचार की क्रिया को कहते हैं।',
+//     'Speech is a human vocal communication using language. Each language uses phonetic combinations of vowel and consonant sounds that form the sound of its words, and using those words in their semantic ',
+//     'आमतौर पर प्रभावशाली संचार के लिये बोलने में कम-से-कम १, ००० शब्दों का प्रयोग देखा गया है। हर शब्द को स्वर और व्यंजन वर्णों का स्वानिक मिश्रण कर के बनाया जाता है',
+//     'ut labore et dolore magna aliqua.',
+//   ];
+
+//   useEffect(() => {
+//     Tts.addEventListener('tts-finish', handleTTSFinish);
+
+//     return () => {
+//       Tts.removeEventListener('tts-finish', handleTTSFinish);
+//     };
+//   }, []);
+
+//   const handleTTSFinish = () => {
+//     if (activeIndex !== null && activeIndex < textData.length - 1) {
+//       // Move to the next text if available
+//       handlePlay(activeIndex + 1);
+//     } else {
+//       // All texts have been spoken or paused
+//       setIsPlaying(false);
+//       setActiveIndex(null);
+//     }
+//   };
+
+//   const handlePlay = (index) => {
+//     var data = textData.length
+    
+//     for (var i = 0; i < data; i++) {
+//     setActiveIndex(i);
+//     setIsPlaying(true);
+//     setRecognizedText('');
+//     Tts.speak(textData[i]);
+    
+//     }
+//   };
+
+  
+//   const handleStop = () => {
+//     Tts.stop();
+//     setIsPlaying(false);
+//     setActiveIndex(null);
+//   };
+
+//   const handleTextClick = (index) => {
+//     setActiveIndex(index);
+//     setRecognizedText('');
+//     if (index >= 0 && index < textData.length) {
+//       Tts.stop();
+//       Tts.speak(textData[index]);
+//     }
+//   };
+
+//   return (
+//     <View style={{ margin: 50 }}>
+//       {textData.map((text, index) => (
+//         <TouchableOpacity key={index} onPress={() => handleTextClick(index)}>
+//           <Text
+//             style={{
+//               fontSize: 16,
+//               fontWeight: activeIndex === index ? 'bold' : 'normal',
+//               color: activeIndex === index ? 'red' : '#000',
+//             }}
+//           >
+//             {text}
+//           </Text>
+//         </TouchableOpacity>
+//       ))}
+//       <Text>Recognized Text: {recognizedText}</Text>
+
+//       <TouchableOpacity onPress={() => handlePlay(0)} style={{ backgroundColor: "blue", padding: 10, borderRadius: 5, color: "#fff" }}>
+//         <Text>Play</Text>
+//       </TouchableOpacity>
+
+//       {isPlaying && (
+//         <TouchableOpacity onPress={handleStop}>
+//           <Text>Stop</Text>
+//         </TouchableOpacity>
+//       )}
+//     </View>
+//   );
+// };
+
+// export default Support;
