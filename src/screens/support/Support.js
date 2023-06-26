@@ -158,6 +158,146 @@
 // export default Support;
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// import React, { useState, useEffect,useRef } from 'react';
+// import { View, Text, TouchableOpacity } from 'react-native';
+// import { WebView } from 'react-native-webview';
+// import MaterialIcons from 'react-native-vector-icons/Ionicons';
+// import Tts from 'react-native-tts';
+
+// const Support = (props ) => {
+
+//   const textData = `
+//     <p>बोलना वाक-शक्ति द्वारा ध्वनियों को जोड़कर बने एक विस्तृत शब्दकोश के शब्दों का प्रयोग कर के करी गई संचार की क्रिया को कहते हैं।</p>
+//     <p>Speech is a human vocal communication using language. </p>
+//     <p>This is the third paragraph.</p>
+//     <p>Each language uses phonetic combinations of vowel and consonant sounds that form the sound of its words, and using those words in their semantic</p>
+//     <p>आमतौर पर प्रभावशाली संचार के लिये बोलने में कम-से-कम १, ००० शब्दों का प्रयोग देखा गया है। </p>
+//     <p> हर शब्द को स्वर और व्यंजन वर्णों का स्वानिक मिश्रण कर के बनाया जाता है</p>
+//   `;
+
+ 
+//   const [activeIndex, setActiveIndex] = useState(-1);
+//     const [activeIndex1, setActiveIndex1] = useState(0);
+//     const [isPlaying, setIsPlaying] = useState(false);
+//     const [recognizedText, setRecognizedText] = useState('');
+  
+
+//     const activeIndexRef = useRef(activeIndex);
+//       const activeIndexRef1 = useRef(activeIndex1);
+    
+//       useEffect(() => {
+//         activeIndexRef.current = activeIndex;
+//       }, [activeIndex]);
+    
+//       useEffect(() => {
+//         activeIndexRef1.current = activeIndex1;
+//       }, [activeIndex1]);
+    
+//       useEffect(() => {
+//         Tts.addEventListener('tts-finish', handleTTSFinish);
+    
+//         return () => {
+//           Tts.removeEventListener('tts-finish', handleTTSFinish);
+//         };
+//       }, []);
+    
+//   const handleWordPress = (word) => {
+//     setHighlightedWord(word);
+//     Tts.speak(word);
+//   };
+
+//   const handleWebViewMessage = (event) => {
+//     const word = event.nativeEvent.data;
+//     handleWordPress(word);
+//   };
+
+  
+//     const handlePlay = (index) => {
+//         Tts.stop();
+//         setActiveIndex(index);
+//         setIsPlaying(true);
+//         setRecognizedText('');
+//         const paragraphText = textData.replace(/<[^>]+>/g, '');
+//         Tts.speak(paragraphText);
+//         // Tts.speak(textData[index]);
+//       };
+    
+//       const handleTTSFinish = () => {
+       
+//         const currentActiveIndex = activeIndexRef.current;
+//         const currentActiveIndex1 = activeIndexRef1.current;
+//         if (currentActiveIndex1 === 1 ) {
+//           setIsPlaying(false);
+//           setActiveIndex(-1);
+//         } else if (currentActiveIndex !== -1 && currentActiveIndex < textData.length - 1) {
+//           handlePlay(currentActiveIndex + 1);
+//         } else {
+//           setIsPlaying(false);
+//           setActiveIndex(-1);
+//         }
+//       };
+  
+//       const handleStop = () => {
+//         Tts.stop();
+//         setIsPlaying(false);
+//         setActiveIndex(-1);
+//       };
+    
+//       const handleTextClick = (index) => { 
+//         Tts.stop();
+//         setActiveIndex(index);
+//         setRecognizedText('');
+//         if (index >= 0 && index < textData.length) {
+//           const paragraphText = textData.replace(/<[^>]+>/g, '');
+//           Tts.speak(paragraphText);
+//           // Tts.speak(textData[index]);
+//           setActiveIndex1(1)
+//         }
+//       };
+    
+
+
+//       return (
+//             <View style={{ margin: 50 }}>
+//                 {textData.split('</p>').map((text, index) => {
+//                   const cleanedParagraph = text.replace(/<[^>]+>/g, '');
+
+//                   return(
+//                 <TouchableOpacity key={index} onPress={() => handleTextClick(index)}>
+//                   <Text
+//                     style={{
+//                       fontSize: 16,
+//                       fontWeight: activeIndex === index ? 'bold' : 'normal',
+//                       color: activeIndex === index ? 'red' : '#000',
+//                     }}
+//                   >
+//                     {cleanedParagraph}
+//                   </Text>
+//                 </TouchableOpacity>
+//                   )
+// })}
+//               <Text>Recognized Text: {recognizedText}</Text>
+        
+//               <TouchableOpacity onPress={() => handlePlay(0)} style={{ backgroundColor: "blue", padding: 10, borderRadius: 5, margin:5 }}>
+//                 <Text style={{color: "#fff"}}>Play</Text>
+//               </TouchableOpacity>
+        
+//               {isPlaying && (
+//                 <TouchableOpacity onPress={handleStop}>
+//                   <Text>Stop</Text>
+//                 </TouchableOpacity>
+//               )}
+//             </View>
+//           );
+// };
+
+// export default Support;
+
+
+
 
 
 
