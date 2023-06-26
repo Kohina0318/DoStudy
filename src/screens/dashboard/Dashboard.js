@@ -18,6 +18,7 @@ import { getCarousel } from '../../repository/DashboardRepository/DashboardRep';
 import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
 import { getSettingDetails } from '../../repository/SettingRepository/SettingRepo';
 import AdsCarouselFile from '../../components/shared/Carousel/AdsCarouselFile';
+import { StoreDatatoAsync } from '../../repository/AsyncStorageServices';
 
 export default function Dashboard(props) {
   const toast = useToast();
@@ -125,6 +126,7 @@ export default function Dashboard(props) {
       if (res.status === true) {
         var AdsData = res.data.ads;
         setAdsData(Object.values(AdsData))
+        await StoreDatatoAsync('@AdsData', JSON.stringify(Object.values(AdsData)));
       }
       else {
         toast.show(res.message, {
@@ -163,29 +165,31 @@ export default function Dashboard(props) {
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ ...styles.bdContainter }} >
 
-              <View  style={styles.mgT10}/>
+              <View style={styles.mgT10} />
 
-            <View style={{
+              <View style={{
                 ...styles.adsContainer,
               }}>
                 <CarouselFile data={carouselData} />
               </View>
 
-              <View  style={styles.mgT10}/>
+              <View style={styles.mgT10} />
 
               <View style={{ ...styles.ViewHeading }}>
                 <DashBoardFlateList data={data} />
               </View>
 
-              <View style={{
-                ...styles.adsContainer,
-              }}>
-                <AdsCarouselFile data={adsData}/>
-              </View>
+              {adsData.length > 0 ?
+                <View style={{
+                  ...styles.adsContainer,
+                }}>
+                  <AdsCarouselFile data={adsData} />
+                </View>
+                : <></>}
 
             </View>
-            
-          <View style={{ marginVertical: 5 }} />
+
+            <View style={{ marginVertical: 5 }} />
           </ScrollView>
         </>
       )}

@@ -107,6 +107,16 @@ const MainNavigatorstyle = StyleSheet.create({
         height: 120,
         borderRadius: 100 
     },
+    userimgIconsSmall: {
+        width: 50,
+        resizeMode: 'contain',
+        height: 50,
+    },
+    userimgIconsSmall1: {
+        width: 60,
+        resizeMode: 'contain',
+        height: 60,
+    },
    view1: {
         flexDirection: 'row',
         justifyContent: 'space-between',

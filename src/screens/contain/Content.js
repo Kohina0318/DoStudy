@@ -13,6 +13,8 @@ import { getContent } from '../../repository/ClassesRepository/ContentRep';
 import { ContentFlateList } from '../../components/shared/FlateLists/ClassesFlateList/ContentFlateList';
 
 import CIcon from 'react-native-vector-icons/MaterialIcons';
+import { getADsDatabyAsync } from '../../repository/CommonRepository';
+import AdsCarouselFile from '../../components/shared/Carousel/AdsCarouselFile';
 
 
 const { width, height } = Dimensions.get('screen');
@@ -123,6 +125,24 @@ export default function Content(props) {
 
     const [loader, setLoader] = useState(true);
     const [data, setData] = useState([]);
+    const [adsdata, setAdsdata] = useState([]);
+
+    useEffect(() => {
+        async function temp() {
+            try {
+                var adsD = await getADsDatabyAsync();
+                if (adsD == null || adsD == '' || adsD == undefined) {
+                    setAdsdata([])
+                } else {
+                    setAdsdata(adsD);
+                }
+            } catch (e) {
+                setAdsdata([])
+            }
+        }
+        temp()
+    }, [props]);
+
 
     const handleContent = async () => {
         try {
@@ -159,20 +179,32 @@ export default function Content(props) {
             {loader ? (
                 <LoadingFullScreen style={{ flex: 1 }} />
             ) : (
-                <Animated.ScrollView
-                    contentContainerStyle={{ paddingTop: HEADER_MAX_HEIGHT, marginTop: 10, }}
-                    scrollEventThrottle={16} // 
-                    onScroll={Animated.event(
-                        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-                        { useNativeDriver: true },
-                    )} showsVerticalScrollIndicator={false}>
-                    {data.length > 0 ? (
-                        <ContentFlateList data={data} />
-                    ) : (
-                        <NoDataMsg title="No Data Found!" />
-                    )}
-                    <View style={{ marginVertical: 20 }} />
-                </Animated.ScrollView>
+                <>
+                    <Animated.ScrollView
+                        contentContainerStyle={{ paddingTop: HEADER_MAX_HEIGHT, marginTop: 10, }}
+                        scrollEventThrottle={16} // 
+                        onScroll={Animated.event(
+                            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                            { useNativeDriver: true },
+                        )} showsVerticalScrollIndicator={false}>
+                        {data.length > 0 ? (
+                            <ContentFlateList data={data} />
+                        ) : (
+                            <NoDataMsg title="No Data Found!" />
+                        )}
+
+                        <View style={{ ...styles.MT10 }} />
+                        <View style={{ marginVertical: 20 }} />
+                    </Animated.ScrollView>
+                    
+                    {adsdata.length > 0 ?
+                        <View style={{
+                            ...styles.adsContainer,
+                        }}>
+                            <AdsCarouselFile data={adsdata} />
+                        </View>
+                        : <></>}
+                </>
             )}
 
             <Animated.View

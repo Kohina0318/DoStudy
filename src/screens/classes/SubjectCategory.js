@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Dimensions, Text, BackHandler, StatusBar,ScrollView
+    Dimensions, Text, BackHandler, StatusBar, ScrollView
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -11,6 +11,9 @@ import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen'
 import { styles } from '../../assets/css/ClassesCss/CategoryStyle';
 import { SubjectCategoryFlateList } from '../../components/shared/FlateLists/ClassesFlateList/SubjectCategoryFlateList';
 import { getAllCategory } from '../../repository/ClassesRepository/CategoryRepo';
+import NoDataMsg from '../../components/shared/NoData/NoDataMsg';
+import AdsCarouselFile from '../../components/shared/Carousel/AdsCarouselFile';
+import { getADsDatabyAsync } from '../../repository/CommonRepository';
 
 const { width } = Dimensions.get('screen');
 
@@ -34,55 +37,27 @@ export default function SubjectCategory(props) {
     const mode = useSelector(state => state.mode);
     const themecolor = new MyThemeClass(mode).getThemeColor();
 
-    const [loader, setLoader] = useState(false);
-
-    // var data = [
-    //     {
-    //         id: 1,
-    //         image: require('../../assets/images/allbook.png'),
-    //         name: 'Books',
-    //         onpress: "BookCategory",
-    //         touch: false,
-    //         itemToSend: { Id: props.route.params.Id,ClassId:props.route.params.ClassId,Name:props.route.params.Name}
-    //     },
-    //     {
-    //         id: 2,
-    //         image: require('../../assets/images/solved.png'),
-    //         name: 'Solutions',
-    //         onpress: "",
-    //         touch: false,
-    //     },
-    //     {
-    //         id: 3,
-    //         image: require('../../assets/images/questionBank.png'),
-    //         name: 'Question Bank',
-    //         onpress: "",
-    //         touch: false,
-    //     },
-    //     {
-    //         id: 4,
-    //         image: require('../../assets/images/allexams.png'),
-    //         name: 'Exam Paper',
-    //         onpress: "",
-    //         touch: false,
-    //     },
-    //     {
-    //         id: 5,
-    //         image: require('../../assets/images/allvideos.png'),
-    //         name: 'Vedio',
-    //         onpress: "",
-    //         touch: false,
-    //     },
-    //     {
-    //         id: 6,
-    //         image: require('../../assets/images/notes.png'),
-    //         name: 'Notes',
-    //         onpress: "",
-    //         touch: false,
-    //     },
-    // ]
-
+    const [loader, setLoader] = useState(true);
     const [data, setData] = useState([]);
+    const [adsdata, setAdsdata] = useState([]);
+
+    useEffect(() => {
+        async function temp() {
+            try {
+                var adsD = await getADsDatabyAsync();
+                if (adsD == null || adsD == '' || adsD == undefined) {
+                    setAdsdata([])
+                } else {
+                    setAdsdata(adsD);
+                }
+            } catch (e) {
+                setAdsdata([])
+            }
+        }
+        temp()
+    }, [props]);
+
+
 
     const handleCategory = async () => {
         try {
@@ -135,9 +110,25 @@ export default function SubjectCategory(props) {
                                 ...styles.container,
                             }}>
 
-                            <SubjectCategoryFlateList data={data} subjectId={props.route.params.Id} />
+                            {data.length > 0 ?
+                                <SubjectCategoryFlateList data={data} subjectId={props.route.params.Id} />
+                                :
+                                <NoDataMsg title="No Data Found!" />
+                            }
+
+                            <View style={{ ...styles.MT10 }} />
+
+
                         </View>
                     </ScrollView>
+
+                    {adsdata.length > 0 ?
+                        <View style={{
+                            ...styles.adsContainer,
+                        }}>
+                            <AdsCarouselFile data={adsdata} />
+                        </View>
+                        : <></>}
                 </>
             )}
         </View>

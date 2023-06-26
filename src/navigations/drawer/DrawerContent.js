@@ -69,7 +69,7 @@ export default function DrawerContent(props) {
         setStarRating1(res.data[0].no_of_rating);
         setCommentRating(res.data[0].remark)
         setCommentRating1(res.data[0].remark)
-      } 
+      }
     } catch (e) {
       console.log('errrror in..getRatingReview page-->', e);
       toast.show('Something went wrong!, Try again later.', {
@@ -301,6 +301,37 @@ export default function DrawerContent(props) {
           />
         )}
 
+
+        <View
+          style={{
+            ...MainNavigatorstyle.Borderline,
+            borderWidth: 0.6,
+            borderColor: themecolor.BOXBORDERCOLOR1,
+          }}
+        />
+
+        <View style={{ flexDirection: "row", justifyContent: "space-between", margin: 5 , alignItems:"center",alignSelf:"center"}}>
+          <View style={{ padding: 10 }}>
+            <ImageR
+              style={{ ...MainNavigatorstyle.userimgIconsSmall }}
+              source={require('../../assets/images/iaf.png')}
+            />
+          </View>
+          <View style={{ padding: 10 }}>
+            <ImageR
+              style={{ ...MainNavigatorstyle.userimgIconsSmall1 }}
+              source={require('../../assets/images/iso.png')}
+            />
+          </View>
+          <View style={{ padding: 10 }}>
+            <ImageR
+              style={{ ...MainNavigatorstyle.userimgIconsSmall }}
+              source={require('../../assets/images/egac.png')}
+            />
+          </View>
+        </View>
+
+
         <View style={MainNavigatorstyle.view2}>
           <View
             style={{
@@ -309,6 +340,8 @@ export default function DrawerContent(props) {
               borderColor: themecolor.BOXBORDERCOLOR1,
             }}
           />
+
+
           <View style={{ marginVertical: 3 }} />
           <Text allowFontScaling={false} style={{ ...MainNavigatorstyle.view2txt }}>App Version 1.0</Text>
           <View style={{ marginVertical: 3 }} />

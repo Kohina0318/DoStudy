@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
     View,
     Dimensions, Text, BackHandler, Image, TouchableOpacity, ScrollView, ImageBackground, StatusBar
@@ -138,7 +138,10 @@ export default function ContentDetail(props) {
         contantUrlType = contantUrl.split('.').pop()
     }
 
-    const [activeIndex, setActiveIndex] = useState(null);
+////////////////////////////////////////////////////////////////////////////////////////
+
+    const [activeIndex, setActiveIndex] = useState(-1);
+    const [activeIndex1, setActiveIndex1] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [recognizedText, setRecognizedText] = useState('');
 
@@ -148,40 +151,74 @@ export default function ContentDetail(props) {
         textData = description.split('.');
     }
 
+    const activeIndexRef = useRef(activeIndex);
+    const activeIndexRef1 = useRef(activeIndex1);
+
+    useEffect(() => {
+        activeIndexRef.current = activeIndex;
+    }, [activeIndex]);
+
+    useEffect(() => {
+        activeIndexRef1.current = activeIndex1;
+    }, [activeIndex1]);
+
     useEffect(() => {
         Tts.addEventListener('tts-finish', handleTTSFinish);
 
         return () => {
             Tts.removeEventListener('tts-finish', handleTTSFinish);
         };
+
     }, []);
 
+
+
+    const handlePlay = (index) => {
+        console.log("index....",index)
+        Tts.stop();
+        setActiveIndex(index);
+        setIsPlaying(true);
+        setRecognizedText('');
+        Tts.speak(textData[index]);
+        setSpeckerOnStop(1)
+    };
+
     const handleTTSFinish = () => {
-        if (activeIndex !== null && activeIndex < textData.length - 1) {
-            // Move to the next text if available
-            handlePlay(activeIndex + 1);
-        } else {
-            // All texts have been spoken or paused
+
+        const currentActiveIndex = activeIndexRef.current;
+        const currentActiveIndex1 = activeIndexRef1.current;
+        console.log("darrat.....currentActiveIndex",currentActiveIndex, textData.length)
+        if (currentActiveIndex1 === 1) {
             setIsPlaying(false);
-            setActiveIndex(null);
+            setActiveIndex(-1);
+        } else if (currentActiveIndex !== -1 && currentActiveIndex < textData.length - 1) {
+            console.log("currentActiveIndex",currentActiveIndex)
+            handlePlay(currentActiveIndex + 1);
+        } else {
+            setIsPlaying(false);
+            setActiveIndex(-1);
         }
     };
 
 
+    const handleStop = () => {
+        Tts.stop();
+        setIsPlaying(false);
+        setActiveIndex(-1);
+        setSpeckerOnStop(0)
+    };
+
     const handleTextClick = (index) => {
+        Tts.stop();
         setActiveIndex(index);
         setRecognizedText('');
         if (index >= 0 && index < textData.length) {
-            Tts.stop();
-            Tts.setDefaultLanguage('hi-IN')
-            Tts.setDefaultVoice('hi-in-x-hid-local')
-            Tts.setDefaultRate(0.3);
-            Tts.setDefaultPitch(1.0);
-
             Tts.speak(textData[index]);
+            setActiveIndex1(1)
         }
     };
 
+ /////////////////////////////////////////////////////////////////////////////
 
 
     return (
@@ -274,20 +311,20 @@ export default function ContentDetail(props) {
                                                 }}>{description}</Text> */}
 
                                             {description != "" ?
-                                                    textData.map((text, index) => (
-                                                        <TouchableOpacity key={index} onPress={() => handleTextClick(index)} >
-                                                            <Text
-                                                                style={{
-                                                                    ...styles.txt,
-                                                                    letterSpacing: 1,
-                                                                    fontWeight: activeIndex === index ? 'bold' : 'normal',
-                                                                    color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
-                                                                }}
-                                                            >
-                                                                {text}.
-                                                            </Text>
-                                                        </TouchableOpacity>
-                                                    ))
+                                                textData.map((text, index) => (
+                                                    <TouchableOpacity key={index} onPress={() => handleTextClick(index)} >
+                                                        <Text
+                                                            style={{
+                                                                ...styles.txt,
+                                                                letterSpacing: 1,
+                                                                fontWeight: activeIndex === index ? 'bold' : 'normal',
+                                                                color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
+                                                            }}
+                                                        >
+                                                            {text}.
+                                                        </Text>
+                                                    </TouchableOpacity>
+                                                ))
                                                 : <></>}
 
                                             <View style={styles.mt15} />
@@ -420,19 +457,21 @@ export default function ContentDetail(props) {
                                 style={{
                                     ...styles.touchview,
                                 }}>
-                                <View style={{ ...styles.mainView, backgroundColor: themecolor.LOGINTHEMECOLOR1, borderColor: themecolor.BOXBORDERCOLOR1 }}>
+                                <View style={{ ...styles.mainView, backgroundColor: themecolor.LOGINTHEMECOLOR1, borderColor: themecolor.BOXBORDERCOLOR1, elevation: 3 }}>
                                     {speckerOnStop === 1 ?
                                         <HalfSizeButton
                                             title=""
                                             icon={<IC name="ios-volume-mute-outline" size={35} color={themecolor.TEXTRED} />}
-                                            onPress={() => handleStopVoice()}
+                                            // onPress={() => handleStopVoice()}
+                                            onPress={() => handleStop()}
                                             backgroundColor={'transparent'}
                                             borderColor={'transparent'}
                                         />
                                         : <HalfSizeButton
                                             title=""
                                             icon={<IC name="ios-volume-high-outline" size={35} color={themecolor.BACKICON} />}
-                                            onPress={() => handleVoice()}
+                                            onPress={() => handlePlay(0)}
+                                            // onPress={() => handleVoice()}
                                             backgroundColor={'transparent'}
                                             borderColor={'transparent'}
                                         />

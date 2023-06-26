@@ -139,10 +139,12 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
                     {" "}
                     {parseInt(item.amount)}
                     {" "}
-                    <Text
-                        allowFontScaling={false}
-                        numberOfLines={1}
-                        style={{ color: themecolor.TXTGREYS, ...styles.classheadd, textDecorationLine: 'line-through' }}> {parseInt(item.total_amt)} </Text>
+                    {item.total_amt != "" ?
+                        <Text
+                            allowFontScaling={false}
+                            numberOfLines={1}
+                            style={{ color: themecolor.TXTGREYS, ...styles.classheadd, textDecorationLine: 'line-through' }}> {parseInt(item.total_amt)} </Text>
+                        : <></>}
                     {" "}
                     <Text
                         allowFontScaling={false}
@@ -150,10 +152,12 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
                         style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>for {item.validation == 12 ? "1 Year" : item.validation == 1 ? item.validation + " Month" : item.validation + " Months"}  </Text>
                 </Text>
 
-                <Text
-                    allowFontScaling={false}
-                    numberOfLines={1}
-                    style={{ color: themecolor.TEXTRED, ...styles.txt1, }}> ( {parseInt(item.discount_per)}% discount ) </Text>
+                {item.discount_per != "" ?
+                    <Text
+                        allowFontScaling={false}
+                        numberOfLines={1}
+                        style={{ color: themecolor.TEXTRED, ...styles.txt1, }}> ( {parseInt(item.discount_per)}% Off ) </Text>
+                    : <></>}
             </View>
 
             <View style={styles.margT10} />
