@@ -27,4 +27,14 @@ const getAppToken = async () => {
     }
   };
 
-export {getAppToken,getUserData,getAppLogoAsync };
+  const getADsDatabyAsync = async () => {
+    try {
+      var getData =  await getDatafromAsync('@AdsData');
+      return getData;
+    } catch (e) {
+      console.log('erro in getADsDatabyAsync', e);
+    }
+  };
+
+
+export {getAppToken,getUserData,getAppLogoAsync ,getADsDatabyAsync};

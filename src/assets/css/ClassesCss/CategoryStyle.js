@@ -65,6 +65,16 @@ const styles = StyleSheet.create({
     fontSize: FontSize.labelText2,
     fontWeight: 'bold',
   },
+  adsContainer: {
+    width:width *0.95,
+    justifyContent:"center",
+    alignSelf:"center",
+    borderRadius:10
+  },
+
+  MT10:{
+    marginTop: 10
+  },
  
   
 });

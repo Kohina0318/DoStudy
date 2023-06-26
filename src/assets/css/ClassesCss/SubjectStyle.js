@@ -36,8 +36,17 @@ const styles = StyleSheet.create({
   },
   contentContainerStyle:{
     width:width*0.944, justifyContent:"flex-start", 
-  }
-  
+  },
+  adsContainer: {
+    width:width *0.95,
+    justifyContent:"center",
+    alignSelf:"center",
+    borderRadius:10
+  },
+  MT10:{
+    marginTop: 10
+  },
+ 
 });
 
 export {styles};

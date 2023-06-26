@@ -12,6 +12,8 @@ import NoDataMsg from '../../components/shared/NoData/NoDataMsg';
 import { styles } from '../../assets/css/ClassesCss/SubjectStyle';
 import { getSubjects } from '../../repository/ClassesRepository/SubjectRep';
 import { SubjectFlateList } from '../../components/shared/FlateLists/ClassesFlateList/SubjectFlateList';
+import { getADsDatabyAsync } from '../../repository/CommonRepository';
+import AdsCarouselFile from '../../components/shared/Carousel/AdsCarouselFile';
 
 
 const { width } = Dimensions.get('screen');
@@ -38,6 +40,24 @@ export default function Subjects(props) {
 
     const [loader, setLoader] = useState(true);
     const [data, setData] = useState([]);
+    const [adsdata, setAdsdata] = useState([]);
+
+    useEffect(() => {
+        async function temp() {
+            try {
+                var adsD = await getADsDatabyAsync();
+                if (adsD == null || adsD == '' || adsD == undefined) {
+                    setAdsdata([])
+                } else {
+                    setAdsdata(adsD);
+                }
+            } catch (e) {
+                setAdsdata([])
+            }
+        }
+        temp()
+    }, [props]);
+
 
     const handleSubject = async () => {
         try {
@@ -94,8 +114,19 @@ export default function Subjects(props) {
                                 <NoDataMsg title="No Data Found!" />
                             )}
 
+                            <View style={{ ...styles.MT10 }} />
+
+
                         </View>
                     </ScrollView>
+
+                    {adsdata.length > 0 ?
+                        <View style={{
+                            ...styles.adsContainer,
+                        }}>
+                            <AdsCarouselFile data={adsdata} />
+                        </View>
+                        : <></>}
                 </>
             )}
         </View>

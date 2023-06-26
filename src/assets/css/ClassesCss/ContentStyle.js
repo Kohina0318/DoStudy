@@ -194,8 +194,17 @@ const styles = StyleSheet.create({
   },
   fulllVideoView: {
     backgroundColor: "#000", width: "100%", height: "100%",
-  }
-
+  },
+  adsContainer: {
+    width:width *0.95,
+    justifyContent:"center",
+    alignSelf:"center",
+    borderRadius:10
+  },
+  MT10:{
+    marginTop: 10
+  },
+ 
 
 });
 

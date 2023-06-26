@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Dimensions, Text, BackHandler,StatusBar,ScrollView
+    Dimensions, Text, BackHandler, StatusBar, ScrollView
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -12,6 +12,8 @@ import NoDataMsg from '../../components/shared/NoData/NoDataMsg';
 import { BookCategoryFlateList } from '../../components/shared/FlateLists/ClassesFlateList/BookCategoryFlateList';
 import { getBookCategory, getCategoryTopics } from '../../repository/ClassesRepository/CategoryRepo';
 import { styles } from '../../assets/css/ClassesCss/CategoryStyle';
+import { getADsDatabyAsync } from '../../repository/CommonRepository';
+import AdsCarouselFile from '../../components/shared/Carousel/AdsCarouselFile';
 
 
 
@@ -39,6 +41,23 @@ export default function BookCategory(props) {
 
     const [loader, setLoader] = useState(true);
     const [data, setData] = useState([]);
+    const [adsdata, setAdsdata] = useState([]);
+
+    useEffect(() => {
+        async function temp() {
+            try {
+                var adsD = await getADsDatabyAsync();
+                if (adsD == null || adsD == '' || adsD == undefined) {
+                    setAdsdata([])
+                } else {
+                    setAdsdata(adsD);
+                }
+            } catch (e) {
+                setAdsdata([])
+            }
+        }
+        temp()
+    }, [props]);
 
     const handleCategoryTopics = async () => {
         try {
@@ -84,20 +103,30 @@ export default function BookCategory(props) {
                 <LoadingFullScreen style={{ flex: 1 }} />
             ) : (
                 <>
-                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <View
-                        style={{
-                            ...styles.container,
-                        }}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View
+                            style={{
+                                ...styles.container,
+                            }}>
 
-                        {data.length > 0 ? (
-                            <BookCategoryFlateList data={data} />
-                        ) : (
-                            <NoDataMsg title="No Data Found!" />
-                        )}
+                            {data.length > 0 ? (
+                                <BookCategoryFlateList data={data} />
+                            ) : (
+                                <NoDataMsg title="No Data Found!" />
+                            )}
 
-                    </View>
+                            <View style={{ ...styles.MT10 }} />
+
+                        </View>
                     </ScrollView>
+
+                    {adsdata.length > 0 ?
+                        <View style={{
+                            ...styles.adsContainer,
+                        }}>
+                            <AdsCarouselFile data={adsdata} />
+                        </View>
+                        : <></>}
                 </>
             )}
         </View>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Dimensions, Text, BackHandler,StatusBar,ScrollView
+    Dimensions, Text, BackHandler, StatusBar, ScrollView
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
@@ -12,6 +12,8 @@ import NoDataMsg from '../../components/shared/NoData/NoDataMsg';
 import { styles } from '../../assets/css/ClassesCss/ClassesStyle';
 import { ClassFlatList } from '../../components/shared/FlateLists/ClassesFlateList/ClassFlatList';
 import { getClasses } from '../../repository/ClassesRepository/ClasessRep';
+import { getADsDatabyAsync } from '../../repository/CommonRepository';
+import AdsCarouselFile from '../../components/shared/Carousel/AdsCarouselFile';
 
 
 const { width } = Dimensions.get('screen');
@@ -38,33 +40,51 @@ export default function Classes(props) {
 
     const [loader, setLoader] = useState(true);
     const [data, setData] = useState([]);
+    const [adsdata, setAdsdata] = useState([]);
+
+    useEffect(() => {
+        async function temp() {
+            try {
+                var adsD = await getADsDatabyAsync();
+                if (adsD == null || adsD == '' || adsD == undefined) {
+                    setAdsdata([])
+                } else {
+                    setAdsdata(adsD);
+                }
+            } catch (e) {
+                setAdsdata([])
+            }
+        }
+        temp()
+    }, [props]);
+
 
     const handleClasses = async () => {
         try {
-          var res = await getClasses();
-          if (res.status === true) {
-            setData(res.data);
-            setLoader(false)
-          } else {
-            setLoader(false)
-          }
+            var res = await getClasses();
+            if (res.status === true) {
+                setData(res.data);
+                setLoader(false)
+            } else {
+                setLoader(false)
+            }
         } catch (e) {
-          setLoader(false)
-          console.log('errrror in..handleClasses page-->', e);
-          toast.show('Something went wrong!, Try again later.', {
-            type: 'danger',
-            placement: 'bottom',
-            duration: 1000,
-            offset: 30,
-            animationType: 'slide-in',
-          });
+            setLoader(false)
+            console.log('errrror in..handleClasses page-->', e);
+            toast.show('Something went wrong!, Try again later.', {
+                type: 'danger',
+                placement: 'bottom',
+                duration: 1000,
+                offset: 30,
+                animationType: 'slide-in',
+            });
         }
-      };
-    
-      useEffect(() => {
+    };
+
+    useEffect(() => {
         handleClasses()
-      }, [])
-    
+    }, [])
+
     return (
         <View style={{ ...styles.bg, backgroundColor: themecolor.THEMECOLOR }}>
             <StatusBar
@@ -80,20 +100,33 @@ export default function Classes(props) {
                 <LoadingFullScreen style={{ flex: 1 }} />
             ) : (
                 <>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View
-                        style={{
-                            ...styles.container,
-                        }}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View
+                            style={{
+                                ...styles.container,
+                            }}>
 
-                        {data.length > 0 ? (
-                             <ClassFlatList data={data} />
-                        ) : (
-                            <NoDataMsg title="No Data Found!" />
-                        )}
+                            {data.length > 0 ? (
+                                <ClassFlatList data={data} />
+                            ) : (
+                                <NoDataMsg title="No Data Found!" />
+                            )}
 
-                    </View>
+                            <View style={{ ...styles.MT10 }} />
+
+
+
+                        </View>
                     </ScrollView>
+
+                    {adsdata.length > 0 ?
+                        <View style={{
+                            ...styles.adsContainer,
+                        }}>
+                            <AdsCarouselFile data={adsdata} />
+                        </View>
+                        : <></>}
+
 
                 </>
             )}

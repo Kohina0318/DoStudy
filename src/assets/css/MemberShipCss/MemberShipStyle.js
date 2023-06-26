@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
       width: width * 0.94,
   },
     innerContanier:{
-    width: width * 0.93,
+    width: width * 0.95,
     margin: 3,
     padding:13,
     alignItems: 'center',
@@ -104,7 +104,16 @@ const styles = StyleSheet.create({
     elevation:1,
     fontWeight:'bold'
   },
-  
+  adsContainer: {
+    width:width *0.95,
+    justifyContent:"center",
+    alignSelf:"center",
+    borderRadius:10
+  },
+  MT10:{
+    marginTop: 10
+  },
+ 
   
 });
 

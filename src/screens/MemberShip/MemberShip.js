@@ -14,6 +14,8 @@ import { getActivePackage, getPackage } from '../../repository/MemberShipReposit
 import { ActiveMemberShip, MemberFlatList } from '../../components/shared/FlateLists/MemberFlateList/MemberFlatList';
 import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRepo';
 import { getSettingDetails } from '../../repository/SettingRepository/SettingRepo';
+import { getADsDatabyAsync } from '../../repository/CommonRepository';
+import AdsCarouselFile from '../../components/shared/Carousel/AdsCarouselFile';
 
 
 const { width } = Dimensions.get('screen');
@@ -47,6 +49,26 @@ export default function MemberShip(props) {
     const [appLogo, setAppLogo] = useState('');
     const [appName, setAppName] = useState('');
     const [accesskey, setAccesskey] = useState('');
+
+    const [adsdata, setAdsdata] = useState([]);
+
+    useEffect(() => {
+        async function temp() {
+            try {
+                var adsD = await getADsDatabyAsync();
+                if (adsD == null || adsD == '' || adsD == undefined) {
+                    setAdsdata([])
+                } else {
+                    setAdsdata(adsD);
+                }
+            } catch (e) {
+                setAdsdata([])
+            }
+        }
+        temp()
+    }, [props]);
+
+
 
     const handleUserData = async () => {
         try {
@@ -135,7 +157,7 @@ export default function MemberShip(props) {
 
 
     useEffect(() => {
-        handleUserData();  
+        handleUserData();
         handleSettingDetails()
         handlActivePackage()
         handlPackages()
@@ -158,30 +180,44 @@ export default function MemberShip(props) {
             {loader ? (
                 <LoadingFullScreen style={{ flex: 1 }} />
             ) : (
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View
-                        style={{
-                            ...styles.container,
+                <>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View
+                            style={{
+                                ...styles.container,
+                            }}>
+
+                            {data.length > 0 ? (
+                                <>
+                                    {activePackageData.length > 0 ?
+                                        <ActiveMemberShip data={activePackageData[0]} />
+                                        : <></>
+                                    }
+
+                                    <View style={styles.margT} />
+
+                                    <MemberFlatList data={data} userName={name} userEmail={email} userPhoneNo={phone} appLogo={appLogo} appName={appName} accesskey={accesskey} setLoader={setLoader} />
+                                    <View style={styles.margT} />
+                                </>
+                            ) : (
+                                <NoDataMsg title="No Data Found!" />
+                            )}
+
+                            <View style={{ ...styles.MT10 }} />
+
+                        </View>
+                        <View style={{ marginVertical: 10 }} />
+                    </ScrollView>
+
+                    {adsdata.length > 0 ?
+                        <View style={{
+                            ...styles.adsContainer,
                         }}>
+                            <AdsCarouselFile data={adsdata} />
+                        </View>
+                        : <></>}
 
-                        {data.length > 0 ? (
-                            <>
-                                {activePackageData.length > 0 ?
-                                    <ActiveMemberShip data={activePackageData[0]} />
-                                    : <></>
-                                }
-
-                                <View style={styles.margT} />
-
-                                <MemberFlatList data={data} userName={name} userEmail={email} userPhoneNo={phone} appLogo={appLogo} appName={appName} accesskey={accesskey} setLoader={setLoader} />
-                                <View style={styles.margT} />
-                            </>
-                        ) : (
-                            <NoDataMsg title="No Data Found!" />
-                        )}
-                    </View>
-                    <View style={{ marginVertical: 10 }} />
-                </ScrollView>
+                </>
             )}
         </View>
     );
