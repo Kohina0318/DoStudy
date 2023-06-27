@@ -24,12 +24,13 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 10,
     backgroundColor: '#FFF',
+    elevation:2
   },
   subImg:{
-    width:"100%", height:height*0.305, borderRadius: 10,
+    width:"100%", height:height*0.301, borderRadius: 10,
   },
   subConView:{
-    width:"100%",height:"20%",marginTop:-42,backgroundColor:'rgba(255, 255, 255, 0.7)',alignItems:'center',display:"flex",justifyContent:"center",borderBottomStartRadius:10,borderBottomEndRadius:10
+    width:"100%",height:"20%",marginTop:-43,backgroundColor:'rgba(255, 255, 255, 0.7)',alignItems:'center',display:"flex",justifyContent:"center",borderBottomStartRadius:10,borderBottomEndRadius:10
   },
   subMT5:{
     marginTop: 5
@@ -37,6 +38,14 @@ const styles = StyleSheet.create({
   subhead:{
     fontSize: FontSize.labelText4,
     fontWeight: 'bold',
+  },
+  txt:{
+    fontSize: FontSize.labelText,
+    fontFamily:FontFamily.PopinsMedium
+  },
+  subhead1:{
+    fontSize: FontSize.labelText4,
+    // fontWeight: 'bold',
   },
   contentContainerStyle:{
     width:width*0.944, justifyContent:"flex-start", 
@@ -75,6 +84,31 @@ const styles = StyleSheet.create({
   MT10:{
     marginTop: 10
   },
+  datalistView1: {
+    width: width * 0.94,
+    marginTop: 6,
+    padding: 15,
+    borderRadius: 10,
+    alignSelf: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    borderWidth: 0.5,
+    display: "flex",
+    marginBottom: 1,
+  },
+  
+  innerViewCon1: {
+    width: "90%",
+  },
+  innerViewCon2: {
+    width: "10%",
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: "center",
+    padding: 10,
+    borderRadius: 50
+  },
+  
  
   
 });

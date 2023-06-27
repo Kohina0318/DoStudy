@@ -28,7 +28,6 @@ export default function Dashboard(props) {
 
   const [loader, setLoader] = useState(true);
 
-
   var data = [
     {
       id: 1,
@@ -55,14 +54,14 @@ export default function Dashboard(props) {
       id: 4,
       image: require('../../assets/images/englishBook.png'),
       name: 'English Books',
-      onpress: "",
+      onpress: "EnglishBooks",
       touch: false,
     },
     {
       id: 5,
       image: require('../../assets/images/hindibook.png'),
       name: 'Hindi Books',
-      onpress: "",
+      onpress: "HindiBooks",
       touch: false,
     },
     {
@@ -90,7 +89,7 @@ export default function Dashboard(props) {
       id: 9,
       image: require('../../assets/images/result.png'),
       name: 'Results',
-      onpress: "",
+      onpress: "Result",
       touch: false,
     },
   ]

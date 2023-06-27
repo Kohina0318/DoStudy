@@ -14,9 +14,10 @@ import Dashboard from '../../screens/dashboard/Dashboard';
 import FA from 'react-native-vector-icons/FontAwesome';
 import AD from 'react-native-vector-icons/AntDesign';
 import Ii from 'react-native-vector-icons/Ionicons';
-import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
+import OI from 'react-native-vector-icons/Octicons';
 import Profile from '../../screens/profile/Profile';
 import Support from '../../screens/support/Support';
+import Discussion from '../../screens/discussion/Discussion';
 
 const Tab = createBottomTabNavigator();
 const MyTransition = {
@@ -95,9 +96,9 @@ export default function BottomNavigationStack(props) {
         }}
       />
 
-      {/* <Tab.Screen
-        name="Help & Support"
-        component={Support}
+      <Tab.Screen
+        name="Discussion"
+        component={Discussion}
         options={{
           MyTransition,
           tabBarLabel: ' ',
@@ -105,32 +106,32 @@ export default function BottomNavigationStack(props) {
           tabBarIcon: ({ color, size, focused }) =>
             focused ? (
               <>
-                <Ii name="ios-chatbubble-ellipses-outline" color={themecolor.BACKICON} size={24} />
+                <Ii name="chatbubbles-outline" color={themecolor.BACKICON} size={22} />
                 <Text
                   allowFontScaling={false}
                   style={{
                     ...MainNavigatorstyle.abelstylecss2,
                     color: themecolor.BACKICON,
                   }}>
-                 Help & Support
+                 Discussion
                 </Text>
               </>
             ) : (
               <>
-                <Ii name="ios-chatbubble-ellipses-outline" size={24} color={themecolor.TXTGREY} />
+                <Ii name="chatbubbles-outline" size={22} color={themecolor.TXTGREY} />
                 <Text
                   allowFontScaling={false}
                   style={{
                     ...MainNavigatorstyle.abelstylecss2,
                     color: themecolor.TXTGREY,
                   }}>
-                 Help & Support
+                 Discussion
                 </Text>
               </>
             ),
           headerShown: false,
         }}
-      /> */}
+      />
 
 
       <Tab.Screen

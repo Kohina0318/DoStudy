@@ -12,6 +12,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 12,
   },
+  fullcontainer: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginTop: 5,
+  },
 
   contentContainerStyle: {
     width: width * 0.944, justifyContent: "flex-start",

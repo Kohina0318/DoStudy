@@ -4,22 +4,22 @@ import {
     Dimensions, Text, BackHandler, StatusBar, ScrollView
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
+import { MyThemeClass } from '../../../../components/Theme/ThemeDarkLightColor';
 import { useToast } from 'react-native-toast-notifications';
-import Header from '../../components/shared/header/Header';
-import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
-import NoDataMsg from '../../components/shared/NoData/NoDataMsg';
-import { BookCategoryFlateList } from '../../components/shared/FlateLists/ClassesFlateList/BookCategoryFlateList';
-import { getBookCategory, getCategoryTopics } from '../../repository/ClassesRepository/CategoryRepo';
-import { styles } from '../../assets/css/ClassesCss/CategoryStyle';
-import { getADsDatabyAsync } from '../../repository/CommonRepository';
-import AdsCarouselFile from '../../components/shared/Carousel/AdsCarouselFile';
+import Header from '../../../../components/shared/header/Header';
+import LoadingFullScreen from '../../../../components/shared/Loader/LoadingFullScreen';
+import NoDataMsg from '../../../../components/shared/NoData/NoDataMsg';
+import { getBookCategory, getCategoryTopics } from '../../../../repository/ClassesRepository/CategoryRepo';
+import { styles } from '../../../../assets/css/ClassesCss/CategoryStyle';
+import { getADsDatabyAsync } from '../../../../repository/CommonRepository';
+import AdsCarouselFile from '../../../../components/shared/Carousel/AdsCarouselFile';
+import { QuestionCategoryFlateList } from '../../../../components/shared/FlateLists/ClassesFlateList/CategoryFlateList/QuestionCategoryFlateList';
 
 
 
 const { width } = Dimensions.get('screen');
 
-export default function BookCategory(props) {
+export default function QuestionandExamCategory(props) {
     function handleBackButtonClick() {
         props.navigation.goBack();
         return true;
@@ -40,7 +40,7 @@ export default function BookCategory(props) {
     const themecolor = new MyThemeClass(mode).getThemeColor();
 
     const [loader, setLoader] = useState(true);
-    const [data, setData] = useState([]);
+    // const [data, setData] = useState([]);
     const [adsdata, setAdsdata] = useState([]);
 
     useEffect(() => {
@@ -59,13 +59,27 @@ export default function BookCategory(props) {
         temp()
     }, [props]);
 
-    const handleCategoryTopics = async () => {
-        try {
-            var res = await getCategoryTopics(props.route.params.Id, props.route.params.subjectId);
-            console.log(res)
 
+    const data=[
+        {
+            id:1,
+            topic: "sample",
+            url: "https://www.orimi.com/pdf-test.pdf",
+        },
+        {
+            id:2,
+            topic: "question paper",
+            url: "https://www.africau.edu/images/default/sample.pdf"
+        },
+        
+    ]
+
+    const handleVideoCategory = async () => {
+        try{
+        var res = await getCategoryTopics(props.route.params.Id, props.route.params.subjectId);
+            console.log(res)
             if (res.status === true) {
-                setData(res.data);
+                // setData(res.data);
                 setLoader(false)
             } else {
                 setLoader(false)
@@ -80,13 +94,12 @@ export default function BookCategory(props) {
                 offset: 30,
                 animationType: 'slide-in',
             });
-        }
     }
+}
 
     useEffect(() => {
-        handleCategoryTopics();
+        handleVideoCategory();
     }, []);
-
 
     return (
         <View style={{ ...styles.bg, backgroundColor: themecolor.THEMECOLOR }}>
@@ -110,7 +123,7 @@ export default function BookCategory(props) {
                             }}>
 
                             {data.length > 0 ? (
-                                <BookCategoryFlateList data={data} />
+                                <QuestionCategoryFlateList data={data} />
                             ) : (
                                 <NoDataMsg title="No Data Found!" />
                             )}

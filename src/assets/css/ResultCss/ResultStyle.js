@@ -13,9 +13,9 @@ const styles = StyleSheet.create({
   },
 
   classContanier:{
-    width: width * 0.46,
-    margin: 2,
-    padding: 10,
+    width: width * 0.92,
+    margin: 4,
+    padding: 15,
     alignItems: 'center',
     alignItems: 'center',
     alignSelf: 'center',
@@ -25,15 +25,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
   classImg:{
-    width:width * 0.4, height:height*0.15 
+    width:width * 0.2, height:height*0.1 
   },
   classMT5:{
-    marginTop: 5
+    marginTop: 10
   },
   classhead:{
-    fontSize: 11,
-    fontWeight: 'bold',
+    fontSize:  FontSize.labelText3,
+    fontStyle:FontFamily.PopinsRegular,
+    fontWeight:'700'
   },
+  txt:{
+    fontSize:  FontSize.labelText3,
+    fontStyle:FontFamily.PopinsRegular,
+  },
+
 
   contentContainerStyle:{
     width:width*0.944, justifyContent:"flex-start", 

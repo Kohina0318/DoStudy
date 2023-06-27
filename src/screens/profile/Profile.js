@@ -67,12 +67,6 @@ export default function Profile(props) {
             icon: <AD name="logout" size={18} color={themecolor.BACKICON} />,
             onpress1: 'Sign Out'
         },
-        {
-            id: 5,
-            name: "Vice testing",
-            icon: <AD name="logout" size={18} color={themecolor.BACKICON} />,
-            onpress: 'Support'
-        },
     ];
 
     const handleUserData = async () => {
@@ -104,7 +98,7 @@ export default function Profile(props) {
 
 
     return (
-        <View style={{ backgroundColor: themecolor.THEMECOLOR, ...styles.bg }}>
+        <View style={{ backgroundColor: themecolor.THEMECOLOR1, ...styles.bg }}>
 
             <StatusBar
                 translucent

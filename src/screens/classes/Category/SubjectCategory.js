@@ -4,16 +4,16 @@ import {
     Dimensions, Text, BackHandler, StatusBar, ScrollView
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
+import { MyThemeClass } from '../../../components/Theme/ThemeDarkLightColor';
 import { useToast } from 'react-native-toast-notifications';
-import Header from '../../components/shared/header/Header';
-import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
-import { styles } from '../../assets/css/ClassesCss/CategoryStyle';
-import { SubjectCategoryFlateList } from '../../components/shared/FlateLists/ClassesFlateList/SubjectCategoryFlateList';
-import { getAllCategory } from '../../repository/ClassesRepository/CategoryRepo';
-import NoDataMsg from '../../components/shared/NoData/NoDataMsg';
-import AdsCarouselFile from '../../components/shared/Carousel/AdsCarouselFile';
-import { getADsDatabyAsync } from '../../repository/CommonRepository';
+import Header from '../../../components/shared/header/Header';
+import LoadingFullScreen from '../../../components/shared/Loader/LoadingFullScreen';
+import { styles } from '../../../assets/css/ClassesCss/CategoryStyle';
+import { SubjectCategoryFlateList } from '../../../components/shared/FlateLists/ClassesFlateList/SubjectCategoryFlateList';
+import { getAllCategory } from '../../../repository/ClassesRepository/CategoryRepo';
+import NoDataMsg from '../../../components/shared/NoData/NoDataMsg';
+import AdsCarouselFile from '../../../components/shared/Carousel/AdsCarouselFile';
+import { getADsDatabyAsync } from '../../../repository/CommonRepository';
 
 const { width } = Dimensions.get('screen');
 

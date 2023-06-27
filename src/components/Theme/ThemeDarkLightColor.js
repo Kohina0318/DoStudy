@@ -93,6 +93,7 @@ class MyThemeClass {
       ButtonIconLightRight:  this.mode === 'dark' ? "rgba(237, 59, 59, 0.65)" : 'rgba(252, 39, 39, 0.65)',
       MODAL: this.mode === 'dark' ? '#9E9E9E' : '#a3bad357',
       STATUSEBARCONTENT: this.mode === 'dark' ? 'light-content' : 'dark-content',
+      DARKBLUECOLOR: this.mode === 'dark' ? '#fff' : '#082d7e',
      
     }
 
