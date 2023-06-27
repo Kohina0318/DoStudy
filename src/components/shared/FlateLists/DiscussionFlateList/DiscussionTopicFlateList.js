@@ -18,11 +18,11 @@ function DiscussionTopicDataFlatList({ item, themecolor, boxSize }) {
     const navigation = useNavigation();
 
     return (
-        <TouchableOpacity activeOpacity={0.5} omPress={() => navigation.navigate("Discussion", { Id: item.id, Name: item.topic_name })}
-            style={{ ...styles.innerContain, backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1, }}
+        <TouchableOpacity activeOpacity={0.5} 
+        onPress={() => navigation.navigate('Discussion', { Id: item.id,Name:item.name})}
+            style={{ ...styles.innertopicContain, backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1, }}
         >
 
-            <View style={{ ...styles.innercont1 }}>
                 <View style={{ ...styles.commentCon, }}>
                     <Text
                         allowFontScaling={false}
@@ -40,7 +40,6 @@ function DiscussionTopicDataFlatList({ item, themecolor, boxSize }) {
                     </Text>
 
                 </View>
-            </View>
 
         </TouchableOpacity>
     );

@@ -23,6 +23,18 @@ const styles = StyleSheet.create({
         borderRadius:3,
         backgroundColor: '#FFF',
     },
+    innertopicContain:{
+        width: width*0.95 ,
+        padding: 13,
+        margin:3,
+        alignItems: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        borderColor: '#E9E9E9',
+        borderWidth: 0.5,
+        borderRadius:10,
+        backgroundColor: '#FFF',
+    },
     innercont1:{
         flexDirection:"row",
         width:"100%",
