@@ -14,31 +14,37 @@ import { styles } from '../../../../assets/css/ClassesCss/CategoryStyle';
 
 const { width, height } = Dimensions.get('screen');
 
-function BookCategoryDataFlatList({ item, themecolor, boxSize }) {
+function EnglishHindiBooksDataFlatList({ item, themecolor, boxSize }) {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity activeOpacity={0.5}
       style={{...styles.subContanier,backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1,}}
-    onPress={() => navigation.navigate('Content', {Id: item.id,Name:item.category_name,Image:item.image })}
+      onPress={() => navigation.navigate('FullPdfContainDetail', { contantUrl:item.pdf_url,UnitNo:item.book_name  })}
     >
       <Image
-        source={{ uri: item.image }}
+        source={{ uri: item.book_img }}
         style={{...styles.subImg}}
       />
       <View style={{...styles.subConView,backgroundColor: themecolor.CONTENTHEADEROPACITY}}>
       <Text
         allowFontScaling={false}
         numberOfLines={1}
-        style={{color:themecolor.TXTWHITE,...styles.subhead}}>
-        {item.name}
+        style={{color:themecolor.DARKBLUECOLOR,...styles.subhead}}>
+        {item.book_name}
+      </Text>
+      <Text
+        allowFontScaling={false}
+        numberOfLines={1}
+        style={{color:themecolor.DARKBLUECOLOR,...styles.txt,}}>
+        - {item.book_author}
       </Text>
       </View>
     </TouchableOpacity>
   );
 }
 
-export function BookCategoryFlateList(props) {
+export function EnglishHindiBooksFlateList(props) {
   const mode = useSelector(state => state.mode);
   const themecolor = new MyThemeClass(mode).getThemeColor();
 
@@ -46,7 +52,7 @@ export function BookCategoryFlateList(props) {
     <FlatList
       data={props.data}
       renderItem={({ item }) => (
-        <BookCategoryDataFlatList item={item} themecolor={themecolor} boxSize={props.boxSize} />
+        <EnglishHindiBooksDataFlatList item={item} themecolor={themecolor} boxSize={props.boxSize} />
       )}
       numColumns={2}
       horizontal={false}

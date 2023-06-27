@@ -45,7 +45,7 @@ export default function FullPdfContainDetail(props) {
 
              <View
                 style={{
-                    ...styles.container,
+                    ...styles.fullcontainer,
                 }}> 
 
                 <Pdf
@@ -53,7 +53,7 @@ export default function FullPdfContainDetail(props) {
                         uri: props.route.params.contantUrl,
                         cache: true,
                     }}
-                    // spacing={2}
+                    spacing={5}
                     trustAllCerts={Platform.OS === 'ios'}
                     onLoadComplete={(numberOfPages, filePath) => {
                         console.log(`number of pages: ${numberOfPages}`);

@@ -12,11 +12,11 @@ import Dashboard from '../../screens/dashboard/Dashboard';
 import Splash from '../../screens/intro/Splash';
 import DrawerNavigation from '../drawer/DrawerNavigation';
 import Subjects from '../../screens/classes/Subjects';
-import BookCategory from '../../screens/classes/BookCategory'
+import BookCategory from '../../screens/classes/Category/Topics/BookCategory'
 import Content from '../../screens/contain/Content';
 import ContentDetail from '../../screens/contain/contain-detail/ContentDetail';
 import Classes from '../../screens/classes/Classes';
-import SubjectCategory from '../../screens/classes/SubjectCategory';
+import SubjectCategory from '../../screens/classes/Category/SubjectCategory';
 import Profile from '../../screens/profile/Profile';
 import Support from '../../screens/support/Support';
 import SignIn from '../../screens/auth/SignIn';
@@ -30,6 +30,12 @@ import ChangePswdByForgot from '../../screens/auth/ForgotPassword/ChangePswdByFo
 import MemberShip from '../../screens/MemberShip/MemberShip';
 import FullVideoContainDetail from '../../screens/contain/contain-detail/FullVideoContainDetail';
 import FullPdfContainDetail from '../../screens/contain/contain-detail/FullPdfContainDetail';
+import VideoCategory from '../../screens/classes/Category/Topics/VideoCategory';
+import QuestionandExamCategory from '../../screens/classes/Category/Topics/QuestionandExamCategory';
+import Result from '../../screens/result/Result';
+import EnglishBooks from '../../screens/englishBooks/EnglishBooks';
+import HindiBooks from '../../screens/hindiBooks/HindiBooks';
+import Discussion from '../../screens/discussion/Discussion';
 
 
 function MainNavigationStack(props) {
@@ -76,6 +82,16 @@ function MainNavigationStack(props) {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="VideoCategory"
+          component={VideoCategory}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="QuestionandExamCategory"
+          component={QuestionandExamCategory}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="Content"
           component={Content}
           options={{ headerShown: false }}
@@ -85,7 +101,7 @@ function MainNavigationStack(props) {
           component={ContentDetail}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="FullVideoContainDetail"
           component={FullVideoContainDetail}
           options={{ headerShown: false }}
@@ -145,12 +161,32 @@ function MainNavigationStack(props) {
           component={ChangePswdByForgot}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="MemberShip"
           component={MemberShip}
           options={{ headerShown: false }}
         />
 
+        <Stack.Screen
+          name="Result"
+          component={Result}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="EnglishBooks"
+          component={EnglishBooks}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="HindiBooks"
+          component={HindiBooks}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Discussion"
+          component={Discussion}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

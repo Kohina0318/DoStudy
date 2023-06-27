@@ -17,10 +17,20 @@ const { width, height } = Dimensions.get('screen');
 function SubjectCategoryDataFlateList({ item, themecolor,subjectId }) {
   const navigation = useNavigation();
 
+  var navigate = "";
+  if(item.id === 6){
+    navigate = "VideoCategory"
+  }else if(item.id === 3 || item.id === 4){
+    navigate = "QuestionandExamCategory"
+  }
+  else{
+    navigate = "BookCategory"
+  }
+
   return (
       <TouchableOpacity activeOpacity={0.5} 
         style={{ ...styles.classContanier, backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1, }}
-        onPress={() => navigation.navigate("BookCategory", {Id:item.id,subjectId:subjectId, Name:item.category_name})}
+        onPress={() => navigation.navigate(navigate, {Id:item.id,subjectId:subjectId, Name:item.category_name})}
       >
         <View style={{ ...styles.classImg }}>
           <Image
