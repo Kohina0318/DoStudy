@@ -13,11 +13,7 @@ import { styles } from '../../assets/css/DiscussionCss/DiscussionStyle';
 import { useToast } from 'react-native-toast-notifications';
 import { useNavigation } from '@react-navigation/native';
 import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import FA from 'react-native-vector-icons/Feather';
-import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRepo';
-import { DiscussionFlateList } from '../../components/shared/FlateLists/DiscussionFlateList/DiscussionFlateList';
-import { getDiscussion, postSendDiscussion } from '../../repository/DiscussionRepository/DiscussionRepo';
+import { DiscussionTopicFlateList } from '../../components/shared/FlateLists/DiscussionFlateList/DiscussionTopicFlateList';
 
 export default function DiscussionTopic(props) {
     const toast = useToast();
@@ -25,11 +21,8 @@ export default function DiscussionTopic(props) {
     const mode = useSelector(state => state.mode);
     const themecolor = new MyThemeClass(mode).getThemeColor();
 
-    const [loader, setLoader] = useState(true);
+    const [loader, setLoader] = useState(false);
     // const [data, setData] = useState([]);
-    const [userProfile, setProfile] = useState('');
-    const [refresh, setRefresh] = useState(false);
-
     
     const data = [
         {
@@ -48,7 +41,7 @@ export default function DiscussionTopic(props) {
 
 
     return (
-        <View style={{ ...styles.bg, backgroundColor: themecolor.THEMECOLOR1 }}>
+        <View style={{ ...styles.bg, backgroundColor: themecolor.THEMECOLOR }}>
             <StatusBar
                 translucent
                 backgroundColor="transparent"
@@ -66,7 +59,7 @@ export default function DiscussionTopic(props) {
 
 
                             {data.length > 0 ? (
-                                <DiscussionFlateList data={data} />
+                                <DiscussionTopicFlateList data={data} />
                             ) : (
                                 <NoDataMsg title="No Comments!" />
                             )}

@@ -36,6 +36,7 @@ import Result from '../../screens/result/Result';
 import EnglishBooks from '../../screens/englishBooks/EnglishBooks';
 import HindiBooks from '../../screens/hindiBooks/HindiBooks';
 import Discussion from '../../screens/discussion/Discussion';
+import DiscussionTopic from '../../screens/discussion/DiscussionTopic';
 
 
 function MainNavigationStack(props) {
@@ -185,6 +186,11 @@ function MainNavigationStack(props) {
         <Stack.Screen
           name="Discussion"
           component={Discussion}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DiscussionTopic"
+          component={DiscussionTopic}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -18,6 +18,7 @@ import OI from 'react-native-vector-icons/Octicons';
 import Profile from '../../screens/profile/Profile';
 import Support from '../../screens/support/Support';
 import Discussion from '../../screens/discussion/Discussion';
+import DiscussionTopic from '../../screens/discussion/DiscussionTopic';
 
 const Tab = createBottomTabNavigator();
 const MyTransition = {
@@ -97,8 +98,8 @@ export default function BottomNavigationStack(props) {
       />
 
       <Tab.Screen
-        name="Discussion"
-        component={Discussion}
+        name="DiscussionTopic"
+        component={DiscussionTopic}
         options={{
           MyTransition,
           tabBarLabel: ' ',
