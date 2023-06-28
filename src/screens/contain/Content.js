@@ -171,6 +171,7 @@ export default function Content(props) {
     }, []);
 
 
+
     return (
 
 
@@ -188,7 +189,7 @@ export default function Content(props) {
                             { useNativeDriver: true },
                         )} showsVerticalScrollIndicator={false}>
                         {data.length > 0 ? (
-                            <ContentFlateList data={data} />
+                            <ContentFlateList data={data} TopicId={props.route.params.TopicId} />
                         ) : (
                             <NoDataMsg title="No Data Found!" />
                         )}
@@ -219,7 +220,7 @@ export default function Content(props) {
                     ]}
                     source={{ uri: props.route.params.Image }}
                 />
-                <Text style={{ ...styles1.title, color: themecolor.TXTWHITE, backgroundColor: themecolor.CONTENTHEADEROPACITY }}>Management</Text>
+                <Text style={{ ...styles1.title, color: themecolor.TXTWHITE, backgroundColor: themecolor.CONTENTHEADEROPACITY }}>{props.route.params.Name}</Text>
             </Animated.View>
 
             <Animated.View

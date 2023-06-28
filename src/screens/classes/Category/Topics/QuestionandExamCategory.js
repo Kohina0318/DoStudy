@@ -40,7 +40,7 @@ export default function QuestionandExamCategory(props) {
     const themecolor = new MyThemeClass(mode).getThemeColor();
 
     const [loader, setLoader] = useState(true);
-    // const [data, setData] = useState([]);
+    const [data, setData] = useState([]);
     const [adsdata, setAdsdata] = useState([]);
 
     useEffect(() => {
@@ -60,26 +60,13 @@ export default function QuestionandExamCategory(props) {
     }, [props]);
 
 
-    const data=[
-        {
-            id:1,
-            topic: "sample",
-            url: "https://www.orimi.com/pdf-test.pdf",
-        },
-        {
-            id:2,
-            topic: "question paper",
-            url: "https://www.africau.edu/images/default/sample.pdf"
-        },
-        
-    ]
-
+   
     const handleVideoCategory = async () => {
         try{
         var res = await getCategoryTopics(props.route.params.Id, props.route.params.subjectId);
             console.log(res)
             if (res.status === true) {
-                // setData(res.data);
+                setData(res.data);
                 setLoader(false)
             } else {
                 setLoader(false)

@@ -11,35 +11,59 @@ import { MyThemeClass } from '../../../Theme/ThemeDarkLightColor';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from '../../../../assets/css/DiscussionCss/DiscussionStyle';
+import moment from 'moment';
 
 const { width, height } = Dimensions.get('screen');
 
 function DiscussionTopicDataFlatList({ item, themecolor, boxSize }) {
     const navigation = useNavigation();
 
+    var NewDate = moment(item.created_time).format('MM-DD-YYYY hh:mm a') ;
+  
     return (
-        <TouchableOpacity activeOpacity={0.5} 
-        onPress={() => navigation.navigate('Discussion', { Id: item.id,Name:item.name})}
+        <TouchableOpacity activeOpacity={0.5}
+            onPress={() => navigation.navigate('Discussion', { Id: item.id, TopicData: item })}
             style={{ ...styles.innertopicContain, backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1, }}
         >
 
-                <View style={{ ...styles.commentCon, }}>
+            <View style={{ ...styles.commentCon1, }}>
+
+                <View style={{ ...styles.TmeCon }}>
+                    <View style={{ width: "30%", }}>
+                        <Text
+                            allowFontScaling={false}
+                            style={{ color: themecolor.TXTWHITE, ...styles.smalltxt }}>
+                            Discussion Topic : {item.id}
+                        </Text>
+                    </View>
+                    <View style={{ ...styles.tmeConinnerLast }}>
+                        <Text
+                            allowFontScaling={false}
+                            style={{ color: themecolor.TXTGREYS, ...styles.smalltxt }}>
+                            {NewDate}
+                        </Text>
+                    </View>
+                </View>
+
+                <View style={{ margin: 5, width: "96%" }}>
+
                     <Text
                         allowFontScaling={false}
                         style={{ color: themecolor.TXTWHITE, ...styles.txt3 }}>
                         {item.topic_name}
                     </Text>
 
-                </View>
+                    <View style={styles.MT5} />
 
-                <View style={{ ...styles.commentCon, }}>
                     <Text
                         allowFontScaling={false}
                         style={{ color: themecolor.TXTWHITE, ...styles.txt2 }}>
-                        {item.topic_des}
+                        {item.topic_description}
                     </Text>
 
                 </View>
+
+            </View>
 
         </TouchableOpacity>
     );

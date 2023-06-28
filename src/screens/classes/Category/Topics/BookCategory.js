@@ -109,7 +109,7 @@ export default function BookCategory(props) {
                             }}>
 
                             {data.length > 0 ? (
-                                <BookCategoryFlateList data={data} />
+                                <BookCategoryFlateList data={data}  TopicId={props.route.params.Id}/>
                             ) : (
                                 <NoDataMsg title="No Data Found!" />
                             )}

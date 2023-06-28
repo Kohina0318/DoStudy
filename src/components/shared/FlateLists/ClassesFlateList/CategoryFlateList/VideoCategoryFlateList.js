@@ -26,13 +26,13 @@ function VideoCategoryDataFlateList({ item, themecolor, boxSize }) {
                 backgroundColor: themecolor.BOXBORDERCOLOR,
                 borderColor: themecolor.BOXBORDERCOLOR1,
             }}
-            onPress={() => navigation.navigate('FullVideoContainDetail', { contantUrl:item.url,  })}
+            onPress={() => navigation.navigate('FullVideoContainDetail', { contantUrl:item.image,  })}
         >
             <View style={{ ...styles.innerViewCon1 }}>
                 <Text
                     allowFontScaling={false}
                     style={{ ...styles.subhead1, color: themecolor.TXTWHITE }}>
-                    {item.topic}
+                    {item.name}
                 </Text>
 
             </View>

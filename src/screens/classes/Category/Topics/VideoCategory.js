@@ -40,7 +40,7 @@ export default function VideoCategory(props) {
     const themecolor = new MyThemeClass(mode).getThemeColor();
 
     const [loader, setLoader] = useState(true);
-    // const [data, setData] = useState([]);
+    const [data, setData] = useState([]);
     const [adsdata, setAdsdata] = useState([]);
 
     useEffect(() => {
@@ -58,37 +58,13 @@ export default function VideoCategory(props) {
         }
         temp()
     }, [props]);
-
-
-    const data=[
-        {
-            id:1,
-            topic: "xyz",
-            url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        },
-        {
-            id:2,
-            topic: "gyuuyyughgf jhhuuy",
-            url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
-        },
-        {
-            id:2,
-            topic: "gyuuyyughgf jhhuuy",
-            url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
-        },
-        {
-            id:2,
-            topic: "gyuuyyughgf jhhuuy",
-            url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
-        },
-    ]
+ 
 
     const handleVideoCategory = async () => {
         try{
         var res = await getCategoryTopics(props.route.params.Id, props.route.params.subjectId);
-            console.log(res)
             if (res.status === true) {
-                // setData(res.data);
+                setData(res.data);
                 setLoader(false)
             } else {
                 setLoader(false)

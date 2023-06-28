@@ -11,11 +11,14 @@ import { MyThemeClass } from '../../../Theme/ThemeDarkLightColor';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from '../../../../assets/css/DiscussionCss/DiscussionStyle';
+import moment from 'moment';
 
 const { width, height } = Dimensions.get('screen');
 
-function DiscussionDataFlatList({ item, themecolor, boxSize }) {
+function DiscussionDataFlatList({ item, themecolor, }) {
     const navigation = useNavigation();
+
+    var NewDate = moment(item.created_time).format('MM-DD-YYYY hh:mm a') ;
 
     return (
         <View
@@ -41,7 +44,7 @@ function DiscussionDataFlatList({ item, themecolor, boxSize }) {
                         allowFontScaling={false}
                         numberOfLines={1}
                         style={{ color: themecolor.TXTGREYS, ...styles.txt1 }}>
-                        {item.time}
+                        {NewDate}
                     </Text>
                 </View>
 

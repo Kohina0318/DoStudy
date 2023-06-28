@@ -14,13 +14,13 @@ import { styles } from '../../../../../assets/css/ClassesCss/CategoryStyle';
 
 const { width, height } = Dimensions.get('screen');
 
-function BookCategoryDataFlatList({ item, themecolor, boxSize }) {
+function BookCategoryDataFlatList({ item, themecolor, boxSize,TopicId }) {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity activeOpacity={0.5}
       style={{...styles.subContanier,backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1,}}
-    onPress={() => navigation.navigate('Content', {Id: item.id,Name:item.category_name,Image:item.image })}
+    onPress={() => navigation.navigate('Content', {Id: item.id,Name:item.name,Image:item.image ,TopicId:TopicId })}
     >
       <Image
         source={{ uri: item.image }}
@@ -46,7 +46,7 @@ export function BookCategoryFlateList(props) {
     <FlatList
       data={props.data}
       renderItem={({ item }) => (
-        <BookCategoryDataFlatList item={item} themecolor={themecolor} boxSize={props.boxSize} />
+        <BookCategoryDataFlatList item={item} themecolor={themecolor} boxSize={props.boxSize} TopicId={props.TopicId} />
       )}
       numColumns={2}
       horizontal={false}
