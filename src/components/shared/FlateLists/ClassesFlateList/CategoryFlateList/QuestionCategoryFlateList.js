@@ -26,13 +26,13 @@ function QuestionCategoryDataFlateList({ item, themecolor, boxSize }) {
                 backgroundColor: themecolor.BOXBORDERCOLOR,
                 borderColor: themecolor.BOXBORDERCOLOR1,
             }}
-            onPress={() => navigation.navigate('FullPdfContainDetail', { contantUrl:item.url,UnitNo:item.topic  })}
+            onPress={() => navigation.navigate('FullPdfContainDetail', { contantUrl:item.image,UnitNo:item.name  })}
         >
             <View style={{ ...styles.innerViewCon1 }}>
                 <Text
                     allowFontScaling={false}
                     style={{ ...styles.subhead1, color: themecolor.TXTWHITE }}>
-                    {item.topic}
+                    {item.name}
                 </Text>
 
             </View>

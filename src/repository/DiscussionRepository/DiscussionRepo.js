@@ -4,9 +4,83 @@ import { removeDatafromAsync } from "../AsyncStorageServices";
 import { getAppToken } from "../CommonRepository";
 import { SERVER_URL } from "../SERVER_URL";
 
-const getDiscussion = async () => {
+const getDiscussionTopic = async () => {
   try {
-    const response = await fetch(`${await SERVER_URL()}/api/profile-info`, {
+    const response = await fetch(`${await SERVER_URL()}/api/discussion-topic-list`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        Authorization: `${await getAppToken()}`,
+      },
+    });
+    const result = await response.json();
+
+   
+    if (result.token_status == 'false') {
+      await removeDatafromAsync('@UserData');
+      await removeDatafromAsync('@Token');
+
+      ToastAndroid.showWithGravityAndOffset(
+        `${'Token Expired'}`,
+        ToastAndroid.TOP,
+        ToastAndroid.LONG,
+        10,
+        10,
+      )
+      navigateToClearStack('SignIn');
+      return result;
+
+    } else {
+      return result;
+    }
+
+  } catch (err) {
+    console.log('error in getDiscussionTopic...in DiscussionRepo ', err);
+  }
+};
+
+const postCreateDiscussionTopic = async formdata => {
+  try {
+    const response = await fetch(
+      `${await SERVER_URL()}/api/create-discussion-topic`,
+      {  
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `${await getAppToken()}`
+        },
+        body: formdata,
+      },
+    );
+    const result = await response.json();
+
+    if (result.token_status == 'false') {
+      await removeDatafromAsync('@UserData');
+      await removeDatafromAsync('@Token');
+
+      ToastAndroid.showWithGravityAndOffset(
+        `${'Token Expired'}`,
+        ToastAndroid.TOP,
+        ToastAndroid.LONG,
+        10,
+        10,
+      )
+      navigateToClearStack('SignIn');
+      return result;
+
+    } else {
+      return result;
+    }
+  } catch (err) {
+    console.log('error in postCreateDiscussionTopic...in DiscussionRepo ', err);
+  }
+};
+
+
+
+const getDiscussion = async (did) => {
+  try {
+    const response = await fetch(`${await SERVER_URL()}/api/discussion-user-list?topic_id=${did}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
@@ -43,7 +117,7 @@ const getDiscussion = async () => {
 const postSendDiscussion = async formdata => {
   try {
     const response = await fetch(
-      `${await SERVER_URL()}/api/edit-profile`,
+      `${await SERVER_URL()}/api/user-send-discussion`,
       {  
         method: 'POST',
         headers: {
@@ -77,4 +151,4 @@ const postSendDiscussion = async formdata => {
   }
 };
 
-export { getDiscussion,postSendDiscussion };
+export {getDiscussionTopic, getDiscussion,postSendDiscussion,postCreateDiscussionTopic };

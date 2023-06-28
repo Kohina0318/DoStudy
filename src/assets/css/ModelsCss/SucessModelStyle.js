@@ -29,6 +29,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'center',
       },
+      ModelVideoCenter1: {
+        justifyContent: 'center',
+        alignSelf: 'center',
+        flexDirection:'row'
+      },
       submittext: {
         fontSize: FontSize.h4,
         color: Colors.black,
@@ -57,6 +62,9 @@ const styles = StyleSheet.create({
       backgroundVideo: {
         height: 250,
       },
+      img:{
+        width:100,height:100
+      }
                   
 });
 

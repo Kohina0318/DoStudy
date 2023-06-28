@@ -18,6 +18,7 @@ import FA from 'react-native-vector-icons/Feather';
 import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRepo';
 import { DiscussionFlateList } from '../../components/shared/FlateLists/DiscussionFlateList/DiscussionFlateList';
 import { getDiscussion, postSendDiscussion } from '../../repository/DiscussionRepository/DiscussionRepo';
+import NoDataMsg from '../../components/shared/NoData/NoDataMsg';
 
 export default function Discussion(props) {
 
@@ -44,9 +45,11 @@ export default function Discussion(props) {
     const [loader, setLoader] = useState(true);
     const [txt, setTxt] = useState("");
     const [userData, setUserData] = useState([]);
-    // const [data, setData] = useState([]);
+    const [data, setData] = useState([]);
     const [userProfile, setProfile] = useState('');
     const [refresh, setRefresh] = useState(false);
+
+    var discussionTopicData = props.route.params.TopicData
 
     const handleUserData = async () => {
         try {
@@ -73,7 +76,8 @@ export default function Discussion(props) {
 
     const handleDiscussion = async () => {
         try {
-            var res = await getDiscussion();
+            var res = await getDiscussion(props.route.params.Id);
+            console.log("hjjkjjk..",res)
             if (res.status === true) {
                 setData(res.data)
                 setLoader(false)
@@ -90,7 +94,7 @@ export default function Discussion(props) {
             }
         } catch (e) {
             setLoader(false)
-            console.log('catch in ....handleSendDiscussion page', e);
+            console.log('catch in ....handleDiscussion page', e);
             toast.show('Something went wrong!, Try again later.', {
                 type: 'danger',
                 placement: 'bottom',
@@ -118,11 +122,12 @@ export default function Discussion(props) {
                 offset: 30,
                 animationType: 'slide-in',
             });
-        } 
+        }
         else {
             try {
                 let formdata = new FormData()
                 formdata.append('user_id', userData.id)
+                formdata.append('topic_id', props.route.params.Id)
                 formdata.append('comment', txt)
 
                 const res = await postSendDiscussion(formdata);
@@ -153,52 +158,6 @@ export default function Discussion(props) {
     }
 
 
-    const data = [
-        {
-            id: 1,
-            user_name: "Riya Singh",
-            user_profile_pic: "https://newprofilepic2.photo-cdn.net//assets/images/article/profile.jpg",
-            comment: "Please, Provide JEE Mains Contain.",
-            time: "16 seconds ago at 5:45 PM"
-        },
-        {
-            id: 2,
-            user_name: "Priya Sharma",
-            user_profile_pic: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFY8X8BDSNJmIX2UR4V2uTjzpmmfGYnp3W5UuiEDWHP90PFOE1HBC96ZGDY5mH-nfButE&usqp=CAU",
-            comment: "xyzguhuh jjij",
-            time: "2 days ago at 2:00 AM"
-        },
-        {
-            id: 2,
-            user_name: "Priya Sharma",
-            user_profile_pic: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFY8X8BDSNJmIX2UR4V2uTjzpmmfGYnp3W5UuiEDWHP90PFOE1HBC96ZGDY5mH-nfButE&usqp=CAU",
-            comment: "xyzguhuh jjij",
-            time: "2 days ago at 2:00 AM"
-        },
-        {
-            id: 2,
-            user_name: "Priya Sharma",
-            user_profile_pic: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFY8X8BDSNJmIX2UR4V2uTjzpmmfGYnp3W5UuiEDWHP90PFOE1HBC96ZGDY5mH-nfButE&usqp=CAU",
-            comment: "xyzguhuh jjij",
-            time: "2 days ago at 2:00 AM"
-        },
-        {
-            id: 2,
-            user_name: "Priya Sharma",
-            user_profile_pic: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFY8X8BDSNJmIX2UR4V2uTjzpmmfGYnp3W5UuiEDWHP90PFOE1HBC96ZGDY5mH-nfButE&usqp=CAU",
-            comment: "xyzguhuh jjij",
-            time: "2 days ago at 2:00 AM"
-        },
-        {
-            id: 2,
-            user_name: "Priya Sharma",
-            user_profile_pic: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFY8X8BDSNJmIX2UR4V2uTjzpmmfGYnp3W5UuiEDWHP90PFOE1HBC96ZGDY5mH-nfButE&usqp=CAU",
-            comment: "xyzguhuh jjij",
-            time: "2 days ago at 2:00 AM"
-        },
-    ]
-
-
     return (
         <View style={{ ...styles.bg, backgroundColor: themecolor.THEMECOLOR1 }}>
             <StatusBar
@@ -207,7 +166,7 @@ export default function Discussion(props) {
                 barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
             />
 
-            <Header title="Discussion"  backIcon={true}
+            <Header title={` Discussion Topic : ${props.route.params.Id}`} backIcon={true}
                 onPressBack={() => handleBackButtonClick()} />
 
             {loader ? (
@@ -217,14 +176,51 @@ export default function Discussion(props) {
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={{ ...styles.container }}>
 
-                            <View style={{}}>
+                            <View
+                                style={{ ...styles.innerContaintop, backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1, }}
+                            >
+
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{ color: themecolor.TXTWHITE, ...styles.txt3 }}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{ color: themecolor.TXTWHITE, ...styles.smalltxt1 }}>
+                                        Topic Name :
+                                    </Text>  {discussionTopicData.topic_name}
+                                </Text>
+
+
+                                <View style={{ ...styles.MT5 }} />
+
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{ color: themecolor.TXTGREYS, ...styles.smalltxt }}>
+                                    Created Date : {discussionTopicData.created_date}
+                                </Text>
+
+                                <View style={styles.MT5} />
+
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{ color: themecolor.TXTWHITE, ...styles.txt2 }}>
+                                    {discussionTopicData.topic_des}
+                                </Text>
+
+                                <View style={{ ...styles.MT5 }} />
+
+
+
+                                <View style={styles.MT10} />
 
                             </View>
+
+                            <View style={{ ...styles.MT5 }} />
 
                             {data.length > 0 ? (
                                 <DiscussionFlateList data={data} />
                             ) : (
-                                <NoDataMsg title="No Comments!" />
+                               <></>
                             )}
 
                         </View>
@@ -262,7 +258,7 @@ export default function Discussion(props) {
                         </View>
 
                         <View style={{ ...styles.bottommsgSend }}>
-                            <TouchableOpacity activeOpacity={0.5} style={{ ...styles.msgSend }} onPress={()=>handleSendDiscussion()}>
+                            <TouchableOpacity activeOpacity={0.5} style={{ ...styles.msgSend }} onPress={() => handleSendDiscussion()}>
                                 <FA name="send" color={themecolor.ADDTOCARTBUTTONCOLOR} size={25} />
                             </TouchableOpacity>
                         </View>

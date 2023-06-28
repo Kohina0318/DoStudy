@@ -15,10 +15,9 @@ import AD from 'react-native-vector-icons/AntDesign';
 import FA from 'react-native-vector-icons/FontAwesome';
 
 
-function ContentDataFlateList({ item, themecolor }) {
+function ContentDataFlateList({ item, themecolor, TopicId }) {
 
     const navigation = useNavigation();
-
 
     return (
         <TouchableOpacity activeOpacity={0.5}
@@ -27,7 +26,12 @@ function ContentDataFlateList({ item, themecolor }) {
                 backgroundColor: themecolor.BOXBORDERCOLOR,
                 borderColor: themecolor.BOXBORDERCOLOR1,
             }}
-            onPress={() => navigation.navigate('ContentDetail', { Id:item.id, UnitNo:item.unit_no,UnitName:item.unit_name,UnitImage:item.image })}
+            onPress={() => {
+                TopicId === 1 ?
+                navigation.navigate('ContentDetail', { Id: item.id, UnitNo: item.unit_no, UnitName: item.unit_name, UnitImage: item.image })
+                :
+                navigation.navigate('FullPdfContainDetail', { contantUrl:item.image,UnitNo:item.unit_name  })
+            }}
         >
             <View style={{ ...styles.innerViewCon1 }}>
                 <Text
@@ -61,7 +65,7 @@ export function ContentFlateList(props) {
         <FlatList
             data={props.data}
             renderItem={({ item }) => (
-                <ContentDataFlateList item={item} themecolor={themecolor} />
+                <ContentDataFlateList item={item} themecolor={themecolor} TopicId={props.TopicId} />
             )}
             showsVerticalScrollIndicator={false}
             scrollEnabled={true}

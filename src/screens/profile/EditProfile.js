@@ -240,8 +240,6 @@ export default function EditProfile(props) {
                             ...styles.container,
                         }}>
 
-
-
                         {image === '' ? (
                             <View style={styles.viewDetails}>
                                 <TouchableOpacity onPress={() => openGallery()}>
@@ -287,9 +285,6 @@ export default function EditProfile(props) {
                                 </Text>
                             </View>
                         )}
-
-
-
 
 
                         <View style={styles.mt10}>
