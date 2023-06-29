@@ -20,7 +20,7 @@ function SubjectCategoryDataFlateList({ item, themecolor,subjectId }) {
   var navigate = "";
   if(item.id === 6){
     navigate = "VideoCategory"
-  }else if(item.id === 3 || item.id === 4){
+  }else if(item.id === 3 || item.id === 4 ||  item.id === 8 ){
     navigate = "QuestionandExamCategory"
   }
   else{

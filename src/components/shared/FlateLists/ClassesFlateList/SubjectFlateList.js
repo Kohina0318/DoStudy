@@ -14,28 +14,33 @@ import { styles } from '../../../../assets/css/ClassesCss/SubjectStyle';
 
 const { width, height } = Dimensions.get('screen');
 
-function SubjectDataFlatList({ item, themecolor, boxSize }) {
+function SubjectDataFlatList({ item, themecolor, boxSize, dashTypes }) {
   const navigation = useNavigation();
+
+  var navigateTo = 'SubjectCategory'
+  if (dashTypes == "YouTube_Classes") {
+    navigateTo = "YouTubeClasses"
+  }
 
   return (
     <TouchableOpacity activeOpacity={0.5}
-      style={{...styles.subContanier,backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1,}}
-    onPress={() => navigation.navigate('SubjectCategory', { Id: item.id,ClassId:item.class_id,Name:item.subject_name})}
+      style={{ ...styles.subContanier, backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1, }}
+      onPress={() => navigation.navigate(navigateTo, { Id: item.id, ClassId: item.class_id, Name: item.subject_name, dashTypes:dashTypes })}
     >
-      <View style={{...styles.subImg}}>
-      <Image
-        source={{ uri: item.image }}
-        resizeMode="contain"
-        style={{ width: '100%', height: '100%' }}
-      />
+      <View style={{ ...styles.subImg }}>
+        <Image
+          source={{ uri: item.image }}
+          resizeMode="contain"
+          style={{ width: '100%', height: '100%' }}
+        />
       </View>
       <View
-        style={{...styles.subMT5}}>
+        style={{ ...styles.subMT5 }}>
       </View>
       <Text
         allowFontScaling={false}
         numberOfLines={1}
-        style={{color: themecolor.TXTWHITE,...styles.subhead}}>
+        style={{ color: themecolor.TXTWHITE, ...styles.subhead }}>
         {item.subject_name}
       </Text>
     </TouchableOpacity>
@@ -50,7 +55,7 @@ export function SubjectFlateList(props) {
     <FlatList
       data={props.data}
       renderItem={({ item }) => (
-        <SubjectDataFlatList item={item} themecolor={themecolor} boxSize={props.boxSize} />
+        <SubjectDataFlatList item={item} themecolor={themecolor} boxSize={props.boxSize} dashTypes={props.dashTypes} />
       )}
       numColumns={2}
       horizontal={false}

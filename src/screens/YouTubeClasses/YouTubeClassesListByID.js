@@ -9,16 +9,17 @@ import { useToast } from 'react-native-toast-notifications';
 import Header from '../../components/shared/header/Header';
 import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
 import NoDataMsg from '../../components/shared/NoData/NoDataMsg';
-import { styles } from '../../assets/css/ClassesCss/ClassesStyle';
-import { ClassFlatList } from '../../components/shared/FlateLists/ClassesFlateList/ClassFlatList';
-import { getClasses } from '../../repository/ClassesRepository/ClasessRep';
+import { styles } from '../../assets/css/YouTubeClassesCss/YouTubeClassesStyle';
 import { getADsDatabyAsync } from '../../repository/CommonRepository';
 import AdsCarouselFile from '../../components/shared/Carousel/AdsCarouselFile';
+import { YouTubeClassFlateList } from '../../components/shared/FlateLists/YouTubeClassFlatList/YouTubeClassFlateList';
+import { YouTubeClassListByIdFlateList } from '../../components/shared/FlateLists/YouTubeClassFlatList/YouTubeClassListByIdFlateList';
+import { getYouTubeClassesByID } from '../../repository/YouTubeClassesRepository/YouTubeClassesRepository';
 
 
 const { width } = Dimensions.get('screen');
 
-export default function Classes(props) {
+export default function YouTubeClassesListByID(props) {
     function handleBackButtonClick() {
         props.navigation.goBack();
         return true;
@@ -43,6 +44,34 @@ export default function Classes(props) {
     const [adsdata, setAdsdata] = useState([]);
 
 
+    const handleYouTube = async () => {
+        try {
+            var res = await getYouTubeClassesByID(props.route.params.Id);
+            if (res.status === true) {
+                setData(res.data);
+                setLoader(false)
+            } else {
+                setLoader(false)
+            }
+        } catch (e) {
+            setLoader(false)
+            console.log('errrror in..handleYouTube page-->', e);
+            toast.show('Something went wrong!, Try again later.', {
+                type: 'danger',
+                placement: 'bottom',
+                duration: 1000,
+                offset: 30,
+                animationType: 'slide-in',
+            });
+        }
+    }
+
+    useEffect(() => {
+        handleYouTube();
+    }, []);
+
+
+
     useEffect(() => {
         async function temp() {
             try {
@@ -60,38 +89,6 @@ export default function Classes(props) {
     }, [props]);
 
 
-    const handleClasses = async () => {
-        try {
-            var navType =  props.route.params.type;
-            if(navType== "YouTube_Classes"){
-                navType= "Classes"
-            }else if(navType== "Courses"){
-                navType= "Classes"
-            }
-            var res = await getClasses(navType);
-            if (res.status === true) {
-                setData(res.data);
-                setLoader(false)
-            } else {
-                setLoader(false)
-            }
-        } catch (e) {
-            setLoader(false)
-            console.log('errrror in..handleClasses page-->', e);
-            toast.show('Something went wrong!, Try again later.', {
-                type: 'danger',
-                placement: 'bottom',
-                duration: 1000,
-                offset: 30,
-                animationType: 'slide-in',
-            });
-        }
-    };
-
-    useEffect(() => {
-        handleClasses()
-    }, [])
-
     return (
         <View style={{ ...styles.bg, backgroundColor: themecolor.THEMECOLOR }}>
             <StatusBar
@@ -100,7 +97,7 @@ export default function Classes(props) {
                 barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
             />
 
-            <Header title="Classes" backIcon={true}
+            <Header title={props.route.params.Name} backIcon={true}
                 onPressBack={() => handleBackButtonClick()} />
 
             {loader ? (
@@ -114,7 +111,7 @@ export default function Classes(props) {
                             }}>
 
                             {data.length > 0 ? (
-                                <ClassFlatList data={data}  dashTypes={props.route.params.type} />
+                                <YouTubeClassListByIdFlateList data={data} />
                             ) : (
                                 <NoDataMsg title="No Data Found!" />
                             )}

@@ -134,12 +134,6 @@ export default function Profile(props) {
                                 numberOfLines={2}>
                                 {data.name}
                             </Text>
-                            {/* <Text
-                                allowFontScaling={false}
-                                style={{ ...styles.smallTxt, color: themecolor.TXTWHITE }}
-                                numberOfLines={2}>
-                                {data.email}
-                            </Text> */}
 
                             {data.package_type == 1 ?
                                 TodayDate >= packageExpiry ?
@@ -170,12 +164,20 @@ export default function Profile(props) {
 
                                     </>
                                 :
+                                // <Text
+                                //     allowFontScaling={false}
+                                //     style={{ ...styles.headTxt, color: themecolor.TEXTGREEN }}
+                                //     numberOfLines={2}>
+                                //     Free
+                                // </Text>
+                                
                                 <Text
                                     allowFontScaling={false}
-                                    style={{ ...styles.headTxt, color: themecolor.TEXTGREEN }}
+                                    style={{ ...styles.smallTxt, color: themecolor.TXTWHITE }}
                                     numberOfLines={2}>
-                                    Free
+                                    {data.email}
                                 </Text>
+
 
                             }
                         </View>

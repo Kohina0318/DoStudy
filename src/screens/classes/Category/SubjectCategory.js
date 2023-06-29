@@ -61,7 +61,7 @@ export default function SubjectCategory(props) {
 
     const handleCategory = async () => {
         try {
-            var res = await getAllCategory();
+            var res = await getAllCategory(props.route.params.dashTypes);
             if (res.status === true) {
                 setData(res.data);
                 setLoader(false)

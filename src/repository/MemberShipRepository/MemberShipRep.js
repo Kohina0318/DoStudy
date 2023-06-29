@@ -104,5 +104,42 @@ const postMemberShipPayment = async (formdata) => {
 };
 
 
+const postFreePackageActive = async (formdata) => {
+  try {
+    const response = await fetch(
+      `${await SERVER_URL()}/api/purchase-package`,
+      {
+        method: 'POST',
+        headers: {'Content-Type': 'multipart/form-data',
+        Authorization: `${await getAppToken()}`},
+        body: formdata,
+      },
+    );
+    const result = await response.json();
 
-export {  getPackage,getActivePackage ,postMemberShipPayment};
+    if (result.token_status == 'false') {
+      await removeDatafromAsync('@UserData');
+      await removeDatafromAsync('@Token');
+
+      ToastAndroid.showWithGravityAndOffset(
+        `${'Token Expired'}`,
+        ToastAndroid.TOP,
+        ToastAndroid.LONG,
+        10,
+        10,
+      )
+      navigateToClearStack('SignIn');
+      return result;
+
+    } else {
+      return result;
+    }
+
+  } catch (err) {
+    console.log('error in postFreePackageActive...in MemberShipRep ', err);
+  }
+};
+
+
+
+export {  getPackage,getActivePackage ,postMemberShipPayment,postFreePackageActive};
