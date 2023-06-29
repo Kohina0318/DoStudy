@@ -12,7 +12,6 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from '../../../../assets/css/MemberShipCss/MemberShipStyle';
 import RazorpayCheckout from 'react-native-razorpay';
-import { getProfileInfo } from '../../../../repository/ProfileRepository/EditProfileRepo';
 import HalfSizeButton from '../../button/halfSizeButton';
 import { useToast } from 'react-native-toast-notifications';
 import { postFreePackageActive, postMemberShipPayment } from '../../../../repository/MemberShipRepository/MemberShipRep';
@@ -107,18 +106,16 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
     const handleActivatedFree = async () => {
         try {
             setLoader(true)
-            let formdata = new FormData();
-            body.append('package_id', item.id);
-                  
-            var res = await postFreePackageActive(formdata);
-            console.log("postFreePackageActive...",res)
 
-            if (res.status === true) {
-                setLoader(false)
-                props.navigation.navigate('Dashboard');
-            }
-            else {
-                setLoader(false)
+            var body = new FormData();
+            body.append('package_id', item.id);
+           
+            var res = await postMemberShipPayment(body);
+            if (res.status == true) {
+                setLoader(false);
+                navigation.navigate('Dashboard');
+            } else {
+                setLoader(false);
                 toast.show(res.message, {
                     type: 'warning',
                     placement: 'bottom',
@@ -127,7 +124,6 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
                     animationType: 'slide-in',
                 });
             }
-
         } catch (e) {
             setLoader(false)
             console.log('errrror in..handleActivatedFree page in address-->', e);
@@ -226,52 +222,25 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
             <View style={styles.margT10} />
 
 
-         {/* item.features.map((item1)=>{
-            return(
-                <>
-                 <Text
-                allowFontScaling={false}
-                numberOfLines={1}
-                style={{ color: themecolor.TXTGREYS, ...styles.txt1, }}>
-                {item1}
-            </Text>
-
-            <View style={styles.margT10} />
-                </>
-
-            )
-         }) */}
-
-            <Text
-                allowFontScaling={false}
-                numberOfLines={1}
-                style={{ color: themecolor.TXTGREYS, ...styles.txt1, }}>
-                Ad free experience
-            </Text>
-
-            <View style={styles.margT10} />
-
-            <Text
-                allowFontScaling={false}
-                numberOfLines={1}
-                style={{ color: themecolor.TXTGREYS, ...styles.txt1, }}>
-                Personalised recommendations
-            </Text>
-
-            <View style={styles.margT10} />
-
-            <Text
-                allowFontScaling={false}
-                numberOfLines={1}
-                style={{ color: themecolor.TXTGREYS, ...styles.txt1, }}>
-                Topics of interest selected by you
-            </Text>
+            {item.features.map((item1) => {
+                return (
+                    <>
+                        <Text
+                            allowFontScaling={false}
+                            numberOfLines={1}
+                            style={{ color: themecolor.TXTGREYS, ...styles.txt1, }}>
+                            {item1}
+                        </Text>
+                        <View style={styles.margT10} />
+                    </>
+                )
+            })}
 
             <View style={styles.margT10} />
             <View style={styles.margT10} />
 
             <View style={{ width: "65%", marginBottom: 20 }}>
-                {item.package_type === 1 ?
+                {item.package_type == 1 ?
                     <HalfSizeButton
                         title="Pay Now"
                         icon=""
@@ -282,7 +251,7 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
                     />
                     :
                     <HalfSizeButton
-                        title="Free Package Activated"
+                        title="Activate Now"
                         icon=""
                         onPress={() => handleActivatedFree()}
                         color="#fff"
