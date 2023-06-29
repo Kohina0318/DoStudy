@@ -17,11 +17,13 @@ const { width, height } = Dimensions.get('screen');
 function DashBoardDataFlatList({ item, themecolor, boxSize }) {
   const navigation = useNavigation();
 
+
   return (
     <View style={{ ...styles.mainViewCon }}>
       <TouchableOpacity activeOpacity={0.5} disabled={item.touch}
         style={{ ...styles.classContanier, backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1, }}
-        onPress={() => navigation.navigate(item.onpress)}
+        onPress={() => item.onpress1 ? navigation.navigate("Classes",{type:item.onpress1}) : navigation.navigate(item.onpress)}
+        
       >
         <View style={{ ...styles.classImg }}>
           <Image

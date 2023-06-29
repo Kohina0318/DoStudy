@@ -14,13 +14,13 @@ import { styles } from '../../../../assets/css/ClassesCss/ClassesStyle';
 
 const { width, height } = Dimensions.get('screen');
 
-function ClassDataFlatList({ item, themecolor, boxSize }) {
+function ClassDataFlatList({ item, themecolor, boxSize ,dashTypes}) {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity activeOpacity={0.5}
       style={{...styles.classContanier,backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1,}}
-    onPress={() => navigation.navigate('Subjects', { Id: item.id,Name:item.name})}
+    onPress={() => navigation.navigate('Subjects', { Id: item.id,Name:item.name, dashTypes:dashTypes})}
     >
       <View style={{...styles.classImg}}>
       <Image
@@ -50,7 +50,7 @@ export function ClassFlatList(props) {
     <FlatList
       data={props.data}
       renderItem={({ item }) => (
-        <ClassDataFlatList item={item} themecolor={themecolor} boxSize={props.boxSize} />
+        <ClassDataFlatList item={item} themecolor={themecolor} boxSize={props.boxSize} dashTypes={props.dashTypes} />
       )}
       numColumns={2}
       horizontal={false}

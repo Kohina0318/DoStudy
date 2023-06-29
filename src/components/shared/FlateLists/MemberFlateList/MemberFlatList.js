@@ -15,7 +15,7 @@ import RazorpayCheckout from 'react-native-razorpay';
 import { getProfileInfo } from '../../../../repository/ProfileRepository/EditProfileRepo';
 import HalfSizeButton from '../../button/halfSizeButton';
 import { useToast } from 'react-native-toast-notifications';
-import { postMemberShipPayment } from '../../../../repository/MemberShipRepository/MemberShipRep';
+import { postFreePackageActive, postMemberShipPayment } from '../../../../repository/MemberShipRepository/MemberShipRep';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -68,7 +68,6 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
                     //   console.log("postMemberShipPayment....",res)
                     if (res.status == true) {
                         setLoader(false);
-                        // props.navigation.navigate('PaymentConfirmation', { data: detailData })
                         props.navigation.navigate('Dashboard');
                     } else {
                         setLoader(false);
@@ -105,6 +104,44 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
         })
     }
 
+    const handleActivatedFree = async () => {
+        try {
+            setLoader(true)
+            let formdata = new FormData();
+            body.append('package_id', item.id);
+                  
+            var res = await postFreePackageActive(formdata);
+            console.log("postFreePackageActive...",res)
+
+            if (res.status === true) {
+                setLoader(false)
+                props.navigation.navigate('Dashboard');
+            }
+            else {
+                setLoader(false)
+                toast.show(res.message, {
+                    type: 'warning',
+                    placement: 'bottom',
+                    duration: 1000,
+                    offset: 30,
+                    animationType: 'slide-in',
+                });
+            }
+
+        } catch (e) {
+            setLoader(false)
+            console.log('errrror in..handleActivatedFree page in address-->', e);
+            toast.show('Something went wrong!, Try again later.', {
+                type: 'danger',
+                placement: 'bottom',
+                duration: 1000,
+                offset: 30,
+                animationType: 'slide-in',
+            });
+        }
+    }
+
+
     return (
         <View
             style={{ ...styles.classContanier, backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1, }}
@@ -128,36 +165,56 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
 
                 <View style={styles.margT} />
 
-                <Text
-                    allowFontScaling={false}
-                    numberOfLines={1}
-                    style={{ color: themecolor.TXTWHITE, ...styles.classhead }}>
-                    <Text
-                        allowFontScaling={false}
-                        numberOfLines={1}
-                        style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>&#8377;</Text>
-                    {" "}
-                    {parseInt(item.amount)}
-                    {" "}
-                    {item.total_amt != "" ?
+                {item.package_type == 1 ?
+                    <>
                         <Text
                             allowFontScaling={false}
                             numberOfLines={1}
-                            style={{ color: themecolor.TXTGREYS, ...styles.classheadd, textDecorationLine: 'line-through' }}> {parseInt(item.total_amt)} </Text>
-                        : <></>}
-                    {" "}
-                    <Text
-                        allowFontScaling={false}
-                        numberOfLines={1}
-                        style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>for {item.validation == 12 ? "1 Year" : item.validation == 1 ? item.validation + " Month" : item.validation + " Months"}  </Text>
-                </Text>
+                            style={{ color: themecolor.TXTWHITE, ...styles.classhead }}>
+                            <Text
+                                allowFontScaling={false}
+                                numberOfLines={1}
+                                style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>&#8377;</Text>
+                            {" "}
+                            {parseInt(item.amount)}
+                            {" "}
+                            {item.total_amt != "" ?
+                                <Text
+                                    allowFontScaling={false}
+                                    numberOfLines={1}
+                                    style={{ color: themecolor.TXTGREYS, ...styles.classheadd, textDecorationLine: 'line-through' }}> {parseInt(item.total_amt)} </Text>
+                                : <></>}
+                            {" "}
+                            <Text
+                                allowFontScaling={false}
+                                numberOfLines={1}
+                                style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>for {item.validation == 12 ? "1 Year" : item.validation == 1 ? item.validation + " Month" : item.validation == 7 ? item.validation + " Days" : item.validation + " Months"}  </Text>
+                        </Text>
 
-                {item.discount_per != "" ?
+                        {item.discount_per != "" ?
+                            <Text
+                                allowFontScaling={false}
+                                numberOfLines={1}
+                                style={{ color: themecolor.TEXTRED, ...styles.txt1, }}> ( {parseInt(item.discount_per)}% Off ) </Text>
+                            : <></>}
+                    </>
+                    :
                     <Text
                         allowFontScaling={false}
                         numberOfLines={1}
-                        style={{ color: themecolor.TEXTRED, ...styles.txt1, }}> ( {parseInt(item.discount_per)}% Off ) </Text>
-                    : <></>}
+                        style={{ color: themecolor.TEXTGREEN, ...styles.classhead }}>
+                        Free
+                        {" "}
+                        <Text
+                            allowFontScaling={false}
+                            numberOfLines={1}
+                            style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>for {item.validation == 12 ? "1 Year" : item.validation == 1 ? item.validation + " Month" : item.validation == 7 ? item.validation + " Days" : item.validation + " Months"}  </Text>
+                    </Text>
+
+
+                }
+
+
             </View>
 
             <View style={styles.margT10} />
@@ -167,6 +224,23 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
 
             <View style={styles.margT10} />
             <View style={styles.margT10} />
+
+
+         {/* item.features.map((item1)=>{
+            return(
+                <>
+                 <Text
+                allowFontScaling={false}
+                numberOfLines={1}
+                style={{ color: themecolor.TXTGREYS, ...styles.txt1, }}>
+                {item1}
+            </Text>
+
+            <View style={styles.margT10} />
+                </>
+
+            )
+         }) */}
 
             <Text
                 allowFontScaling={false}
@@ -197,14 +271,25 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
             <View style={styles.margT10} />
 
             <View style={{ width: "65%", marginBottom: 20 }}>
-                <HalfSizeButton
-                    title="Pay Now"
-                    icon=""
-                    onPress={() => handlePayNow()}
-                    color="#fff"
-                    backgroundColor={themecolor.ADDTOCARTBUTTONCOLOR}
-                    borderColor={themecolor.BOXBORDERCOLOR1}
-                />
+                {item.package_type === 1 ?
+                    <HalfSizeButton
+                        title="Pay Now"
+                        icon=""
+                        onPress={() => handlePayNow()}
+                        color="#fff"
+                        backgroundColor={themecolor.ADDTOCARTBUTTONCOLOR}
+                        borderColor={themecolor.BOXBORDERCOLOR1}
+                    />
+                    :
+                    <HalfSizeButton
+                        title="Free Package Activated"
+                        icon=""
+                        onPress={() => handleActivatedFree()}
+                        color="#fff"
+                        backgroundColor={themecolor.ADDTOCARTBUTTONCOLOR}
+                        borderColor={themecolor.BOXBORDERCOLOR1}
+                    />
+                }
             </View>
 
         </View>

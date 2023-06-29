@@ -18,7 +18,8 @@ import FA from 'react-native-vector-icons/Feather';
 import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRepo';
 import { DiscussionFlateList } from '../../components/shared/FlateLists/DiscussionFlateList/DiscussionFlateList';
 import { getDiscussion, postSendDiscussion } from '../../repository/DiscussionRepository/DiscussionRepo';
-import NoDataMsg from '../../components/shared/NoData/NoDataMsg';
+import Video from 'react-native-video';
+import moment from 'moment';
 
 export default function Discussion(props) {
 
@@ -50,6 +51,17 @@ export default function Discussion(props) {
     const [refresh, setRefresh] = useState(false);
 
     var discussionTopicData = props.route.params.TopicData
+    var contantUrl =""
+    var contantUrlType = ""
+    var NewDate=""
+    if (Object.values(discussionTopicData).length > 0) {
+        contantUrl = discussionTopicData.media
+       
+        if (contantUrl != "") {
+            contantUrlType = contantUrl.split('.').pop()
+        }
+        NewDate = moment(discussionTopicData.created_time).format('MM-DD-YYYY hh:mm a');
+    }
 
     const handleUserData = async () => {
         try {
@@ -77,7 +89,6 @@ export default function Discussion(props) {
     const handleDiscussion = async () => {
         try {
             var res = await getDiscussion(props.route.params.Id);
-            console.log("hjjkjjk..",res)
             if (res.status === true) {
                 setData(res.data)
                 setLoader(false)
@@ -196,7 +207,7 @@ export default function Discussion(props) {
                                 <Text
                                     allowFontScaling={false}
                                     style={{ color: themecolor.TXTGREYS, ...styles.smalltxt }}>
-                                    Created Date : {discussionTopicData.created_date}
+                                    Created Date : {NewDate}
                                 </Text>
 
                                 <View style={styles.MT5} />
@@ -204,11 +215,30 @@ export default function Discussion(props) {
                                 <Text
                                     allowFontScaling={false}
                                     style={{ color: themecolor.TXTWHITE, ...styles.txt2 }}>
-                                    {discussionTopicData.topic_des}
+                                    {discussionTopicData.topic_description}
                                 </Text>
 
                                 <View style={{ ...styles.MT5 }} />
 
+                                <View style={{ ...styles.mediaView }}>
+                                    {contantUrlType == 'mp4' ?
+                                        <Video source={{ uri: discussionTopicData.media }}
+                                            ref={(ref) => {
+                                                this.player = ref
+                                            }}
+                                            onBuffer={this.onBuffer}
+                                            onError={this.videoError}
+                                            autoplay={false}
+                                            controls={true}
+                                            resizeMode="contain"
+                                            style={{ ...styles.imgEdit, backgroundColor: "#000" }} />
+                                        :
+                                        <Image
+                                            source={{ uri: discussionTopicData.media }}
+                                            style={{ ...styles.imgEdit }}
+                                        />
+                                    }
+                                </View>
 
 
                                 <View style={styles.MT10} />
@@ -220,7 +250,7 @@ export default function Discussion(props) {
                             {data.length > 0 ? (
                                 <DiscussionFlateList data={data} />
                             ) : (
-                               <></>
+                                <></>
                             )}
 
                         </View>

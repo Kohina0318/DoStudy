@@ -14,10 +14,18 @@ export default ChosseFileTypeModal = props => {
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(true);
 
-    const handleClickOnDone = (type) => {
+    const handleClickOnDone = () => {
+        props.setFileType('image')
         setModalVisible(!modalVisible)
         props.setShowmodal(false)
-        props.onpress(type)
+        props.onpressPhoto()
+    };
+
+    const handleClickOnDoneV = () => {
+        props.setFileType('video')
+        setModalVisible(!modalVisible)
+        props.setShowmodal(false)
+        props.onpressVideo()
     };
 
     const handleClickOnCancle = () => {
@@ -42,7 +50,7 @@ export default ChosseFileTypeModal = props => {
                         </Text>
                         <View style={styles.ModelVideoCenter1}>
 
-                            <TouchableOpacity activeOpacity={0.5} onPress={() => handleClickOnDone("image")} style={{ padding: 10, borderRadius: 5, margin: 10 }}>
+                            <TouchableOpacity activeOpacity={0.5} onPress={() => handleClickOnDone()} style={{ padding: 10, borderRadius: 5, margin: 10 }}>
                                 <Image
                                     source={require('../../../assets/images/imageIcon.jpg')}
                                     style={styles.img}
@@ -50,7 +58,7 @@ export default ChosseFileTypeModal = props => {
                                 />
                             </TouchableOpacity>
 
-                            <TouchableOpacity activeOpacity={0.5} onPress={() => handleClickOnDone("video")} style={{ padding: 10, borderRadius: 5, margin: 10 }}>
+                            <TouchableOpacity activeOpacity={0.5} onPress={() => handleClickOnDoneV()} style={{ padding: 10, borderRadius: 5, margin: 10 }}>
                                 <Image
                                     source={require('../../../assets/images/allvideos.png')}
                                     style={styles.img}

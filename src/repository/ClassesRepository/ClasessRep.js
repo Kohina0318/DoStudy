@@ -4,9 +4,9 @@ import { removeDatafromAsync } from "../AsyncStorageServices";
 import { getAppToken } from "../CommonRepository";
 import { SERVER_URL } from "../SERVER_URL";
 
-const getClasses = async () => {
+const getClasses = async (type) => {
   try {
-    const response = await fetch(`${await SERVER_URL()}/api/class-list`, {
+    const response = await fetch(`${await SERVER_URL()}/api/class-list?type=${type}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json;charset=utf-8' ,
       Authorization: `${await getAppToken()}`},

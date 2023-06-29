@@ -19,6 +19,7 @@ import FIcon from 'react-native-vector-icons/FontAwesome';
 import { launchImageLibrary } from 'react-native-image-picker';
 import EIcon from 'react-native-vector-icons/Entypo';
 import ChosseFileTypeModal from '../../components/shared/Model/ChosseFileTypeModal';
+import Video from 'react-native-video';
 
 const { width } = Dimensions.get('screen');
 
@@ -53,14 +54,15 @@ export default function CreateDiscussion(props) {
     });
     const [image, setImage] = useState('');
     const [image1, setImage1] = useState('');
+    const [fileType, setFileType] = useState('');
 
     const [showmodal, setShowmodal] = useState(false);
-  
-    const openGallery = (type) => {
+
+    const openGallery = () => {
         let options = {
             storageOption: {
                 path: 'images',
-                mediaType: type,
+                mediaType: 'photo',
             },
             includeBase64: true,
         };
@@ -79,8 +81,35 @@ export default function CreateDiscussion(props) {
                     uri: response.assets[0].uri,
                 }
                 // console.log(response)
-                setImage(source.base64);
-                setImage1(source.base64);
+                setImage(source.uri);
+                setImage1(source.uri);
+            }
+        });
+    };
+
+    const openGallery1 = () => {
+        const options2 = {
+            title: 'Select video',
+            mediaType: 'video',
+            path: 'video',
+            quality: 1
+        };
+        launchImageLibrary(options2, (response) => {
+            console.log('Response = ', response.assets[0].uri);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                const source = { uri: response.assets[0].uri };
+
+                setImage(source.uri);
+                setImage1(source.uri);
+
+
             }
         });
     };
@@ -241,25 +270,43 @@ export default function CreateDiscussion(props) {
                             <View style={styles.MT10}>
                                 <Text allowFontScaling={false} style={{ ...styles.TextinputH1, color: themecolor.ADDTOCARTBUTTONCOLOR }}>Upload Media</Text>
                                 {image === '' ? (
-                                    <TouchableOpacity activeOpacity={0.5} style={{ padding: 7 }} 
-                                    onPress={() => setShowmodal(!showmodal)}
+                                    <TouchableOpacity activeOpacity={0.5} style={{ padding: 7 }}
+                                        onPress={() => setShowmodal(!showmodal)}
                                     // onPress={() => openGallery()}
                                     >
-                                        <FIcon name="camera" size={50} color={themecolor.TXTGREY} />
+                                        <FIcon name="camera" size={70} color={themecolor.TXTGREY} />
                                     </TouchableOpacity>
                                 ) : (
                                     <View style={{ padding: 5, }}>
                                         <TouchableOpacity
-                                            style={{ zIndex: 99999, left: 0, marginBottom: -11, width: 82, alignItems: "flex-end", marginTop: -5 }}
+                                            style={{ zIndex: 99999, left: 0, marginBottom: -11, width: 112, alignItems: "flex-end", marginTop: -5 }}
                                             onPress={() => removeImage()}
                                         >
-                                            <EIcon name="circle-with-cross" size={20} color={'tomato'} style={{ zIndex: 99999 }} />
+                                            <EIcon name="circle-with-cross" size={25} color={'tomato'} style={{ zIndex: 99999 }} />
                                         </TouchableOpacity>
-                                        <Image
-                                            source={{ uri: image }}
-                                            style={{ width: 70, height: 70, borderRadius: 4 }}
-                                        />
+                                        {fileType === 'video' ?
+
+                                            <Video source={{ uri: image }}   
+                                                ref={(ref) => {
+                                                    this.player = ref
+                                                }}                                      
+                                                onBuffer={this.onBuffer}                
+                                                onError={this.videoError}              
+                                                autoplay={false}
+                                                resizeMode="contain"
+                                                style={{ width: 100, height: 100, borderRadius: 4, backgroundColor: "#000" }} />
+
+                                            :
+                                            <Image
+                                                source={{ uri: image }}
+                                                style={{ width: 100, height: 100, borderRadius: 4 }}
+                                            />
+                                        }
+
+                                        <View style={styles.MT10} />
+                                        <View style={styles.MT10} />
                                     </View>
+
                                 )}
                             </View>
 
@@ -267,7 +314,7 @@ export default function CreateDiscussion(props) {
                         </View>
                     </ScrollView>
 
-                    <View style={{ marginVertical: 15 }} />
+                    <View style={{ marginVertical: 22 }} />
 
                     <View
                         style={{
@@ -290,7 +337,9 @@ export default function CreateDiscussion(props) {
             {showmodal && (
                 <ChosseFileTypeModal
                     setShowmodal={setShowmodal}
-                    onpress={openGallery}
+                    onpressPhoto={openGallery}
+                    onpressVideo={openGallery1}
+                    setFileType={setFileType}
                 />
             )}
         </View>

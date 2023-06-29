@@ -4,9 +4,9 @@ import { getAppToken } from "../CommonRepository";
 import { SERVER_URL } from "../SERVER_URL";
 import { removeDatafromAsync } from "../AsyncStorageServices";
 
-const getAllCategory = async (cid,sid) => {
+const getAllCategory = async (type) => {
   try {
-    const response = await fetch(`${await SERVER_URL()}/api/category-list`, {
+    const response = await fetch(`${await SERVER_URL()}/api/category-list?type=${type}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json;charset=utf-8',
       Authorization: `${await getAppToken()}` },

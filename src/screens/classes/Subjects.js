@@ -109,7 +109,7 @@ export default function Subjects(props) {
                             }}>
 
                             {data.length > 0 ? (
-                                <SubjectFlateList data={data} />
+                                <SubjectFlateList data={data} dashTypes={props.route.params.dashTypes} />
                             ) : (
                                 <NoDataMsg title="No Data Found!" />
                             )}
