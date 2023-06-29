@@ -136,7 +136,6 @@ export default function MemberShip(props) {
     const handlPackages = async () => {
         try {
             var res = await getPackage();
-            console.log("gyuyui...",res)
             if (res.status === true) {
                 setData(res.data);
                 setLoader(false)
