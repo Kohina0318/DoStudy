@@ -177,7 +177,7 @@ export default function Discussion(props) {
                 barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
             />
 
-            <Header title={` Discussion Topic : ${props.route.params.Id}`} backIcon={true}
+            <Header title={props.route.params.Id} backIcon={true}
                 onPressBack={() => handleBackButtonClick()} />
 
             {loader ? (

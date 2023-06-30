@@ -65,10 +65,10 @@ export default function Classes(props) {
             var navType =  props.route.params.type;
             if(navType== "YouTube_Classes"){
                 navType= "Classes"
-            }else if(navType== "Courses"){
-                navType= "Classes"
             }
+            
             var res = await getClasses(navType);
+            console.log("ghghjnnnnnn.....",res,navType)
             if (res.status === true) {
                 setData(res.data);
                 setLoader(false)
@@ -92,6 +92,20 @@ export default function Classes(props) {
         handleClasses()
     }, [])
 
+    var nameFull = props.route.params.type;
+    if(nameFull== "Preparation"){
+        nameFull= "Preparation"
+    }
+    else if(nameFull== "Courses"){
+        nameFull= "Courses"
+    }
+    else if(nameFull== "YouTube_Classes"){
+        nameFull= "YouTube Classes"
+    }
+    else{
+        nameFull= "Classes"
+    }
+
     return (
         <View style={{ ...styles.bg, backgroundColor: themecolor.THEMECOLOR }}>
             <StatusBar
@@ -100,7 +114,7 @@ export default function Classes(props) {
                 barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
             />
 
-            <Header title="Classes" backIcon={true}
+            <Header title={nameFull} backIcon={true}
                 onPressBack={() => handleBackButtonClick()} />
 
             {loader ? (

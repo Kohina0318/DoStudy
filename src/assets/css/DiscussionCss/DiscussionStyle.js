@@ -88,6 +88,11 @@ const styles = StyleSheet.create({
         fontFamily: FontFamily.PopinsMedium,
         fontWeight:'700'
     },
+    smalltxt2:{
+      fontSize: FontSize.labelText2,
+      fontFamily: FontFamily.PopinsMedium,
+      fontWeight:'700'
+  },
     commentCon:{
         width: "96%",padding:2,left:5
     },
@@ -95,7 +100,8 @@ const styles = StyleSheet.create({
         width: "100%",padding:5,justifyContent:"flex-start",alignSelf:'flex-start',alignItems:"flex-start"
     },
     TmeCon:{width: "100%",flexDirection:"row" , justifyContent:"space-between"},
-    tmeConinnerLast:{width:"65%",  alignSelf:"flex-end",alignItems:"flex-end"},
+    tmeConinnerLast:{width:"40%",  alignSelf:"flex-end",alignItems:"flex-end"},
+    tmeConinnerLast1:{width:"50%",  alignSelf:"flex-end",alignItems:"flex-end"},
     MT10: {
         marginTop: 10
     },
