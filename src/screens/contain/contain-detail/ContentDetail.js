@@ -83,6 +83,7 @@ export default function ContentDetail(props) {
     const handleContentDetail = async () => {
         try {
             var res = await getContentDetail(props.route.params.Id)
+            console.log("handleContentDetail..", res.data[0].description)
             if (res.status === true) {
                 setData(res.data);
                 setDescription(res.data[0].description)
@@ -146,12 +147,12 @@ export default function ContentDetail(props) {
     //     textData = description.split('.');
     // }
 
-    const textData = [ 
+    const textData = [
         'बोलना वाक-शक्ति द्वारा ध्वनियों को जोड़कर बने एक विस्तृत शब्दकोश के शब्दों का प्रयोग कर के करी गई संचार की क्रिया को कहते हैं।',
         'Speech is a human vocal communication using language. Each language uses phonetic combinations of vowel and consonant sounds that form the sound of its words, and using those words in their semantic ',
         'आमतौर पर प्रभावशाली संचार के लिये बोलने में कम-से-कम १, ००० शब्दों का प्रयोग देखा गया है। हर शब्द को स्वर और व्यंजन वर्णों का स्वानिक मिश्रण कर के बनाया जाता है',
         'ut labore et dolore magna aliqua.',
-      ];
+    ];
 
     const [activeIndex, setActiveIndex] = useState(-1);
     const [activeIndex1, setActiveIndex1] = useState(0);
@@ -380,37 +381,135 @@ export default function ContentDetail(props) {
 
                                         </>
                                 ) : (
-                                    <>
-                                        <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
-                                            <Text
-                                                selectable={true}
-                                                allowFontScaling={false}
-                                                numberOfLines={3}
-                                                ellipsizeMode='tail'
-                                                style={{
-                                                    ...styles.txt,
-                                                    color: themecolor.TXTWHITE,
-                                                }}>{description}</Text>
-                                            <View style={styles.mt5} />
-                                            <Text
-                                                selectable={true}
-                                                allowFontScaling={false}
-                                                style={{
-                                                    ...styles.txt1,
-                                                    color: themecolor.TXTWHITE,
-                                                }}>.   .    .</Text>
-                                            <LinearGradient
-                                                start={{ x: 0.0, y: 0.0 }}
-                                                end={{ x: 0.0, y: 1.0 }}
-                                                locations={[0.0, 1.0]}
-                                                colors={['#ffffff40', '#fffffff5']}
-                                                useViewFrame={false}
-                                                style={styles.gradient}
-                                            />
+                                    packageExpiry ?
+                                        TodayDate >= packageExpiry ?
+                                            <>
+                                                <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
+                                                    <Text
+                                                        selectable={true}
+                                                        allowFontScaling={false}
+                                                        numberOfLines={3}
+                                                        ellipsizeMode='tail'
+                                                        style={{
+                                                            ...styles.txt,
+                                                            color: themecolor.TXTWHITE, letterSpacing: 1
+                                                        }}>{description}</Text>
+                                                    <View style={styles.mt5} />
+                                                    <Text
+                                                        selectable={true}
+                                                        allowFontScaling={false}
+                                                        style={{
+                                                            ...styles.txt1,
+                                                            color: themecolor.TXTWHITE,
+                                                        }}>.   .    .</Text>
+                                                    <LinearGradient
+                                                        start={{ x: 0.0, y: 0.0 }}
+                                                        end={{ x: 0.0, y: 1.0 }}
+                                                        locations={[0.0, 1.0]}
+                                                        colors={['#ffffff40', '#fffffff5']}
+                                                        useViewFrame={false}
+                                                        style={styles.gradient}
+                                                    />
 
-                                        </View>
-                                        <View style={styles.mt15} />
-                                    </>
+                                                </View>
+                                                <View style={styles.mt15} />
+                                            </>
+                                            :
+                                            <>
+                                                {/* <Text
+                                            selectable={true}
+                                            allowFontScaling={false}
+                                            style={{
+                                                ...styles.txt,
+                                                color: themecolor.TXTWHITE, letterSpacing: 1
+                                            }}>{description}</Text> */}
+
+                                                {description != "" ?
+                                                    textData.map((text, index) => (
+                                                        <TouchableOpacity key={index} onPress={() => handleTextClick(index)} >
+                                                            <Text
+                                                                style={{
+                                                                    ...styles.txt,
+                                                                    letterSpacing: 1,
+                                                                    fontWeight: activeIndex === index ? 'bold' : 'normal',
+                                                                    color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
+                                                                }}
+                                                            >
+                                                                {text}.
+                                                            </Text>
+                                                        </TouchableOpacity>
+                                                    ))
+                                                    : <></>}
+
+                                                <View style={styles.mt15} />
+                                                <View style={styles.mt15} />
+                                                <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center', display: "flex" }}>
+                                                    {contantUrlType === 'mp4' ?
+                                                        <>
+                                                            <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('FullVideoContainDetail', { contantUrl: contantUrl })} style={{ ...styles.widthVideoBlackPadding, }}>
+                                                                <ImageBackground source={{ uri: props.route.params.UnitImage }} resizeMode='contain' style={{ ...styles.widthVideo1 }}>
+                                                                    <View style={{ ...styles.VideoPlay }}>
+                                                                        <Ii name="play" size={25} color={themecolor.TXTWHITE1} />
+                                                                    </View>
+                                                                </ImageBackground>
+                                                            </TouchableOpacity>
+                                                        </>
+                                                        :
+                                                        contantUrlType === 'pdf' ?
+                                                            <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('FullPdfContainDetail', { contantUrl: contantUrl, UnitNo: props.route.params.UnitNo })}>
+                                                                <Image
+                                                                    source={require('../../../assets/images/pdf.png')}
+                                                                    style={{ ...styles.pdfImg }}
+                                                                    resizeMode='contain'
+                                                                />
+                                                                <Text
+                                                                    allowFontScaling={false}
+                                                                    style={{
+                                                                        ...styles.txt1, textAlign: 'center',
+                                                                        color: themecolor.ADDTOCARTBUTTONCOLOR,
+                                                                    }}>View PDF</Text>
+
+                                                                <View style={styles.mt15} />
+                                                            </TouchableOpacity>
+
+                                                            :
+                                                            <></>
+                                                    }
+                                                </View>
+
+                                            </>
+                                        :
+                                        <>
+                                            <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
+                                                <Text
+                                                    selectable={true}
+                                                    allowFontScaling={false}
+                                                    numberOfLines={3}
+                                                    ellipsizeMode='tail'
+                                                    style={{
+                                                        ...styles.txt,
+                                                        color: themecolor.TXTWHITE,
+                                                    }}>{description}</Text>
+                                                <View style={styles.mt5} />
+                                                <Text
+                                                    selectable={true}
+                                                    allowFontScaling={false}
+                                                    style={{
+                                                        ...styles.txt1,
+                                                        color: themecolor.TXTWHITE,
+                                                    }}>.   .    .</Text>
+                                                <LinearGradient
+                                                    start={{ x: 0.0, y: 0.0 }}
+                                                    end={{ x: 0.0, y: 1.0 }}
+                                                    locations={[0.0, 1.0]}
+                                                    colors={['#ffffff40', '#fffffff5']}
+                                                    useViewFrame={false}
+                                                    style={styles.gradient}
+                                                />
+
+                                            </View>
+                                            <View style={styles.mt15} />
+                                        </>
                                 )}
 
                             </View>
@@ -440,24 +539,47 @@ export default function ContentDetail(props) {
                                     <></>
                             )
                                 :
-                                <View style={styles.m20}>
-                                    <View style={styles.mt15} />
-                                    <TouchableOpacity activeOpacity={0.5}
-                                        onPress={() => navigation.navigate('MemberShip')}
-                                        style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
-                                        <FA name="lock" color={themecolor.BACKICON} size={30} />
-                                        <View style={styles.mt15} />
-                                        <Text
-                                            selectable={true}
-                                            allowFontScaling={false}
-                                            style={{
-                                                ...styles.txt1,
-                                                color: themecolor.BACKICON,
-                                                top: 5
-                                            }}>continue to purchase MemberShip</Text>
-                                    </TouchableOpacity>
+                                packageExpiry ?
+                                    TodayDate >= packageExpiry ?
+                                        <View style={styles.m20} >
+                                            <View style={styles.mt15} />
+                                            <TouchableOpacity activeOpacity={0.5}
+                                                onPress={() => navigation.navigate('MemberShip')}
+                                                style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
+                                                <FA name="lock" color={themecolor.BACKICON} size={30} />
+                                                <View style={styles.mt15} />
+                                                <Text
+                                                    selectable={true}
+                                                    allowFontScaling={false}
+                                                    style={{
+                                                        ...styles.txt1,
+                                                        color: themecolor.BACKICON,
 
-                                </View>
+                                                    }}>continue to purchase MemberShip</Text>
+                                            </TouchableOpacity>
+
+                                        </View>
+                                        :
+                                        <></>
+                                    :
+                                    <View style={styles.m20}>
+                                        <View style={styles.mt15} />
+                                        <TouchableOpacity activeOpacity={0.5}
+                                            onPress={() => navigation.navigate('MemberShip')}
+                                            style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
+                                            <FA name="lock" color={themecolor.BACKICON} size={30} />
+                                            <View style={styles.mt15} />
+                                            <Text
+                                                selectable={true}
+                                                allowFontScaling={false}
+                                                style={{
+                                                    ...styles.txt1,
+                                                    color: themecolor.BACKICON,
+                                                    top: 5
+                                                }}>continue to purchase MemberShip</Text>
+                                        </TouchableOpacity>
+
+                                    </View>
                             }
 
                             <View style={{ marginVertical: 20 }} />
@@ -496,8 +618,42 @@ export default function ContentDetail(props) {
                             </View>
 
                     )
+
                         :
-                        <></>
+
+                        packageExpiry ?
+                            TodayDate >= packageExpiry ?
+                                <></>
+                                :
+                                <View
+                                    style={{
+                                        ...styles.touchview,
+                                    }}>
+                                    <View style={{ ...styles.mainView, backgroundColor: themecolor.LOGINTHEMECOLOR1, borderColor: themecolor.BOXBORDERCOLOR1, elevation: 3 }}>
+                                        {speckerOnStop === 1 ?
+                                            <HalfSizeButton
+                                                title=""
+                                                icon={<IC name="ios-volume-mute-outline" size={35} color={themecolor.TEXTRED} />}
+                                                // onPress={() => handleStopVoice()}
+                                                onPress={() => handleStop()}
+                                                backgroundColor={'transparent'}
+                                                borderColor={'transparent'}
+                                            />
+                                            : <HalfSizeButton
+                                                title=""
+                                                icon={<IC name="ios-volume-high-outline" size={35} color={themecolor.BACKICON} />}
+                                                onPress={() => handlePlay(0)}
+                                                // onPress={() => handleVoice()}
+                                                backgroundColor={'transparent'}
+                                                borderColor={'transparent'}
+                                            />
+                                        }
+                                    </View>
+
+                                </View>
+
+                            :
+                            <></>
                     }
 
 
