@@ -109,7 +109,7 @@ function MemberDataFlatList({ item, themecolor, userPhoneNo, userName, userEmail
 
             var body = new FormData();
             body.append('package_id', item.id);
-           
+
             var res = await postMemberShipPayment(body);
             if (res.status == true) {
                 setLoader(false);
@@ -317,22 +317,36 @@ function ActiveMemberShip(props) {
 
                     <View style={styles.margT} />
 
-                    <Text
-                        allowFontScaling={false}
-                        numberOfLines={1}
-                        style={{ color: themecolor.TXTWHITE, ...styles.classhead }}>
+                    {dataAll.package_type == 1 ?
                         <Text
                             allowFontScaling={false}
                             numberOfLines={1}
-                            style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>&#8377;</Text>
-                        {" "}
-                        {parseInt(dataAll.amount)}
-                        {" "}
+                            style={{ color: themecolor.TXTWHITE, ...styles.classhead }}>
+                            <Text
+                                allowFontScaling={false}
+                                numberOfLines={1}
+                                style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>&#8377;</Text>
+                            {" "}
+                            {parseInt(dataAll.amount)}
+                            {" "}
+                            <Text
+                                allowFontScaling={false}
+                                numberOfLines={1}
+                                style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>for {dataAll.validation == 12 ? "1 Year" : dataAll.validation == 1 ? dataAll.validation + " Month" : dataAll.validation == 7 ? dataAll.validation + " Days" : dataAll.validation + " Months"}  </Text>
+                        </Text>
+                        :
                         <Text
                             allowFontScaling={false}
                             numberOfLines={1}
-                            style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>for {dataAll.validation == 12 ? "1 Year" : dataAll.validation == 1 ? dataAll.validation + " Month" : dataAll.validation + " Months"}  </Text>
-                    </Text>
+                            style={{ color: themecolor.TEXTGREEN, ...styles.classhead }}>
+                            Free
+                            {" "}
+                            <Text
+                                allowFontScaling={false}
+                                numberOfLines={1}
+                                style={{ color: themecolor.TXTWHITE, ...styles.txt1 }}>for {dataAll.validation == 12 ? "1 Year" : dataAll.validation == 1 ? dataAll.validation + " Month" : dataAll.validation == 7 ? dataAll.validation + " Days" : dataAll.validation + " Months"}  </Text>
+                        </Text>
+                    }
 
                 </View>
 

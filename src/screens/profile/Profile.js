@@ -66,7 +66,7 @@ export default function Profile(props) {
             name: "Sign Out",
             icon: <AD name="logout" size={18} color={themecolor.BACKICON} />,
             onpress1: 'Sign Out'
-        },
+        }
     ];
 
     const handleUserData = async () => {
@@ -164,19 +164,42 @@ export default function Profile(props) {
 
                                     </>
                                 :
-                                // <Text
-                                //     allowFontScaling={false}
-                                //     style={{ ...styles.headTxt, color: themecolor.TEXTGREEN }}
-                                //     numberOfLines={2}>
-                                //     Free
-                                // </Text>
-                                
-                                <Text
-                                    allowFontScaling={false}
-                                    style={{ ...styles.smallTxt, color: themecolor.TXTWHITE }}
-                                    numberOfLines={2}>
-                                    {data.email}
-                                </Text>
+                                packageExpiry ?
+                                    TodayDate >= packageExpiry ?
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={{ ...styles.smallTxt, color: themecolor.TEXTRED }}
+                                            numberOfLines={2}>
+                                            Your Package is expired
+                                        </Text>
+                                        :
+                                        <>
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={{ ...styles.smallTxt, color: themecolor.TEXTGREEN, fontWeight: '700' }}
+                                                numberOfLines={2}>
+                                                Package Activated </Text>
+
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={{ ...styles.smallTxt, color: themecolor.TXTWHITE }}
+                                                numberOfLines={2}>
+                                                Expiry at {" "}
+                                                <Text
+                                                    allowFontScaling={false}
+                                                    style={{ ...styles.smallTxt, color: themecolor.TEXTRED }}
+                                                    numberOfLines={2}>{packageExpiry} </Text>
+                                            </Text>
+
+                                        </>
+                                    
+                                    :
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{ ...styles.smallTxt, color: themecolor.TXTWHITE }}
+                                        numberOfLines={2}>
+                                        {data.email}
+                                    </Text>
 
 
                             }
