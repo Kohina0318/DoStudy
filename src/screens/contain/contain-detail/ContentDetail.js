@@ -51,7 +51,6 @@ export default function ContentDetail(props) {
     const [loader, setLoader] = useState(true);
     const [data, setData] = useState([]);
     const [description, setDescription] = useState([]);
-    const [descriptionLength, setDescriptionLength] = useState('');
     const [contantUrl, setContantUrl] = useState("");
     const [speckerOnStop, setSpeckerOnStop] = useState(0);
     const [packageType, setPackageType] = useState(0);
@@ -60,15 +59,7 @@ export default function ContentDetail(props) {
     let yourDate = new Date()
     var TodayDate = yourDate.toISOString().split('T')[0]
 
-    const [activeIndex, setActiveIndex] = useState(-1);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [recognizedText, setRecognizedText] = useState('');
-
-    const activeIndexRef = useRef(activeIndex);
-
-
-
-    // var contantUrlType = "";
+   
 
     const handleUserData = async () => {
         try {
@@ -96,7 +87,6 @@ export default function ContentDetail(props) {
             if (res.status === true) {
                 setData(res.data);
                 setDescription(res.data[0].description)
-                setDescriptionLength(res.data[0].description.length)
                 setContantUrl(res.data[0].file_url)
                 setLoader(false)
             } else {
@@ -121,13 +111,21 @@ export default function ContentDetail(props) {
     }, []);
 
 
-    // if (contantUrl != "") {
-    //     contantUrlType = contantUrl.split('.').pop()
-    // }
+    const [activeIndex, setActiveIndex] = useState(-1);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [recognizedText, setRecognizedText] = useState('');
+
+    const activeIndexRef = useRef(activeIndex);
+    const activeDescriptionRef = useRef(description);
 
     useEffect(() => {
         activeIndexRef.current = activeIndex;
     }, [activeIndex]);
+
+    
+    useEffect(() => {
+        activeDescriptionRef.current = description;
+    }, [description]);
 
     useEffect(() => {
         Tts.addEventListener('tts-finish', handleTTSFinish);
@@ -140,6 +138,7 @@ export default function ContentDetail(props) {
 
 
     const handlePlay = (index) => {
+        const activeDescription = activeDescriptionRef.current;
         Tts.stop();
         setActiveIndex(index);
         setIsPlaying(true);
@@ -148,7 +147,7 @@ export default function ContentDetail(props) {
         Tts.setDefaultVoice('hi-in-x-hid-local')
         Tts.setDefaultRate(0.3);
         Tts.setDefaultPitch(1.0);
-        Tts.speak(description[index].replace(/<[^>]+>/g, ''));
+        Tts.speak(activeDescription[index].replace(/<[^>]+>/g, ''));
         setSpeckerOnStop(1)
     };
 
@@ -157,9 +156,10 @@ export default function ContentDetail(props) {
     const handleTTSFinish = () => {
 
         const currentActiveIndex = activeIndexRef.current;
-        console.log("currentActiveIndex............handleTTSFinish..", currentActiveIndex, description.length,descriptionLength)
-        if (currentActiveIndex !== -1 && currentActiveIndex < descriptionLength - 1) {
-            handlePlay(currentActiveIndex + 1);
+        const activeDescription = activeDescriptionRef.current;
+        if (currentActiveIndex !== -1 && currentActiveIndex < activeDescription.length - 1) {
+            var addData = currentActiveIndex + 1
+         handlePlay(addData);
         } else {
             setIsPlaying(false);
             setActiveIndex(-1);
