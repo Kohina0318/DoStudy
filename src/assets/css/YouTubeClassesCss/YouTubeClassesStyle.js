@@ -76,6 +76,9 @@ youtubIcon:{
   backgroundColor:"rgba(0, 0, 0, 0.5)",
   padding:15,
   borderRadius:50
+},
+YoutubeVideo:{
+  backgroundColor:"#000",height:height, justifyContent:"center",alignContent:"center",
 }
  
   

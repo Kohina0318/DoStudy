@@ -66,7 +66,13 @@ export default function Profile(props) {
             name: "Sign Out",
             icon: <AD name="logout" size={18} color={themecolor.BACKICON} />,
             onpress1: 'Sign Out'
-        }
+        },
+        {
+            id: 5,
+            name: "Support",
+            icon: <AD name="logout" size={18} color={themecolor.BACKICON} />,
+            onpress: 'Support'
+        },
     ];
 
     const handleUserData = async () => {

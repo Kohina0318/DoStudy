@@ -17,7 +17,7 @@ const { width, height } = Dimensions.get('screen');
 function SubjectDataFlatList({ item, themecolor, boxSize, dashTypes }) {
   const navigation = useNavigation();
 
-  var navigateTo = 'SubjectCategory'
+  var navigateTo = ''
   if (dashTypes == "YouTube_Classes") {
     navigateTo = "YouTubeClasses"
   }
@@ -25,7 +25,7 @@ function SubjectDataFlatList({ item, themecolor, boxSize, dashTypes }) {
   return (
     <TouchableOpacity activeOpacity={0.5}
       style={{ ...styles.subContanier, backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1, }}
-      onPress={() => navigation.navigate(navigateTo, { Id: item.id, ClassId: item.class_id, Name: item.subject_name, dashTypes:dashTypes })}
+      onPress={() => {navigateTo != '' ? navigation.navigate(navigateTo, { Id:9,subjectId:item.id,  ClassId: item.class_id, Name: item.subject_name, dashTypes:dashTypes }) : navigation.navigate("SubjectCategory", { Id: item.id, ClassId: item.class_id, Name: item.subject_name, dashTypes:dashTypes })}}
     >
       <View style={{ ...styles.subImg }}>
         <Image

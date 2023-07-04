@@ -23,6 +23,9 @@ function SubjectCategoryDataFlateList({ item, themecolor,subjectId }) {
   }else if(item.id === 3 || item.id === 4 ||  item.id === 8 ){
     navigate = "QuestionandExamCategory"
   }
+  else if(item.id === 9 ){
+    navigate = "YouTubeClasses"
+  }
   else{
     navigate = "BookCategory"
   }

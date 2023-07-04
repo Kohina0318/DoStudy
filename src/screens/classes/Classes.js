@@ -68,7 +68,7 @@ export default function Classes(props) {
             }
             
             var res = await getClasses(navType);
-            console.log("ghghjnnnnnn.....",res,navType)
+            // console.log("ghghjnnnnnn.....",res,navType)
             if (res.status === true) {
                 setData(res.data);
                 setLoader(false)
