@@ -21,7 +21,7 @@ function YouTubeClassListByIdDataFlatList({ item, themecolor, boxSize, dashTypes
     return (
         <TouchableOpacity activeOpacity={0.5}
             style={{ ...styles.classContanier, backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1, }}
-            onPress={() => Linking.openURL(item.url)}
+            onPress={() => navigation.navigate('YouTubeVideoPage', { url: item.url })}
         >
             <View style={{ ...styles.classImg }}>
                 <Image

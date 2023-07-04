@@ -40,6 +40,7 @@ import DiscussionTopic from '../../screens/discussion/DiscussionTopic';
 import CreateDiscussion from '../../screens/discussion/CreateDiscussion';
 import YouTubeClasses from '../../screens/YouTubeClasses/YouTubeClasses';
 import YouTubeClassesListByID from '../../screens/YouTubeClasses/YouTubeClassesListByID';
+import YouTubeVideoPage from '../../screens/YouTubeClasses/YouTubeVideoPage';
 
 
 function MainNavigationStack(props) {
@@ -209,6 +210,11 @@ function MainNavigationStack(props) {
         <Stack.Screen
           name="YouTubeClassesListByID"
           component={YouTubeClassesListByID}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="YouTubeVideoPage"
+          component={YouTubeVideoPage}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
     height: 70,
   },
   iconTitle: {
-    width: width * 0.87,
+    width: width * 0.8,
   },
   iconTitle1: {
     width: width * 0.8,

@@ -4,9 +4,9 @@ import { removeDatafromAsync } from "../AsyncStorageServices";
 import { getAppToken } from "../CommonRepository";
 import { SERVER_URL } from "../SERVER_URL";
 
-const getYouTubeClasses = async (sid) => {
+const getYouTubeClasses = async (cid,sid) => {
   try {
-    const response = await fetch(`${await SERVER_URL()}/api/youtube-class-list?subject_id=${sid}&type=Youtube&category_id=9`, {
+    const response = await fetch(`${await SERVER_URL()}/api/youtube-class-list?subject_id=${sid}&category_id=${cid}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json;charset=utf-8' ,
       Authorization: `${await getAppToken()}`},

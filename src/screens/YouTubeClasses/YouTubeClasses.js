@@ -45,7 +45,7 @@ export default function YouTubeClasses(props) {
 
     const handleYouTube = async () => {
         try {
-            var res = await getYouTubeClasses(props.route.params.Id);
+            var res = await getYouTubeClasses(props.route.params.Id, props.route.params.subjectId);
             if (res.status === true) {
                 setData(res.data);
                 setLoader(false)

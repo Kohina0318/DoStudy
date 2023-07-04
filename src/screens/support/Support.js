@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { View, TouchableOpacity, Text,Dimensions,useWindowDimensions } from 'react-native';
 import Tts from 'react-native-tts';
@@ -154,6 +155,135 @@ export default Support;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+// import React, { useState, useEffect, useRef } from 'react';
+// import { View, TouchableOpacity, Text, Dimensions, useWindowDimensions } from 'react-native';
+// import Tts from 'react-native-tts';
+// import PDFView from 'react-native-pdf-lib';
+
+// const { width, height } = Dimensions.get('window');
+// const pdfUrl = 'https://www.africau.edu/images/default/sample.pdf'; // Replace with your PDF URL
+
+// const Support = () => {
+//   const { contentWidth } = useWindowDimensions();
+
+//   const [activeIndex, setActiveIndex] = useState(-1);
+//   const [isPlaying, setIsPlaying] = useState(false);
+//   const [recognizedText, setRecognizedText] = useState('');
+
+//   const activeIndexRef = useRef(activeIndex);
+
+//   useEffect(() => {
+//     activeIndexRef.current = activeIndex;
+//   }, [activeIndex]);
+
+//   useEffect(() => {
+//     Tts.addEventListener('tts-finish', handleTTSFinish);
+
+//     return () => {
+//       Tts.removeEventListener('tts-finish', handleTTSFinish);
+//     };
+//   }, []);
+
+//   const handlePlay = (index) => {
+//     Tts.stop();
+//     setActiveIndex(index);
+//     setIsPlaying(true);
+//     setRecognizedText('');
+//     // Fetch the PDF content and extract the text of the selected page or paragraph
+//     fetch(pdfUrl)
+//       .then((response) => response.blob())
+//       .then((blob) => {
+//         const reader = new FileReader();
+//         reader.onloadend = () => {
+//           const pdfContent = reader.result;
+//           // Extract the text from the PDF content based on the selected index
+//           const selectedText = extractTextFromPdfContent(pdfContent, index);
+//           Tts.speak(selectedText);
+//         };
+//         reader.readAsText(blob);
+//       });
+//   };
+
+//   const handleTTSFinish = () => {
+//     const currentActiveIndex = activeIndexRef.current;
+//     if (currentActiveIndex !== -1 && currentActiveIndex < getPageCount()) {
+//       handlePlay(currentActiveIndex + 1);
+//     } else {
+//       setIsPlaying(false);
+//       setActiveIndex(-1);
+//     }
+//   };
+
+//   const handleStop = () => {
+//     Tts.stop();
+//     setIsPlaying(false);
+//     setActiveIndex(-1);
+//   };
+
+//   const handleTextClick = (index) => {
+//     Tts.stop();
+//     setActiveIndex(index);
+//     setRecognizedText('');
+//     handlePlay(index);
+//   };
+
+//   const getPageCount = () => {
+//     // Implement logic to get the total page count of the PDF
+//     // You can use a PDF parsing library or an API to retrieve this information
+//     // For simplicity, let's assume the page count is 5
+//     return 5;
+//   };
+
+//   const extractTextFromPdfContent = (pdfContent, index) => {
+//     // Implement logic to extract text from the PDF content based on the selected index
+//     // You can use a PDF parsing library or an API to extract the text
+//     // For simplicity, let's assume each page contains a single paragraph
+//     const paragraphs = pdfContent.split('\n\n');
+//     return paragraphs[index];
+//   };
+
+//   return (
+//     <View style={{ margin: 50 }}>
+//       <TouchableOpacity
+//         onPress={() => handlePlay(0)}
+//         style={{
+//           backgroundColor: 'blue',
+//           padding: 10,
+//           borderRadius: 5,
+//           margin: 5,
+//         }}
+//       >
+//         <Text style={{ color: '#fff' }}>Play</Text>
+//       </TouchableOpacity>
+
+//       {[...Array(getPageCount())].map((_, index) => (
+//         <TouchableOpacity key={index} onPress={() => handleTextClick(index)}>
+//           <Text
+//             style={{
+//               fontSize: 16,
+//               fontWeight: activeIndex === index ? 'bold' : 'normal',
+//               color: activeIndex === index ? 'red' : '#000',
+//             }}
+//           >
+//             Page {index + 1}
+//           </Text>
+//         </TouchableOpacity>
+//       ))}
+
+//       {isPlaying && (
+//         <TouchableOpacity onPress={handleStop}>
+//           <Text>Stop</Text>
+//         </TouchableOpacity>
+//       )}
+
+//       <Text>Recognized Text: {recognizedText}</Text>
+//     </View>
+//   );
+// };
+
+// export default Support;
 
 
 

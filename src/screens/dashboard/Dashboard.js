@@ -72,9 +72,16 @@ export default function Dashboard(props) {
       touch: false,
     },
     {
+      id: 9,
+      image: require('../../assets/images/result.png'),
+      name: 'Results',
+      onpress: "Result",
+      touch: false,
+    },
+    {
       id: 7,
       image: require('../../assets/images/liveclass.png'),
-      name: 'Live Classes',
+      name: 'Live Classes', 
       onpress: "",
       touch: true,
     },
@@ -85,13 +92,7 @@ export default function Dashboard(props) {
       onpress: "",
       touch: true,
     },
-    {
-      id: 9,
-      image: require('../../assets/images/result.png'),
-      name: 'Results',
-      onpress: "Result",
-      touch: false,
-    },
+    
   ]
 
   const [carouselData, setCarouselData] = useState([]);
