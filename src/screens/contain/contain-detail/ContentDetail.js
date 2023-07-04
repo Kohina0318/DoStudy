@@ -29,6 +29,7 @@ export default function ContentDetail(props) {
 
 
     function handleBackButtonClick() {
+        Tts.stop();
         props.navigation.goBack();
         return true;
     }
@@ -59,7 +60,7 @@ export default function ContentDetail(props) {
     let yourDate = new Date()
     var TodayDate = yourDate.toISOString().split('T')[0]
 
-   
+
 
     const handleUserData = async () => {
         try {
@@ -122,7 +123,7 @@ export default function ContentDetail(props) {
         activeIndexRef.current = activeIndex;
     }, [activeIndex]);
 
-    
+
     useEffect(() => {
         activeDescriptionRef.current = description;
     }, [description]);
@@ -135,18 +136,42 @@ export default function ContentDetail(props) {
         };
     }, []);
 
-
-
+    const fetchAndSetVoice = async () => {
+        try {
+          const voices = await Tts.voices();
+          console.log('Tts.voices..............',voices); 
+          const desiredVoice = voices.find(voice => voice.id === 'hi-in-x-hid-local');
+          if (desiredVoice) {
+            Tts.setDefaultLanguage(desiredVoice.language)
+            Tts.setDefaultVoice(desiredVoice.id); 
+            Tts.setDefaultRate(0.3);
+            Tts.setDefaultPitch(1.0);
+          } else {
+            Tts.setDefaultRate(0.3);
+            Tts.setDefaultPitch(1.0);
+            console.warn('Desired voice not found');
+          }
+        } catch (error) {
+            Tts.setDefaultRate(0.3);
+            Tts.setDefaultPitch(1.0);
+          console.error('Error fetching available voices:', error);
+        }
+      };
+    
+      useEffect(()=>{
+        fetchAndSetVoice()
+      },[])
+    
     const handlePlay = (index) => {
         const activeDescription = activeDescriptionRef.current;
         Tts.stop();
         setActiveIndex(index);
         setIsPlaying(true);
         setRecognizedText('');
-        Tts.setDefaultLanguage('hi-IN')
-        Tts.setDefaultVoice('hi-in-x-hid-local')
-        Tts.setDefaultRate(0.3);
-        Tts.setDefaultPitch(1.0);
+        // Tts.setDefaultLanguage('hi-IN')
+        // Tts.setDefaultVoice('hi-in-x-hid-local')
+        // Tts.setDefaultRate(0.3);
+        // Tts.setDefaultPitch(1.0);
         Tts.speak(activeDescription[index].replace(/<[^>]+>/g, ''));
         setSpeckerOnStop(1)
     };
@@ -159,7 +184,7 @@ export default function ContentDetail(props) {
         const activeDescription = activeDescriptionRef.current;
         if (currentActiveIndex !== -1 && currentActiveIndex < activeDescription.length - 1) {
             var addData = currentActiveIndex + 1
-         handlePlay(addData);
+            handlePlay(addData);
         } else {
             setIsPlaying(false);
             setActiveIndex(-1);
@@ -179,10 +204,10 @@ export default function ContentDetail(props) {
         setActiveIndex(index);
         setRecognizedText('');
         if (index >= 0 && index < description.length) {
-            Tts.setDefaultLanguage('hi-IN')
-            Tts.setDefaultVoice('hi-in-x-hid-local')
-            Tts.setDefaultRate(0.3);
-            Tts.setDefaultPitch(1.0);
+            // Tts.setDefaultLanguage('hi-IN')
+            // Tts.setDefaultVoice('hi-in-x-hid-local')
+            // Tts.setDefaultRate(0.3);
+            // Tts.setDefaultPitch(1.0);
             if (index >= 0 && index < description.length) {
                 Tts.speak(description[index].replace(/<[^>]+>/g, ''));
             }
@@ -240,15 +265,23 @@ export default function ContentDetail(props) {
                                     TodayDate >= packageExpiry ?
                                         <>
                                             <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
-                                                <Text
-                                                    selectable={true}
-                                                    allowFontScaling={false}
-                                                    numberOfLines={3}
-                                                    ellipsizeMode='tail'
-                                                    style={{
-                                                        ...styles.txt,
-                                                        color: themecolor.TXTWHITE, letterSpacing: 1
-                                                    }}>{description}</Text>
+                                                <HTML
+                                                    contentWidth={contentWidth}
+                                                    source={{ html: description[0] }}
+                                                    enableExperimentalBRCollapsing={true}
+                                                    enableExperimentalGhostLinesPrevention={true}
+                                                    defaultViewProps={{ width: width * 0.8 }}
+                                                    tagsStyles={{
+                                                        p: {
+                                                            fontSize: 16,
+                                                            color: themecolor.TXTWHITE,
+                                                            textAlign: 'left',
+                                                            fontWeight: 'normal',
+                                                            height: 'auto',
+                                                            width: "100%",
+                                                        },
+                                                    }}
+                                                />
                                                 <View style={styles.mt5} />
                                                 <Text
                                                     selectable={true}
@@ -271,23 +304,6 @@ export default function ContentDetail(props) {
                                         </>
                                         :
                                         <>
-
-                                            {/* {description != "" ?
-                                                description.map((text, index) => (
-                                                    <TouchableOpacity key={index} onPress={() => handleTextClick(index)} >
-                                                        <Text
-                                                            style={{
-                                                                ...styles.txt,
-                                                                letterSpacing: 1,
-                                                                fontWeight: activeIndex === index ? 'bold' : 'normal',
-                                                                color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
-                                                            }}
-                                                        >
-                                                            {text}.
-                                                        </Text>
-                                                    </TouchableOpacity>
-                                                ))
-                                                : <></>} */}
 
                                             {description.map((html, index) => (
                                                 <TouchableOpacity key={index} onPress={() => handleTextClick(index)}>
@@ -383,7 +399,24 @@ export default function ContentDetail(props) {
                                         TodayDate >= packageExpiry ?
                                             <>
                                                 <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
-                                                    <Text
+                                                    <HTML
+                                                        contentWidth={contentWidth}
+                                                        source={{ html: description[0] }}
+                                                        enableExperimentalBRCollapsing={true}
+                                                        enableExperimentalGhostLinesPrevention={true}
+                                                        defaultViewProps={{ width: width * 0.8 }}
+                                                        tagsStyles={{
+                                                            p: {
+                                                                fontSize: 16,
+                                                                color: themecolor.TXTWHITE,
+                                                                textAlign: 'left',
+                                                                fontWeight: 'normal',
+                                                                height: 'auto',
+                                                                width: "100%",
+                                                            },
+                                                        }}
+                                                    />
+                                                    {/* <Text
                                                         selectable={true}
                                                         allowFontScaling={false}
                                                         numberOfLines={3}
@@ -391,7 +424,7 @@ export default function ContentDetail(props) {
                                                         style={{
                                                             ...styles.txt,
                                                             color: themecolor.TXTWHITE, letterSpacing: 1
-                                                        }}>{description}</Text>
+                                                        }}>{description}</Text> */}
                                                     <View style={styles.mt5} />
                                                     <Text
                                                         selectable={true}
@@ -509,15 +542,31 @@ export default function ContentDetail(props) {
                                         :
                                         <>
                                             <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
-                                                <Text
+                                                <HTML
+                                                    contentWidth={contentWidth}
+                                                    source={{ html: description[0] }}
+                                                    enableExperimentalBRCollapsing={true}
+                                                    enableExperimentalGhostLinesPrevention={true}
+                                                    defaultViewProps={{ width: width * 0.8 }}
+                                                    tagsStyles={{
+                                                        p: {
+                                                            fontSize: 16,
+                                                            color: themecolor.TXTWHITE,
+                                                            textAlign: 'left',
+                                                            fontWeight: 'normal',
+                                                            height: 'auto',
+                                                            width: "100%",
+                                                        },
+                                                    }}
+                                                />
+                                                {/* <Text
                                                     selectable={true}
                                                     allowFontScaling={false}
                                                     numberOfLines={3}
                                                     ellipsizeMode='tail'
                                                     style={{
-                                                        ...styles.txt,
                                                         color: themecolor.TXTWHITE,
-                                                    }}>{description}</Text>
+                                                    }}>{description}</Text> */}
                                                 <View style={styles.mt5} />
                                                 <Text
                                                     selectable={true}
