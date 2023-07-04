@@ -64,13 +64,13 @@ export default function Dashboard(props) {
       onpress: "HindiBooks",
       touch: false,
     },
-    {
-      id: 6,
-      image: require('../../assets/images/youtube.png'),
-      name: 'YouTube Classes',
-      onpress1: "YouTube_Classes",
-      touch: false,
-    },
+    // {
+    //   id: 6,
+    //   image: require('../../assets/images/youtube.png'),
+    //   name: 'YouTube Classes',
+    //   onpress1: "YouTube_Classes",
+    //   touch: false,
+    // },
     {
       id: 9,
       image: require('../../assets/images/result.png'),
@@ -175,7 +175,7 @@ export default function Dashboard(props) {
 
               <View style={styles.mgT10} />
 
-              <View style={{ ...styles.ViewHeading }}>
+              <View style={{ ...styles.ViewHeading ,}}>
                 <DashBoardFlateList data={data} />
               </View>
 

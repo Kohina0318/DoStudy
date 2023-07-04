@@ -41,6 +41,7 @@ function DashBoardDataFlatList({ item, themecolor, boxSize }) {
           style={{ color: themecolor.TXTWHITE, ...styles.classhead }}>
           {item.name}
         </Text>
+        
       </TouchableOpacity>
 
       {item.touch &&

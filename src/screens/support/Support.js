@@ -5,6 +5,7 @@ import Tts from 'react-native-tts';
 import HTML from 'react-native-render-html';
 
 const { width, height } = Dimensions.get('window');
+
 const Support = () => {
   const { contentWidth } = useWindowDimensions();
  
@@ -30,6 +31,27 @@ const Support = () => {
       Tts.removeEventListener('tts-finish', handleTTSFinish);
     };
   }, []);
+
+
+  const fetchAndSetVoice = async () => {
+    try {
+      const voices = await Tts.voices();
+      console.log('Tts.voices..............',voices); 
+      const desiredVoice = voices.find(voice => voice.id === 'hi-in-x-hid-local');
+      if (desiredVoice) {
+        Tts.setDefaultLanguage(desiredVoice.language)
+        Tts.setDefaultVoice(desiredVoice.id); 
+      } else {
+        console.warn('Desired voice not found');
+      }
+    } catch (error) {
+      console.error('Error fetching available voices:', error);
+    }
+  };
+
+  useEffect(()=>{
+    fetchAndSetVoice()
+  },[])
 
   const handlePlay = (index) => {
     Tts.stop();
@@ -66,7 +88,6 @@ const Support = () => {
 
   
   
-  console.log("jhjjkk...activeIndex...",activeIndex)
 
   return (
     <View style={{ margin: 50 }}>

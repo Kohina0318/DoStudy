@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
       fontSize: FontSize.smallText,
     },
     ViewHeading:{
-      width: width * 0.95, alignSelf: 'center', marginBottom:8
+      width: width * 0.95, alignSelf: 'center', marginBottom:8, 
     },
     ViewInnerHeading:{
       flexDirection: 'row',
@@ -109,7 +109,9 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
     },
     touchView:{
-      backgroundColor: "rgba(252, 252, 203, 0.8)", width: width * 0.305, alignItems: "center", marginTop: -65,padding:2
+      backgroundColor: "rgba(252, 252, 203, 0.8)", width: width * 0.305, alignItems: "center",padding:2,
+      position:"absolute",
+      marginTop: 50
     },
     mainViewCon:{
       display: 'flex', flexDirection: "column", alignItems: "center"

@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
         width: "100%", height: "100%", borderRadius: 7 ,
       },
       mediaView:{
-        width:width*0.8, height:width*0.6,borderRadius: 7 ,
+        width:width*0.83, height:width*0.6,borderRadius: 7 ,
       }
 
 
