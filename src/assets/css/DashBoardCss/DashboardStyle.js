@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     classhead:{
       fontFamily: FontFamily.Popinssemibold,
       color: Colors.black,
-      fontSize: FontSize.labelText2,
+      fontSize: FontSize.labelText,
       fontWeight: 'bold',
     },
     smalltxt:{

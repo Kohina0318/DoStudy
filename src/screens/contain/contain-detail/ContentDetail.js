@@ -138,32 +138,36 @@ export default function ContentDetail(props) {
 
     const fetchAndSetVoice = async () => {
         try {
-          const voices = await Tts.voices();
-          console.log('Tts.voices..............',voices); 
-          const desiredVoice = voices.find(voice => voice.language === 'hi-IN');
-        //   const desiredVoice = voices.find(voice => voice.language === 'hi-IN' && voice.id === 'hi-IN-language');
-        //   const desiredVoice = voices.find(voice => voice.id === 'hi-in-x-hid-local');
-          if (desiredVoice) {
-            Tts.setDefaultLanguage(desiredVoice.language)
-            Tts.setDefaultVoice(desiredVoice.id); 
-            Tts.setDefaultRate(0.3);
-            Tts.setDefaultPitch(1.0);
-          } else {
-            Tts.setDefaultRate(0.3);
-            Tts.setDefaultPitch(1.0);
-            console.warn('Desired voice not found');
-          }
+            const voices = await Tts.voices();
+            //   console.log('Tts.voices..............',voices); 
+            //   const desiredVoice = voices.find(voice => voice.language === 'hi-IN');
+            //   const desiredVoice = voices.find(voice => voice.language === 'hi-IN' && voice.id === 'hi-IN-language');
+            const desiredVoice = voices.find(voice => voice.id === 'hi-IN-language');
+            if (desiredVoice) {
+                Tts.setDefaultLanguage(desiredVoice.language)
+                Tts.setDefaultVoice(desiredVoice.id);
+                // Tts.setDefaultRate(0.3);
+                // Tts.setDefaultPitch(1.0);
+            } else {
+                // Tts.setDefaultRate(0.3);
+                // Tts.setDefaultPitch(1.0);
+                Tts.setDefaultLanguage('hi-IN')
+                Tts.setDefaultVoice('"com.apple.ttsbundle.Lekha-compact')
+                console.warn('Desired voice not found');
+            }
         } catch (error) {
-            Tts.setDefaultRate(0.3);
-            Tts.setDefaultPitch(1.0);
-          console.error('Error fetching available voices:', error);
+            // Tts.setDefaultRate(0.3);
+            // Tts.setDefaultPitch(1.0);
+            Tts.setDefaultLanguage('hi-IN')
+            Tts.setDefaultVoice('"com.apple.ttsbundle.Lekha-compact')
+            console.error('Error fetching available voices:', error);
         }
-      };
-    
-      useEffect(()=>{
+    };
+
+    useEffect(() => {
         fetchAndSetVoice()
-      },[])
-    
+    }, [])
+
     const handlePlay = (index) => {
         const activeDescription = activeDescriptionRef.current;
         Tts.stop();
@@ -334,13 +338,13 @@ export default function ContentDetail(props) {
                                                             },
                                                             ul: {
                                                                 fontSize: 16,
-                                                                color:  themecolor.TXTWHITE,
+                                                                color: themecolor.TXTWHITE,
                                                                 height: 'auto',
                                                                 width: "100%",
                                                             },
                                                             li: {
                                                                 fontSize: 16,
-                                                                color:  themecolor.TXTWHITE,
+                                                                color: themecolor.TXTWHITE,
                                                                 textAlign: 'left',
                                                                 height: 'auto',
                                                                 width: "100%",
@@ -494,13 +498,13 @@ export default function ContentDetail(props) {
                                                                 },
                                                                 ul: {
                                                                     fontSize: 16,
-                                                                    color:  themecolor.TXTWHITE,
+                                                                    color: themecolor.TXTWHITE,
                                                                     height: 'auto',
                                                                     width: "100%",
                                                                 },
                                                                 li: {
                                                                     fontSize: 16,
-                                                                    color:  themecolor.TXTWHITE,
+                                                                    color: themecolor.TXTWHITE,
                                                                     textAlign: 'left',
                                                                     height: 'auto',
                                                                     width: "100%",
