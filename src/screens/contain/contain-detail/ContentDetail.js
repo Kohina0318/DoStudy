@@ -140,7 +140,9 @@ export default function ContentDetail(props) {
         try {
           const voices = await Tts.voices();
           console.log('Tts.voices..............',voices); 
-          const desiredVoice = voices.find(voice => voice.id === 'hi-in-x-hid-local');
+          const desiredVoice = voices.find(voice => voice.language === 'hi-IN');
+        //   const desiredVoice = voices.find(voice => voice.language === 'hi-IN' && voice.id === 'hi-IN-language');
+        //   const desiredVoice = voices.find(voice => voice.id === 'hi-in-x-hid-local');
           if (desiredVoice) {
             Tts.setDefaultLanguage(desiredVoice.language)
             Tts.setDefaultVoice(desiredVoice.id); 
@@ -316,7 +318,7 @@ export default function ContentDetail(props) {
                                                         tagsStyles={{
                                                             p: {
                                                                 fontSize: 16,
-                                                                color: activeIndex === index ? 'red' : '#000',
+                                                                color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
                                                                 textAlign: 'left',
                                                                 fontWeight: activeIndex === index ? 'bold' : 'normal',
                                                                 height: 'auto',
@@ -324,7 +326,7 @@ export default function ContentDetail(props) {
                                                             },
                                                             h2: {
                                                                 fontSize: 16,
-                                                                color: activeIndex === index ? 'red' : '#000',
+                                                                color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
                                                                 textAlign: 'left',
                                                                 fontWeight: activeIndex === index ? 'bold' : 'normal',
                                                                 height: 'auto',
@@ -332,13 +334,13 @@ export default function ContentDetail(props) {
                                                             },
                                                             ul: {
                                                                 fontSize: 16,
-                                                                color: "#000",
+                                                                color:  themecolor.TXTWHITE,
                                                                 height: 'auto',
                                                                 width: "100%",
                                                             },
                                                             li: {
                                                                 fontSize: 16,
-                                                                color: "#000",
+                                                                color:  themecolor.TXTWHITE,
                                                                 textAlign: 'left',
                                                                 height: 'auto',
                                                                 width: "100%",
@@ -476,7 +478,7 @@ export default function ContentDetail(props) {
                                                             tagsStyles={{
                                                                 p: {
                                                                     fontSize: 16,
-                                                                    color: activeIndex === index ? 'red' : '#000',
+                                                                    color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
                                                                     textAlign: 'left',
                                                                     fontWeight: activeIndex === index ? 'bold' : 'normal',
                                                                     height: 'auto',
@@ -484,7 +486,7 @@ export default function ContentDetail(props) {
                                                                 },
                                                                 h2: {
                                                                     fontSize: 16,
-                                                                    color: activeIndex === index ? 'red' : '#000',
+                                                                    color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
                                                                     textAlign: 'left',
                                                                     fontWeight: activeIndex === index ? 'bold' : 'normal',
                                                                     height: 'auto',
@@ -492,13 +494,13 @@ export default function ContentDetail(props) {
                                                                 },
                                                                 ul: {
                                                                     fontSize: 16,
-                                                                    color: "#000",
+                                                                    color:  themecolor.TXTWHITE,
                                                                     height: 'auto',
                                                                     width: "100%",
                                                                 },
                                                                 li: {
                                                                     fontSize: 16,
-                                                                    color: "#000",
+                                                                    color:  themecolor.TXTWHITE,
                                                                     textAlign: 'left',
                                                                     height: 'auto',
                                                                     width: "100%",
