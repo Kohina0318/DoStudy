@@ -33,14 +33,15 @@ import FullPdfContainDetail from '../../screens/contain/contain-detail/FullPdfCo
 import VideoCategory from '../../screens/classes/Category/Topics/VideoCategory';
 import QuestionandExamCategory from '../../screens/classes/Category/Topics/QuestionandExamCategory';
 import Result from '../../screens/result/Result';
-import EnglishBooks from '../../screens/englishBooks/EnglishBooks';
-import HindiBooks from '../../screens/hindiBooks/HindiBooks';
+import EnglishBooks from '../../screens/englishandHindiBooks/EnglishBooks';
+import HindiBooks from '../../screens/englishandHindiBooks/HindiBooks';
 import Discussion from '../../screens/discussion/Discussion';
 import DiscussionTopic from '../../screens/discussion/DiscussionTopic';
 import CreateDiscussion from '../../screens/discussion/CreateDiscussion';
 import YouTubeClasses from '../../screens/YouTubeClasses/YouTubeClasses';
 import YouTubeClassesListByID from '../../screens/YouTubeClasses/YouTubeClassesListByID';
 import YouTubeVideoPage from '../../screens/YouTubeClasses/YouTubeVideoPage';
+import EnglishHindiContentDetail from '../../screens/englishandHindiBooks/EnglishHindiContentDetail';
 
 
 function MainNavigationStack(props) {
@@ -185,6 +186,11 @@ function MainNavigationStack(props) {
         <Stack.Screen
           name="HindiBooks"
           component={HindiBooks}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="EnglishHindiContentDetail"
+          component={EnglishHindiContentDetail}
           options={{ headerShown: false }}
         />
         <Stack.Screen

@@ -14,13 +14,14 @@ import { styles } from '../../../../assets/css/ClassesCss/CategoryStyle';
 
 const { width, height } = Dimensions.get('screen');
 
-function EnglishHindiBooksDataFlatList({ item, themecolor, boxSize }) {
+function EnglishHindiBooksDataFlatList({ item, themecolor, book }) {
   const navigation = useNavigation();
+
 
   return (
     <TouchableOpacity activeOpacity={0.5}
       style={{...styles.subContanier,backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1,}}
-      onPress={() => navigation.navigate('FullPdfContainDetail', { contantUrl:item.pdf_url,UnitNo:item.book_name  })}
+      onPress={() => navigation.navigate('EnglishHindiContentDetail', {UnitNo:item.book_name , ID:item.id , Book:book})}
     >
       <Image
         source={{ uri: item.book_img }}
@@ -52,7 +53,7 @@ export function EnglishHindiBooksFlateList(props) {
     <FlatList
       data={props.data}
       renderItem={({ item }) => (
-        <EnglishHindiBooksDataFlatList item={item} themecolor={themecolor} boxSize={props.boxSize} />
+        <EnglishHindiBooksDataFlatList item={item} themecolor={themecolor} boxSize={props.boxSize} book={props.book} />
       )}
       numColumns={2}
       horizontal={false}

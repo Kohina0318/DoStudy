@@ -12,13 +12,13 @@ import NoDataMsg from '../../components/shared/NoData/NoDataMsg';
 import { styles } from '../../assets/css/EnglishandHindiBooksCss/EnglishandHindiStyle'
 import { getADsDatabyAsync } from '../../repository/CommonRepository';
 import AdsCarouselFile from '../../components/shared/Carousel/AdsCarouselFile';
-import { getHindiBooks } from '../../repository/EnglishandHindiBooksRepository/EnglishandHindiBooksRep';
+import { getEnglishBooks } from '../../repository/EnglishandHindiBooksRepository/EnglishandHindiBooksRep';
 import { EnglishHindiBooksFlateList } from '../../components/shared/FlateLists/EnglishHindiBooksFlateList.js/EnglishHindiBooksFlateList';
 
 
 const { width } = Dimensions.get('screen');
 
-export default function HindiBooks(props) {
+export default function EnglishBooks(props) {
     function handleBackButtonClick() {
         props.navigation.goBack();
         return true;
@@ -59,11 +59,9 @@ export default function HindiBooks(props) {
     }, [props]);
 
 
-    const handleHindiBooks = async () => {
+    const handleEnglishBooks = async () => {
         try {
-            var res = await getHindiBooks();
-            console.log("datat...",res)
-            
+            var res = await getEnglishBooks();
             if (res.status === true) {
                 setData(res.data);
                 setLoader(false)
@@ -72,7 +70,7 @@ export default function HindiBooks(props) {
             }
         } catch (e) {
             setLoader(false)
-            console.log('errrror in..handleHindiBooks page-->', e);
+            console.log('errrror in..handleEnglishBooks page-->', e);
             toast.show('Something went wrong!, Try again later.', {
                 type: 'danger',
                 placement: 'bottom',
@@ -84,7 +82,7 @@ export default function HindiBooks(props) {
     };
 
     useEffect(() => {
-        handleHindiBooks()
+        handleEnglishBooks()
     }, [])
 
     return (
@@ -95,7 +93,7 @@ export default function HindiBooks(props) {
                 barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
             />
 
-            <Header title="Hindi Books" backIcon={true}
+            <Header title="English Books" backIcon={true}
                 onPressBack={() => handleBackButtonClick()} />
 
             {loader ? (
@@ -109,7 +107,7 @@ export default function HindiBooks(props) {
                             }}>
 
                             {data.length > 0 ? (
-                                <EnglishHindiBooksFlateList data={data} />
+                                <EnglishHindiBooksFlateList data={data} book="english" />
                             ) : (
                                 <NoDataMsg title="No Data Found!" />
                             )}

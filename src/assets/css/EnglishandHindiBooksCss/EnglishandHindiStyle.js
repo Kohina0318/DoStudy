@@ -24,14 +24,28 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#FFF',
   },
+  datalistView: {
+    width: width * 0.94,
+    marginTop: 6,
+    padding: 13,
+    borderRadius: 10,
+    alignSelf: 'center',
+    alignItems: 'center',
+    borderWidth: 0.5,
+    display: "flex",
+    marginBottom: 1,
+  },
   Img:{
     width:width * 0.2, height:height*0.1 
   },
-  MT5:{
-    marginTop: 10
-  },
+ 
   head:{
     fontSize:  FontSize.labelText3,
+    fontStyle:FontFamily.PopinsRegular,
+    fontWeight:'700'
+  },
+  head1:{
+    fontSize:  FontSize.labelText4,
     fontStyle:FontFamily.PopinsRegular,
     fontWeight:'700'
   },
@@ -39,8 +53,9 @@ const styles = StyleSheet.create({
     fontSize:  FontSize.labelText3,
     fontStyle:FontFamily.PopinsRegular,
   },
-
-
+  buttonViewPDF:{
+    alignItems:"flex-end", alignSelf:"flex-end",
+  },
   contentContainerStyle:{
     width:width*0.944, justifyContent:"flex-start", 
   },
@@ -52,6 +67,28 @@ const styles = StyleSheet.create({
   },
   MT10:{
     marginTop: 10
+  },
+  MT5:{
+    marginTop: 5
+  },
+  touchview: {
+    // width: width,
+    position: 'absolute',
+    bottom: 0,
+    height: 60,
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
+    backgroundColor: 'transparent'
+  },
+
+  mainView: {
+    margin: 10,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    width: width * 0.15,
+    height: width * 0.15,
+    borderRadius: 50,
+    borderWidth: 1
   },
  
   

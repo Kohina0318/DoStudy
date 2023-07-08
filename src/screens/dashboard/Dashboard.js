@@ -92,6 +92,13 @@ export default function Dashboard(props) {
       onpress: "",
       touch: true,
     },
+    {
+      id: 10,
+      image: require('../../assets/images/motivation_ve.png'),
+      name: 'Motivational Videos',
+      onpress: "",
+      touch: true,
+    },
     
   ]
 
