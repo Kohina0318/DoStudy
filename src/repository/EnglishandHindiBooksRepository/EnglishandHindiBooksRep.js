@@ -63,7 +63,37 @@ const getHindiBooks = async () => {
       console.log('error in getHindiBooks...in EnglishandHindiBooksRep ', err);
     }
   };
+
+  const getHindiBooksDescription = async (book, id) => {
+    try {
+      const response = await fetch(`${await SERVER_URL()}/api/eh-books-description?book=${book}&id=${id}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json;charset=utf-8' ,
+        Authorization: `${await getAppToken()}`},
+      });
+      const result = await response.json();
+      if (result.token_status == 'false') {
+        await removeDatafromAsync('@UserData');
+        await removeDatafromAsync('@Token');
+  
+        ToastAndroid.showWithGravityAndOffset(
+          `${'Token Expired'}`,
+          ToastAndroid.TOP,
+          ToastAndroid.LONG,
+          10,
+          10,
+        )
+        navigateToClearStack('SignIn');
+        return result;
+  
+      } else {
+        return result;
+      }
+    } catch (err) {
+      console.log('error in getHindiBooksDescription...in EnglishandHindiBooksRep ', err);
+    }
+  };
   
 
 
-export {  getEnglishBooks,getHindiBooks };
+export {  getEnglishBooks,getHindiBooks,getHindiBooksDescription };

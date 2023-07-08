@@ -20,6 +20,8 @@ import FA from 'react-native-vector-icons/Feather';
 import Ii from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import HTML from 'react-native-render-html';
+import EP from 'react-native-vector-icons/Entypo';
+
 
 const { width, height } = Dimensions.get('screen');
 
@@ -59,7 +61,6 @@ export default function ContentDetail(props) {
 
     let yourDate = new Date()
     var TodayDate = yourDate.toISOString().split('T')[0]
-
 
 
     const handleUserData = async () => {
@@ -174,10 +175,6 @@ export default function ContentDetail(props) {
         setActiveIndex(index);
         setIsPlaying(true);
         setRecognizedText('');
-        // Tts.setDefaultLanguage('hi-IN')
-        // Tts.setDefaultVoice('hi-in-x-hid-local')
-        // Tts.setDefaultRate(0.3);
-        // Tts.setDefaultPitch(1.0);
         Tts.speak(activeDescription[index].replace(/<[^>]+>/g, ''));
         setSpeckerOnStop(1)
     };
@@ -210,10 +207,6 @@ export default function ContentDetail(props) {
         setActiveIndex(index);
         setRecognizedText('');
         if (index >= 0 && index < description.length) {
-            // Tts.setDefaultLanguage('hi-IN')
-            // Tts.setDefaultVoice('hi-in-x-hid-local')
-            // Tts.setDefaultRate(0.3);
-            // Tts.setDefaultPitch(1.0);
             if (index >= 0 && index < description.length) {
                 Tts.speak(description[index].replace(/<[^>]+>/g, ''));
             }
@@ -238,6 +231,19 @@ export default function ContentDetail(props) {
                 <>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={{ ...styles.container, marginTop: 5 }}>
+
+                            <View style={{ ...styles.mtt5 }} />
+
+                            <TouchableOpacity activeOpacity={0.5} style={{ ...styles.buttonViewPDF, }} onPress={() => navigation.navigate('FullPdfContainDetail', { contantUrl: contantUrl, UnitNo: props.route.params.UnitNo })}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{
+                                        ...styles.head,
+                                        color: themecolor.ADDTOCARTBUTTONCOLOR,
+                                    }}>View in PDF <EP name="chevron-right" size={16} color={themecolor.ADDTOCARTBUTTONCOLOR} /></Text>
+                            </TouchableOpacity>
+
+                            <View style={{ ...styles.mtt5 }} />
 
                             <View
                                 style={{
@@ -276,11 +282,11 @@ export default function ContentDetail(props) {
                                                     source={{ html: description[0] }}
                                                     enableExperimentalBRCollapsing={true}
                                                     enableExperimentalGhostLinesPrevention={true}
-                                                    defaultViewProps={{ width: width * 0.8 }}
+                                                    defaultViewProps={{ width: width * 0.82 }}
                                                     tagsStyles={{
                                                         p: {
                                                             fontSize: 16,
-                                                            color: themecolor.TXTWHITE,
+                                                            color: themecolor.TXTWHITE, 
                                                             textAlign: 'left',
                                                             fontWeight: 'normal',
                                                             height: 'auto',
@@ -318,7 +324,7 @@ export default function ContentDetail(props) {
                                                         source={{ html: html }}
                                                         enableExperimentalBRCollapsing={true}
                                                         enableExperimentalGhostLinesPrevention={true}
-                                                        defaultViewProps={{ width: width * 0.8 }}
+                                                        defaultViewProps={{ width: width * 0.82 }}
                                                         tagsStyles={{
                                                             p: {
                                                                 fontSize: 16,
@@ -363,42 +369,7 @@ export default function ContentDetail(props) {
                                                 </TouchableOpacity>
                                             ))}
 
-                                            <View style={styles.mt15} />
-                                            <View style={styles.mt15} />
-                                            <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center', display: "flex" }}>
-                                                {/* {contantUrlType === 'mp4' ?
-                                                    <>
-                                                        <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('FullVideoContainDetail', { contantUrl: contantUrl })} style={{ ...styles.widthVideoBlackPadding, }}>
-                                                            <ImageBackground source={{ uri: props.route.params.UnitImage }} resizeMode='contain' style={{ ...styles.widthVideo1 }}>
-                                                                <View style={{ ...styles.VideoPlay }}>
-                                                                    <Ii name="play" size={25} color={themecolor.TXTWHITE1} />
-                                                                </View>
-                                                            </ImageBackground>
-                                                        </TouchableOpacity>
-                                                    </>
-                                                    :
-                                                    contantUrlType === 'pdf' ? */}
-                                                <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('FullPdfContainDetail', { contantUrl: contantUrl, UnitNo: props.route.params.UnitNo })}>
-                                                    <Image
-                                                        source={require('../../../assets/images/pdf.png')}
-                                                        style={{ ...styles.pdfImg }}
-                                                        resizeMode='contain'
-                                                    />
-                                                    <Text
-                                                        allowFontScaling={false}
-                                                        style={{
-                                                            ...styles.txt1, textAlign: 'center',
-                                                            color: themecolor.ADDTOCARTBUTTONCOLOR,
-                                                        }}>View PDF</Text>
-
-                                                    <View style={styles.mt15} />
-                                                </TouchableOpacity>
-                                                {/* 
-                                                        :
-                                                        <></>
-                                                } */}
-                                            </View>
-
+                                            
                                         </>
                                 ) : (
                                     packageExpiry ?
@@ -410,7 +381,7 @@ export default function ContentDetail(props) {
                                                         source={{ html: description[0] }}
                                                         enableExperimentalBRCollapsing={true}
                                                         enableExperimentalGhostLinesPrevention={true}
-                                                        defaultViewProps={{ width: width * 0.8 }}
+                                                        defaultViewProps={{ width: width * 0.82 }}
                                                         tagsStyles={{
                                                             p: {
                                                                 fontSize: 16,
@@ -422,15 +393,6 @@ export default function ContentDetail(props) {
                                                             },
                                                         }}
                                                     />
-                                                    {/* <Text
-                                                        selectable={true}
-                                                        allowFontScaling={false}
-                                                        numberOfLines={3}
-                                                        ellipsizeMode='tail'
-                                                        style={{
-                                                            ...styles.txt,
-                                                            color: themecolor.TXTWHITE, letterSpacing: 1
-                                                        }}>{description}</Text> */}
                                                     <View style={styles.mt5} />
                                                     <Text
                                                         selectable={true}
@@ -454,23 +416,6 @@ export default function ContentDetail(props) {
                                             :
                                             <>
 
-                                                {/* {description != "" ?
-                                                    description.map((text, index) => (
-                                                        <TouchableOpacity key={index} onPress={() => handleTextClick(index)} >
-                                                            <Text
-                                                                style={{
-                                                                    ...styles.txt,
-                                                                    letterSpacing: 1,
-                                                                    fontWeight: activeIndex === index ? 'bold' : 'normal',
-                                                                    color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
-                                                                }}
-                                                            >
-                                                                {text}.
-                                                            </Text>
-                                                        </TouchableOpacity>
-                                                    ))
-                                                    : <></>} */}
-
                                                 {description.map((html, index) => (
                                                     <TouchableOpacity key={index} onPress={() => handleTextClick(index)}>
                                                         <HTML
@@ -478,7 +423,7 @@ export default function ContentDetail(props) {
                                                             source={{ html: html }}
                                                             enableExperimentalBRCollapsing={true}
                                                             enableExperimentalGhostLinesPrevention={true}
-                                                            defaultViewProps={{ width: width * 0.8 }}
+                                                            defaultViewProps={{ width: width * 0.82 }}
                                                             tagsStyles={{
                                                                 p: {
                                                                     fontSize: 16,
@@ -522,28 +467,6 @@ export default function ContentDetail(props) {
                                                         />
                                                     </TouchableOpacity>
                                                 ))}
-
-                                                <View style={styles.mt15} />
-                                                <View style={styles.mt15} />
-                                                <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center', display: "flex" }}>
-                                                    <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('FullPdfContainDetail', { contantUrl: contantUrl, UnitNo: props.route.params.UnitNo })}>
-                                                        <Image
-                                                            source={require('../../../assets/images/pdf.png')}
-                                                            style={{ ...styles.pdfImg }}
-                                                            resizeMode='contain'
-                                                        />
-                                                        <Text
-                                                            allowFontScaling={false}
-                                                            style={{
-                                                                ...styles.txt1, textAlign: 'center',
-                                                                color: themecolor.ADDTOCARTBUTTONCOLOR,
-                                                            }}>View PDF</Text>
-
-                                                        <View style={styles.mt15} />
-                                                    </TouchableOpacity>
-
-                                                </View>
-
                                             </>
                                         :
                                         <>
@@ -553,7 +476,7 @@ export default function ContentDetail(props) {
                                                     source={{ html: description[0] }}
                                                     enableExperimentalBRCollapsing={true}
                                                     enableExperimentalGhostLinesPrevention={true}
-                                                    defaultViewProps={{ width: width * 0.8 }}
+                                                    defaultViewProps={{ width: width * 0.82 }}
                                                     tagsStyles={{
                                                         p: {
                                                             fontSize: 16,
@@ -565,14 +488,6 @@ export default function ContentDetail(props) {
                                                         },
                                                     }}
                                                 />
-                                                {/* <Text
-                                                    selectable={true}
-                                                    allowFontScaling={false}
-                                                    numberOfLines={3}
-                                                    ellipsizeMode='tail'
-                                                    style={{
-                                                        color: themecolor.TXTWHITE,
-                                                    }}>{description}</Text> */}
                                                 <View style={styles.mt5} />
                                                 <Text
                                                     selectable={true}
@@ -682,7 +597,6 @@ export default function ContentDetail(props) {
                                         <HalfSizeButton
                                             title=""
                                             icon={<IC name="ios-volume-mute-outline" size={35} color={themecolor.TEXTRED} />}
-                                            // onPress={() => handleStopVoice()}
                                             onPress={() => handleStop()}
                                             backgroundColor={'transparent'}
                                             borderColor={'transparent'}
@@ -691,7 +605,6 @@ export default function ContentDetail(props) {
                                             title=""
                                             icon={<IC name="ios-volume-high-outline" size={35} color={themecolor.BACKICON} />}
                                             onPress={() => handlePlay(0)}
-                                            // onPress={() => handleVoice()}
                                             backgroundColor={'transparent'}
                                             borderColor={'transparent'}
                                         />
@@ -717,7 +630,6 @@ export default function ContentDetail(props) {
                                             <HalfSizeButton
                                                 title=""
                                                 icon={<IC name="ios-volume-mute-outline" size={35} color={themecolor.TEXTRED} />}
-                                                // onPress={() => handleStopVoice()}
                                                 onPress={() => handleStop()}
                                                 backgroundColor={'transparent'}
                                                 borderColor={'transparent'}
@@ -726,7 +638,6 @@ export default function ContentDetail(props) {
                                                 title=""
                                                 icon={<IC name="ios-volume-high-outline" size={35} color={themecolor.BACKICON} />}
                                                 onPress={() => handlePlay(0)}
-                                                // onPress={() => handleVoice()}
                                                 backgroundColor={'transparent'}
                                                 borderColor={'transparent'}
                                             />

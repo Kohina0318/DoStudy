@@ -73,6 +73,15 @@ const styles = StyleSheet.create({
     color: Colors.black,
     fontSize: FontSize.labelText4,
   },
+  buttonViewPDF:{
+    alignItems:"flex-end", alignSelf:"flex-end",right:10
+  },
+  head:{
+    fontSize:  FontSize.labelText3,
+    fontStyle:FontFamily.PopinsRegular,
+    fontWeight:'700'
+  },
+ 
   txt2:
   {
     color: Colors.bluetheme,
