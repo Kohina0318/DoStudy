@@ -17,13 +17,12 @@ import Tts from 'react-native-tts';
 import HTML from 'react-native-render-html';
 import { useNavigation } from '@react-navigation/native';
 import { getHindiBooksDescription } from '../../repository/EnglishandHindiBooksRepository/EnglishandHindiBooksRep';
-
+import Sound from 'react-native-sound';
 const { width, height } = Dimensions.get('screen');
 
 export default function EnglishHindiContentDetail(props) {
 
     const { contentWidth } = useWindowDimensions();
-
 
     function handleBackButtonClick() {
         Tts.stop();
@@ -52,6 +51,10 @@ export default function EnglishHindiContentDetail(props) {
     const [pdf, setPdf] = useState('');
     const [speckerOnStop, setSpeckerOnStop] = useState(0);
 
+    const [sound, setSound] = useState(null);
+    const [audioUrl, setAudioUrl] = useState('https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3');
+    const [showAudio, setShowAudio] = useState(0);
+
     const [activeIndex, setActiveIndex] = useState(-1);
     const [isPlaying, setIsPlaying] = useState(false);
     const [recognizedText, setRecognizedText] = useState('');
@@ -59,9 +62,10 @@ export default function EnglishHindiContentDetail(props) {
     const handleBooksDescription = async () => {
         try {
             var res = await getHindiBooksDescription(props.route.params.Book, props.route.params.ID);
-            console.log("data.......",res.data)
+            console.log("data.......", res.data[0].audio_voice)
             if (res.status === true) {
                 setHtmlData(res.data[0].description);
+                setAudioUrl(res.data[0].audio_voice);
                 setPdf(res.data[0].pdf_url)
                 setLoader(false)
             } else {
@@ -115,14 +119,16 @@ export default function EnglishHindiContentDetail(props) {
                 // Tts.setDefaultRate(0.3);
                 // Tts.setDefaultPitch(1.0);
             } else {
+                setShowAudio(1)
                 // Tts.setDefaultRate(0.3);
                 // Tts.setDefaultPitch(1.0);
-                Tts.setDefaultLanguage('hi-IN')
-                Tts.setDefaultVoice('"com.apple.ttsbundle.Lekha-compact')
+                // Tts.setDefaultLanguage('hi-IN')
+                // Tts.setDefaultVoice('"com.apple.ttsbundle.Lekha-compact')
                 console.warn('Desired voice not found');
             }
-          
+
         } catch (error) {
+            setShowAudio(1)
             console.error('Error fetching available voices:', error);
         }
     };
@@ -171,7 +177,37 @@ export default function EnglishHindiContentDetail(props) {
         }
     };
 
+    const playSound = () => {
+        setSpeckerOnStop(1)
+        const newSound = new Sound(audioUrl, '', (error) => {
+            if (error) {
+                console.log('Failed to load the sound', error);
+                return;
+            }
+            setSound(newSound);
+            newSound.play((success) => {
+                if (success) {
+                    console.log('Sound played successfully');
+                } else {
+                    console.log('Sound playback failed');
+                }
+                newSound.release();
+                setSound(null);
+                setIsPlaying(false);
+            });
+            setIsPlaying(true);
+        });
+    };
 
+    const stopSound = () => {
+        if (sound) {
+            sound.stop();
+            sound.release();
+            setSound(null);
+            setIsPlaying(false);
+            setSpeckerOnStop(0)
+        }
+    };
 
     return (
         <View style={{ ...styles.bg, backgroundColor: themecolor.THEMECOLOR }}>
@@ -217,55 +253,62 @@ export default function EnglishHindiContentDetail(props) {
                                     }}
                                 >
                                     {htmlData.map((html, index) => (
-                                        <TouchableOpacity key={index} onPress={() => handleTextClick(index)}>
-                                            <HTML
-                                                contentWidth={contentWidth}
-                                                source={{ html: html }}
-                                                enableExperimentalBRCollapsing={true}
-                                                enableExperimentalGhostLinesPrevention={true}
-                                                defaultViewProps={{ width: width * 0.82 }}
-                                                tagsStyles={{
-                                                    p: {
-                                                        fontSize: 16,
-                                                        color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
-                                                        textAlign: 'left',
-                                                        fontWeight: activeIndex === index ? 'bold' : 'normal',
-                                                        height: 'auto',
-                                                        width: "100%",
-                                                    },
-                                                    h2: {
-                                                        fontSize: 16,
-                                                        color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
-                                                        textAlign: 'left',
-                                                        fontWeight: activeIndex === index ? 'bold' : 'normal',
-                                                        height: 'auto',
-                                                        width: "100%",
-                                                    },
-                                                    ul: {
-                                                        fontSize: 16,
-                                                        color: themecolor.TXTWHITE,
-                                                        height: 'auto',
-                                                        width: "100%",
-                                                    },
-                                                    li: {
-                                                        fontSize: 16,
-                                                        color: themecolor.TXTWHITE,
-                                                        textAlign: 'left',
-                                                        height: 'auto',
-                                                        width: "100%",
-                                                    },
-                                                    span: {
-
-                                                        height: 'auto',
-                                                        width: "100%",
-                                                    },
-                                                    body: {
-                                                        height: 'auto',
-                                                        width: "100%",
-                                                    },
-                                                }}
-                                            />
-                                        </TouchableOpacity>
+                                        showAudio === 1 ?
+                                            <View>
+                                                <HTML
+                                                    contentWidth={contentWidth}
+                                                    source={{ html: html }}
+                                                    enableExperimentalBRCollapsing={true}
+                                                    enableExperimentalGhostLinesPrevention={true}
+                                                    defaultViewProps={{ width: width * 0.82 }}
+                                                    tagsStyles={{
+                                                        p: {
+                                                            fontSize: 16,
+                                                            color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
+                                                            textAlign: 'left',
+                                                            fontWeight: activeIndex === index ? 'bold' : 'normal',
+                                                            height: 'auto',
+                                                            width: "100%",
+                                                        },
+                                                        h2: {
+                                                            fontSize: 16,
+                                                            color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
+                                                            textAlign: 'left',
+                                                            fontWeight: activeIndex === index ? 'bold' : 'normal',
+                                                            height: 'auto',
+                                                            width: "100%",
+                                                        },
+                                                    }}
+                                                />
+                                            </View>
+                                            :
+                                            <TouchableOpacity key={index} onPress={() => handleTextClick(index)}>
+                                                <HTML
+                                                    contentWidth={contentWidth}
+                                                    source={{ html: html }}
+                                                    enableExperimentalBRCollapsing={true}
+                                                    enableExperimentalGhostLinesPrevention={true}
+                                                    defaultViewProps={{ width: width * 0.82 }}
+                                                    tagsStyles={{
+                                                        p: {
+                                                            fontSize: 16,
+                                                            color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
+                                                            textAlign: 'left',
+                                                            fontWeight: activeIndex === index ? 'bold' : 'normal',
+                                                            height: 'auto',
+                                                            width: "100%",
+                                                        },
+                                                        h2: {
+                                                            fontSize: 16,
+                                                            color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
+                                                            textAlign: 'left',
+                                                            fontWeight: activeIndex === index ? 'bold' : 'normal',
+                                                            height: 'auto',
+                                                            width: "100%",
+                                                        },
+                                                    }}
+                                                />
+                                            </TouchableOpacity>
                                     ))}
 
                                 </View>
@@ -287,14 +330,14 @@ export default function EnglishHindiContentDetail(props) {
                                 <HalfSizeButton
                                     title=""
                                     icon={<IC name="ios-volume-mute-outline" size={35} color={themecolor.TEXTRED} />}
-                                    onPress={() => handleStop()}
+                                    onPress={() => showAudio === 1 ? stopSound() : handleStop()}
                                     backgroundColor={'transparent'}
                                     borderColor={'transparent'}
                                 />
                                 : <HalfSizeButton
                                     title=""
                                     icon={<IC name="ios-volume-high-outline" size={35} color={themecolor.BACKICON} />}
-                                    onPress={() => handlePlay(0)}
+                                    onPress={() => showAudio === 1 ? playSound() : handlePlay(0)}
                                     backgroundColor={'transparent'}
                                     borderColor={'transparent'}
                                 />

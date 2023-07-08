@@ -1,23 +1,181 @@
-// import React from 'react';
-// import { Button, View } from 'react-native';
-// import * as Speech from 'expo-speech';
 
-// export default function Support() {
+/////////////////////////////////////////////////////////////////////////////////////////////////
 
-//   const speakText = () => {
-//     const text = 'नमस्ते दुनिया!'; // Hindi text
-//     Speech.speak(text, {
-//       language: 'hi', // Specify the language code for Hindi
+// import React, { useState, useEffect, useRef } from 'react';
+// import { View, TouchableOpacity, Text, Dimensions, useWindowDimensions } from 'react-native';
+// import Sound from 'react-native-sound';
+// import HTML from 'react-native-render-html';
+
+// const { width, height } = Dimensions.get('window');
+
+// const Support = () => {
+//   const { contentWidth } = useWindowDimensions();
+
+//   const [activeIndex, setActiveIndex] = useState(-1);
+//   const [isPlaying, setIsPlaying] = useState(false);
+//   const [recognizedText, setRecognizedText] = useState('');
+
+//   const htmlData = [
+//     "<p>&nbsp;regarded as one of the greatest batsmen of all time, and the best of the current generation <a href=\"https://en.wikipedia.org/wiki/Virat_Kohli#cite_note-indiatoday.intoday.in-4\">[4]</a> Kohli holds the records for scoring most runs in <a href=\"https://en.wikipedia.org/wiki/Twenty20_International\">T20 internationals</a> and in the IPL. In 2020, the <a href=\"https://en.wikipedia.org/wiki/International_Cricket_Council\">International Cricket Council</a> named him the <a href=\"https://en.wikipedia.org/wiki/ICC_Awards_of_the_Decade\">male cricketer of the decade</a>.&nbsp;</p>",
+//     "<p>हिंदी की गद्य परंपरा से जुड़ी प्राचीन, प्रतिनिधि और प्रसिद्ध पुस्तकें यहाँ पढ़िए</p>",
+//     "<p>Kohli has also contributed to India's successes, including winning the <a href=\"https://en.wikipedia.org/wiki/2011_Cricket_World_Cup\">2011 World Cup</a> and the <a href=\"https://en.wikipedia.org/wiki/2013_ICC_Champions_Trophy\">2013 Champions trophy</a>.</p>",
+//   ];
+
+//   const activeIndexRef = useRef(activeIndex);
+//   const audioRef = useRef();
+
+//   useEffect(() => {
+//     activeIndexRef.current = activeIndex;
+//   }, [activeIndex]);
+
+//   const handlePlay = async (index) => {
+//     const text = htmlData[index].replace(/<[^>]+>/g, '')
+//     var toSpeak = new SpeechSynthesisUtterance(text);
+//     console.log("hjjiii",toSpeak)
+//             // var selectedVoiceName = voiceList.selectedOptions[0].getAttribute('data-name');
+//             // voices.forEach((voice)=>{
+//             //     if(voice.name === selectedVoiceName){
+//             //         toSpeak.voice = voice;
+//             //     }
+//             // });
+//             synth.speak(toSpeak);
+
+//     // setActiveIndex(index);
+//     // setIsPlaying(true);
+//     // setRecognizedText('');
+
+//     // try {
+//     //   const text = htmlData[index].replace(/<[^>]+>/g, '');
+//     //   const audioContent = await convertTextToSpeech(text);
+//     //   playAudio(audioContent);
+//     // } catch (error) {
+//     //   console.error('Error converting text to speech:', error);
+//     //   setIsPlaying(false);
+//     //   setActiveIndex(-1);
+//     // }
+//   };
+
+//   const convertTextToSpeech = async (text) => {
+//     const apiKey = 'AIzaSyDaGmWKa4JsXZ-HjGw7ISLn_3namBGewQe'; // Replace with your Google Cloud API key
+//     const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`;
+//     const request = {
+//       input: { text },
+//       voice: { languageCode: "hi-IN", name: "hi-IN-Standard-B", ssmlGender: 'MALE' },
+//       audioConfig: { audioEncoding: 'MP3' },
+//     };
+
+//     try {
+//       const response = await fetch(url, {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(request),
+//       });
+
+//       const data = await response.json();
+//       console.log("convertTextToSpeech.....",data)
+//       return data.audioContent;
+//     } catch (error) {
+//       console.error('Error converting text to speech:', error);
+//     }
+//   };
+
+//   const playAudio = (audioContent) => {
+//     audioRef.current = new Sound(audioContent, Sound.MAIN_BUNDLE, (error) => {
+//       if (error) {
+//         console.error('Error playing audio:', error);
+//         setIsPlaying(false);
+//         setActiveIndex(-1);
+//       } else {
+//         audioRef.current.play((success) => {
+//           if (success) {
+//             handleTTSFinish();
+//           } else {
+//             console.warn('Audio playback failed');
+//           }
+//         });
+//       }
 //     });
 //   };
 
-//   return (
-//     <View>
-//       <Button title="Speak in Hindi" onPress={speakText} />
-//     </View>
-//   );
-// }
+//   const handleStop = () => {
+//     if (audioRef.current) {
+//       audioRef.current.stop();
+//       audioRef.current.release();
+//     }
+//     setIsPlaying(false);
+//     setActiveIndex(-1);
+//   };
 
+//   const handleTextClick = (index) => {
+//     handlePlay(index);
+//   };
+
+//   const handleTTSFinish = () => {
+//     const currentActiveIndex = activeIndexRef.current;
+//     if (currentActiveIndex !== -1 && currentActiveIndex < htmlData.length - 1) {
+//       handlePlay(currentActiveIndex + 1);
+//     } else {
+//       setIsPlaying(false);
+//       setActiveIndex(-1);
+//     }
+//   };
+
+//   return (
+//     <View style={{ margin: 50 }}>
+//       <TouchableOpacity
+//         onPress={() => handlePlay(0)}
+//         style={{
+//           backgroundColor: 'blue',
+//           padding: 10,
+//           borderRadius: 5,
+//           margin: 5,
+//         }}
+//       >
+//         <Text style={{ color: '#fff' }}>Play</Text>
+//       </TouchableOpacity>
+
+//       {htmlData.map((html, index) => (
+//         <TouchableOpacity key={index} onPress={() => handleTextClick(index)}>
+//           <HTML
+//             contentWidth={contentWidth}
+//             source={{ html }}
+//             enableExperimentalBRCollapsing={true}
+//             enableExperimentalGhostLinesPrevention={true}
+//             defaultViewProps={{ width: width * 0.85 }}
+//             style={{
+//               fontSize: 16,
+//               fontWeight: activeIndex === index ? 'bold' : 'normal',
+//               color: activeIndex === index ? 'red' : '#000',
+//             }}
+//             tagsStyles={{
+//               p: {
+//                 fontSize: 16,
+//                 color: activeIndex === index ? 'red' : '#000',
+//                 textAlign: 'left',
+//                 fontWeight: activeIndex === index ? 'bold' : 'normal',
+//                 height: 'auto',
+//                 width: '100%',
+//               },
+//           }}
+//         />
+//       </TouchableOpacity>
+//     ))}
+
+//     {isPlaying && (
+//       <TouchableOpacity onPress={handleStop} style={{ backgroundColor: 'red', padding: 10, borderRadius: 5, margin: 5 }}>
+//         <Text>Stop</Text>
+//       </TouchableOpacity>
+//     )}
+
+//     <Text>Recognized Text: {recognizedText}</Text>
+//   </View>
+// );
+
+// };
+
+// export default Support;
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -26,6 +184,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, TouchableOpacity, Text,Dimensions,useWindowDimensions } from 'react-native';
 import Tts from 'react-native-tts';
 import HTML from 'react-native-render-html';
+import Sound from 'react-native-sound';
 
 const { width, height } = Dimensions.get('window');
 
@@ -35,6 +194,10 @@ const Support = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [recognizedText, setRecognizedText] = useState('');
+  const [showAudio, setShowAudio] = useState(0);
+
+  const [sound, setSound] = useState(null);
+  const audioUrl = 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3'; 
 
   const htmlData = [
      "<p>&nbsp;regarded as one of the greatest batsmen of all time, and the best of the current generation <a href=\"https://en.wikipedia.org/wiki/Virat_Kohli#cite_note-indiatoday.intoday.in-4\">[4]</a> Kohli holds the records for scoring most runs in <a href=\"https://en.wikipedia.org/wiki/Twenty20_International\">T20 internationals</a> and in the IPL. In 2020, the <a href=\"https://en.wikipedia.org/wiki/International_Cricket_Council\">International Cricket Council</a> named him the <a href=\"https://en.wikipedia.org/wiki/ICC_Awards_of_the_Decade\">male cricketer of the decade</a>.&nbsp;</p>",
@@ -63,23 +226,24 @@ const Support = () => {
       const voices = await Tts.voices();
       console.log('Tts.voices..............',voices); 
       // const desiredVoice = voices.find(voice => voice.id === 'hi-in-x-hid-local');
-      const desiredVoice = voices.find(voice => voice.id === 'hi-IN-language');
+      const desiredVoice = voices.find(voice => voice.id === 'hi-IN-language9');
       if (desiredVoice) {
           Tts.setDefaultLanguage(desiredVoice.language)
           Tts.setDefaultVoice(desiredVoice.id);
           // Tts.setDefaultRate(0.3);
           // Tts.setDefaultPitch(1.0);
       } else {
+        setShowAudio(1)
           // Tts.setDefaultRate(0.3);
           // Tts.setDefaultPitch(1.0);
           // Tts.setDefaultLanguage('en-US')
           Tts.setDefaultVoice('en-US-SMTf00');
-
           // Tts.setDefaultLanguage('hi-IN')
-// Tts.setDefaultVoice('com.apple.ttsbundle.Lekha-compact')
+         // Tts.setDefaultVoice('com.apple.ttsbundle.Lekha-compact')
           console.warn('Desired voice not found');
       }
     } catch (error) {
+      setShowAudio(1)
       console.error('Error fetching available voices:', error);
     }
   };
@@ -121,13 +285,65 @@ const Support = () => {
     }
   };
 
-  
-  
+
+  const playSound = () => {
+    // Create a new sound instance with the audio URL
+    const newSound = new Sound(audioUrl, '', (error) => {
+      if (error) {
+        console.log('Failed to load the sound', error);
+        return;
+      }
+      // Store the sound instance in state
+      setSound(newSound);
+
+      // Play the sound
+      newSound.play((success) => {
+        if (success) {
+          console.log('Sound played successfully');
+        } else {
+          console.log('Sound playback failed');
+        }
+        // Reset the sound and isPlaying state
+        newSound.release();
+        setSound(null);
+        setIsPlaying(false);
+      });
+
+      setIsPlaying(true);
+    });
+  };
+
+  const stopSound = () => {
+    if (sound) {
+      // Stop the sound
+      sound.stop();
+
+      // Reset the sound and isPlaying state
+      sound.release();
+      setSound(null);
+      setIsPlaying(false);
+    }
+  };
+
+
 
   return (
     <View style={{ margin: 50 }}>
 
-<TouchableOpacity
+   {showAudio == 1 ?
+    <TouchableOpacity
+        onPress={() => playSound()}
+        style={{
+          backgroundColor: 'blue',
+          padding: 10,
+          borderRadius: 5,
+          margin: 5,
+        }}
+      >
+        <Text style={{ color: '#fff' }}>Play Audio</Text>
+      </TouchableOpacity>
+      :
+      <TouchableOpacity
         onPress={() => handlePlay(0)}
         style={{
           backgroundColor: 'blue',
@@ -138,6 +354,8 @@ const Support = () => {
       >
         <Text style={{ color: '#fff' }}>Play</Text>
       </TouchableOpacity>
+
+}
       
       {htmlData.map((html, index) => (
         <TouchableOpacity key={index} onPress={() => handleTextClick(index)}>
@@ -160,36 +378,7 @@ const Support = () => {
               height: 'auto',
               width:"100%",
             },
-            h2: {
-              fontSize: 16,
-              color: activeIndex === index ? 'red' : '#000',
-              textAlign: 'left',
-              fontWeight: activeIndex === index ? 'bold' : 'normal',
-              height: 'auto',
-              width:"100%",
-            },
-            ul: {
-              fontSize: 16,
-              color: "#000",
-              height: 'auto',
-              width:"100%",
-            },
-            li: {
-              fontSize: 16,
-              color: "#000",
-              textAlign: 'left',
-              height: 'auto',
-              width:"100%",
-            },
-            span: {
-
-              height: 'auto',
-              width:"100%", 
-            },
-            body: {
-              height: 'auto',
-              width:"100%",
-            },}}
+           }}
            />
         </TouchableOpacity>
       ))}
@@ -197,7 +386,16 @@ const Support = () => {
      
 
       {isPlaying && (
-        <TouchableOpacity onPress={handleStop}  style={{
+        showAudio == 1 ?
+        <TouchableOpacity onPress={stopSound}  style={{
+          backgroundColor: 'red',
+          padding: 10,
+          borderRadius: 5,
+          margin: 5,
+        }}>
+          <Text>Stop Audio</Text>
+        </TouchableOpacity>
+        : <TouchableOpacity onPress={handleStop}  style={{
           backgroundColor: 'red',
           padding: 10,
           borderRadius: 5,
@@ -205,6 +403,7 @@ const Support = () => {
         }}>
           <Text>Stop</Text>
         </TouchableOpacity>
+      
       )}
 
       <Text>Recognized Text: {recognizedText}</Text>
