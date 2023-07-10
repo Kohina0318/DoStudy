@@ -16,9 +16,8 @@ import FA from 'react-native-vector-icons/FontAwesome';
 import EP from 'react-native-vector-icons/Entypo';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ii from 'react-native-vector-icons/Ionicons';
-import { postSignOut } from '../../repository/AuthRepository/SignOutRepository';
-import { removeDatafromAsync } from '../../repository/AsyncStorageServices';
 import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRepo';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 export default function Profile(props) {
@@ -67,12 +66,12 @@ export default function Profile(props) {
             icon: <AD name="logout" size={18} color={themecolor.BACKICON} />,
             onpress1: 'Sign Out'
         },
-        {
-            id: 6,
-            name: "Support",
-            icon: <AD name="logout" size={18} color={themecolor.BACKICON} />,
-            onpress: 'Support'
-        },
+        // {
+        //     id: 6,
+        //     name: "Support",
+        //     icon: <AD name="logout" size={18} color={themecolor.BACKICON} />,
+        //     onpress: 'Support'
+        // },
     ];
 
     const handleUserData = async () => {
@@ -98,9 +97,14 @@ export default function Profile(props) {
         }
     };
 
-    useEffect(() => {
-        handleUserData();
-    }, []);
+
+    useFocusEffect(
+        React.useCallback(() => {
+          setLoader(true);
+          handleUserData()
+        }, [props]),
+      );
+
 
 
     return (
@@ -141,7 +145,8 @@ export default function Profile(props) {
                                 {data.name}
                             </Text>
 
-                            {data.package_type == 1 ?
+                           
+                            {packageExpiry ?
                                 TodayDate >= packageExpiry ?
                                     <Text
                                         allowFontScaling={false}
@@ -169,45 +174,14 @@ export default function Profile(props) {
                                         </Text>
 
                                     </>
+
                                 :
-                                packageExpiry ?
-                                    TodayDate >= packageExpiry ?
-                                        <Text
-                                            allowFontScaling={false}
-                                            style={{ ...styles.smallTxt, color: themecolor.TEXTRED }}
-                                            numberOfLines={2}>
-                                            Your Package is expired
-                                        </Text>
-                                        :
-                                        <>
-                                            <Text
-                                                allowFontScaling={false}
-                                                style={{ ...styles.smallTxt, color: themecolor.TEXTGREEN, fontWeight: '700' }}
-                                                numberOfLines={2}>
-                                                Package Activated </Text>
-
-                                            <Text
-                                                allowFontScaling={false}
-                                                style={{ ...styles.smallTxt, color: themecolor.TXTWHITE }}
-                                                numberOfLines={2}>
-                                                Expiry at {" "}
-                                                <Text
-                                                    allowFontScaling={false}
-                                                    style={{ ...styles.smallTxt, color: themecolor.TEXTRED }}
-                                                    numberOfLines={2}>{packageExpiry} </Text>
-                                            </Text>
-
-                                        </>
-                                    
-                                    :
-                                    <Text
-                                        allowFontScaling={false}
-                                        style={{ ...styles.smallTxt, color: themecolor.TXTWHITE }}
-                                        numberOfLines={2}>
-                                        {data.email}
-                                    </Text>
-
-
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{ ...styles.smallTxt, color: themecolor.TXTWHITE }}
+                                    numberOfLines={2}>
+                                    {data.email}
+                                </Text>
                             }
                         </View>
 

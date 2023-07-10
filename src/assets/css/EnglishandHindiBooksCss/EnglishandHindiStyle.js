@@ -35,6 +35,12 @@ const styles = StyleSheet.create({
     display: "flex",
     marginBottom: 1,
   },
+  txt1:
+  {
+    fontFamily: FontFamily.Popinssemibold,
+    color: Colors.black,
+    fontSize: FontSize.labelText4,
+  },
   Img:{
     width:width * 0.2, height:height*0.1 
   },
@@ -70,6 +76,12 @@ const styles = StyleSheet.create({
   },
   MT5:{
     marginTop: 5
+  },
+  m20: {
+    margin: 15
+  },
+  mt15: {
+    marginTop: 15
   },
   touchview: {
     // width: width,

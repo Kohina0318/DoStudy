@@ -16,6 +16,7 @@ import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRe
 import { getSettingDetails } from '../../repository/SettingRepository/SettingRepo';
 import { getADsDatabyAsync } from '../../repository/CommonRepository';
 import AdsCarouselFile from '../../components/shared/Carousel/AdsCarouselFile';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 const { width } = Dimensions.get('screen');
@@ -156,12 +157,22 @@ export default function MemberShip(props) {
     };
 
 
-    useEffect(() => {
-        handleUserData();
-        handleSettingDetails()
-        handlActivePackage()
-        handlPackages()
-    }, [])
+    // useEffect(() => {
+    //     handleUserData();
+    //     handleSettingDetails()
+    //     handlActivePackage()
+    //     handlPackages()
+    // }, [])
+
+    useFocusEffect(
+        React.useCallback(() => {
+            setLoader(true);
+            handleUserData();
+            handleSettingDetails()
+            handlActivePackage()
+            handlPackages()
+        }, [props]),
+    );
 
 
 

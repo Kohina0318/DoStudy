@@ -32,7 +32,7 @@ export default function ContentDetail(props) {
 
     function handleBackButtonClick() {
         Tts.stop();
-       props.navigation.goBack();
+        props.navigation.goBack();
         return true;
     }
 
@@ -145,7 +145,6 @@ export default function ContentDetail(props) {
         try {
             const voices = await Tts.voices();
             //   console.log('Tts.voices..............',voices); 
-            //   const desiredVoice = voices.find(voice => voice.language === 'hi-IN');
             //   const desiredVoice = voices.find(voice => voice.language === 'hi-IN' && voice.id === 'hi-IN-language');
             const desiredVoice = voices.find(voice => voice.id === 'hi-IN-language');
             if (desiredVoice) {
@@ -309,8 +308,7 @@ export default function ContentDetail(props) {
 
                                 <View style={styles.mt15} />
 
-
-                                {packageType == 1 ? (
+                                {packageExpiry ?
                                     TodayDate >= packageExpiry ?
                                         <>
                                             <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
@@ -353,7 +351,6 @@ export default function ContentDetail(props) {
                                         </>
                                         :
                                         <>
-
                                             {description.map((html, index) => (
                                                 showAudio === 1 ?
                                                     <View>
@@ -380,6 +377,7 @@ export default function ContentDetail(props) {
                                                                     height: 'auto',
                                                                     width: "100%",
                                                                 },
+
                                                             }}
                                                         />
                                                     </View>
@@ -408,165 +406,58 @@ export default function ContentDetail(props) {
                                                                     height: 'auto',
                                                                     width: "100%",
                                                                 },
+
                                                             }}
                                                         />
                                                     </TouchableOpacity>
                                             ))}
-
-
                                         </>
-                                ) : (
-                                    packageExpiry ?
-                                        TodayDate >= packageExpiry ?
-                                            <>
-                                                <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
-                                                    <HTML
-                                                        contentWidth={contentWidth}
-                                                        source={{ html: description[0] }}
-                                                        enableExperimentalBRCollapsing={true}
-                                                        enableExperimentalGhostLinesPrevention={true}
-                                                        defaultViewProps={{ width: width * 0.82 }}
-                                                        tagsStyles={{
-                                                            p: {
-                                                                fontSize: 16,
-                                                                color: themecolor.TXTWHITE,
-                                                                textAlign: 'left',
-                                                                fontWeight: 'normal',
-                                                                height: 'auto',
-                                                                width: "100%",
-                                                            },
-                                                        }}
-                                                    />
-                                                    <View style={styles.mt5} />
-                                                    <Text
-                                                        selectable={true}
-                                                        allowFontScaling={false}
-                                                        style={{
-                                                            ...styles.txt1,
-                                                            color: themecolor.TXTWHITE,
-                                                        }}>.   .    .</Text>
-                                                    <LinearGradient
-                                                        start={{ x: 0.0, y: 0.0 }}
-                                                        end={{ x: 0.0, y: 1.0 }}
-                                                        locations={[0.0, 1.0]}
-                                                        colors={['#ffffff40', '#fffffff5']}
-                                                        useViewFrame={false}
-                                                        style={styles.gradient}
-                                                    />
-
-                                                </View>
-                                                <View style={styles.mt15} />
-                                            </>
-                                            :
-                                            <>
-
-                                                {description.map((html, index) => (
-                                                    showAudio === 1 ?
-                                                        <View>
-                                                            <HTML
-                                                                contentWidth={contentWidth}
-                                                                source={{ html: html }}
-                                                                enableExperimentalBRCollapsing={true}
-                                                                enableExperimentalGhostLinesPrevention={true}
-                                                                defaultViewProps={{ width: width * 0.82 }}
-                                                                tagsStyles={{
-                                                                    p: {
-                                                                        fontSize: 16,
-                                                                        color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
-                                                                        textAlign: 'left',
-                                                                        fontWeight: activeIndex === index ? 'bold' : 'normal',
-                                                                        height: 'auto',
-                                                                        width: "100%",
-                                                                    },
-                                                                    h2: {
-                                                                        fontSize: 16,
-                                                                        color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
-                                                                        textAlign: 'left',
-                                                                        fontWeight: activeIndex === index ? 'bold' : 'normal',
-                                                                        height: 'auto',
-                                                                        width: "100%",
-                                                                    },
-
-                                                                }}
-                                                            />
-                                                        </View>
-                                                        :
-                                                        <TouchableOpacity key={index} onPress={() => handleTextClick(index)}>
-                                                            <HTML
-                                                                contentWidth={contentWidth}
-                                                                source={{ html: html }}
-                                                                enableExperimentalBRCollapsing={true}
-                                                                enableExperimentalGhostLinesPrevention={true}
-                                                                defaultViewProps={{ width: width * 0.82 }}
-                                                                tagsStyles={{
-                                                                    p: {
-                                                                        fontSize: 16,
-                                                                        color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
-                                                                        textAlign: 'left',
-                                                                        fontWeight: activeIndex === index ? 'bold' : 'normal',
-                                                                        height: 'auto',
-                                                                        width: "100%",
-                                                                    },
-                                                                    h2: {
-                                                                        fontSize: 16,
-                                                                        color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
-                                                                        textAlign: 'left',
-                                                                        fontWeight: activeIndex === index ? 'bold' : 'normal',
-                                                                        height: 'auto',
-                                                                        width: "100%",
-                                                                    },
-
-                                                                }}
-                                                            />
-                                                        </TouchableOpacity>
-                                                ))}
-                                            </>
-                                        :
-                                        <>
-                                            <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
-                                                <HTML
-                                                    contentWidth={contentWidth}
-                                                    source={{ html: description[0] }}
-                                                    enableExperimentalBRCollapsing={true}
-                                                    enableExperimentalGhostLinesPrevention={true}
-                                                    defaultViewProps={{ width: width * 0.82 }}
-                                                    tagsStyles={{
-                                                        p: {
-                                                            fontSize: 16,
-                                                            color: themecolor.TXTWHITE,
-                                                            textAlign: 'left',
-                                                            fontWeight: 'normal',
-                                                            height: 'auto',
-                                                            width: "100%",
-                                                        },
-                                                    }}
-                                                />
-                                                <View style={styles.mt5} />
-                                                <Text
-                                                    selectable={true}
-                                                    allowFontScaling={false}
-                                                    style={{
-                                                        ...styles.txt1,
+                                    :
+                                    <>
+                                        <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
+                                            <HTML
+                                                contentWidth={contentWidth}
+                                                source={{ html: description[0] }}
+                                                enableExperimentalBRCollapsing={true}
+                                                enableExperimentalGhostLinesPrevention={true}
+                                                defaultViewProps={{ width: width * 0.82 }}
+                                                tagsStyles={{
+                                                    p: {
+                                                        fontSize: 16,
                                                         color: themecolor.TXTWHITE,
-                                                    }}>.   .    .</Text>
-                                                <LinearGradient
-                                                    start={{ x: 0.0, y: 0.0 }}
-                                                    end={{ x: 0.0, y: 1.0 }}
-                                                    locations={[0.0, 1.0]}
-                                                    colors={['#ffffff40', '#fffffff5']}
-                                                    useViewFrame={false}
-                                                    style={styles.gradient}
-                                                />
+                                                        textAlign: 'left',
+                                                        fontWeight: 'normal',
+                                                        height: 'auto',
+                                                        width: "100%",
+                                                    },
+                                                }}
+                                            />
+                                            <View style={styles.mt5} />
+                                            <Text
+                                                selectable={true}
+                                                allowFontScaling={false}
+                                                style={{
+                                                    ...styles.txt1,
+                                                    color: themecolor.TXTWHITE,
+                                                }}>.   .    .</Text>
+                                            <LinearGradient
+                                                start={{ x: 0.0, y: 0.0 }}
+                                                end={{ x: 0.0, y: 1.0 }}
+                                                locations={[0.0, 1.0]}
+                                                colors={['#ffffff40', '#fffffff5']}
+                                                useViewFrame={false}
+                                                style={styles.gradient}
+                                            />
 
-                                            </View>
-                                            <View style={styles.mt15} />
-                                        </>
-                                )}
+                                        </View>
+                                        <View style={styles.mt15} />
+                                    </>
+                                }
 
                             </View>
 
-
-                            {packageType == 1 ? (
+                            
+                            {packageExpiry ?
                                 TodayDate >= packageExpiry ?
                                     <View style={styles.m20} >
                                         <View style={styles.mt15} />
@@ -588,56 +479,33 @@ export default function ContentDetail(props) {
                                     </View>
                                     :
                                     <></>
-                            )
                                 :
-                                packageExpiry ?
-                                    TodayDate >= packageExpiry ?
-                                        <View style={styles.m20} >
-                                            <View style={styles.mt15} />
-                                            <TouchableOpacity activeOpacity={0.5}
-                                                onPress={() => navigation.navigate('MemberShip')}
-                                                style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
-                                                <FA name="lock" color={themecolor.BACKICON} size={30} />
-                                                <View style={styles.mt15} />
-                                                <Text
-                                                    selectable={true}
-                                                    allowFontScaling={false}
-                                                    style={{
-                                                        ...styles.txt1,
-                                                        color: themecolor.BACKICON,
-
-                                                    }}>continue to purchase MemberShip</Text>
-                                            </TouchableOpacity>
-
-                                        </View>
-                                        :
-                                        <></>
-                                    :
-                                    <View style={styles.m20}>
+                                <View style={styles.m20}>
+                                    <View style={styles.mt15} />
+                                    <TouchableOpacity activeOpacity={0.5}
+                                        onPress={() => navigation.navigate('MemberShip')}
+                                        style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
+                                        <FA name="lock" color={themecolor.BACKICON} size={30} />
                                         <View style={styles.mt15} />
-                                        <TouchableOpacity activeOpacity={0.5}
-                                            onPress={() => navigation.navigate('MemberShip')}
-                                            style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
-                                            <FA name="lock" color={themecolor.BACKICON} size={30} />
-                                            <View style={styles.mt15} />
-                                            <Text
-                                                selectable={true}
-                                                allowFontScaling={false}
-                                                style={{
-                                                    ...styles.txt1,
-                                                    color: themecolor.BACKICON,
-                                                    top: 5
-                                                }}>continue to purchase MemberShip</Text>
-                                        </TouchableOpacity>
+                                        <Text
+                                            selectable={true}
+                                            allowFontScaling={false}
+                                            style={{
+                                                ...styles.txt1,
+                                                color: themecolor.BACKICON,
+                                                top: 5
+                                            }}>continue to purchase MemberShip</Text>
+                                    </TouchableOpacity>
 
-                                    </View>
+                                </View>
                             }
 
                             <View style={{ marginVertical: 20 }} />
                         </View>
                     </ScrollView>
 
-                    {packageType == 1 ? (
+
+                    {packageExpiry ?
                         TodayDate >= packageExpiry ?
                             <></>
                             :
@@ -665,42 +533,8 @@ export default function ContentDetail(props) {
                                 </View>
 
                             </View>
-
-                    )
-
                         :
-
-                        packageExpiry ?
-                            TodayDate >= packageExpiry ?
-                                <></>
-                                :
-                                <View
-                                    style={{
-                                        ...styles.touchview,
-                                    }}>
-                                    <View style={{ ...styles.mainView, backgroundColor: themecolor.LOGINTHEMECOLOR1, borderColor: themecolor.BOXBORDERCOLOR1, elevation: 3 }}>
-                                        {speckerOnStop === 1 ?
-                                            <HalfSizeButton
-                                                title=""
-                                                icon={<IC name="ios-volume-mute-outline" size={35} color={themecolor.TEXTRED} />}
-                                                onPress={() => showAudio === 1 ? stopSound() : handleStop()}
-                                                backgroundColor={'transparent'}
-                                                borderColor={'transparent'}
-                                            />
-                                            : <HalfSizeButton
-                                                title=""
-                                                icon={<IC name="ios-volume-high-outline" size={35} color={themecolor.BACKICON} />}
-                                                onPress={() => showAudio === 1 ? playSound() : handlePlay(0)}
-                                                backgroundColor={'transparent'}
-                                                borderColor={'transparent'}
-                                            />
-                                        }
-                                    </View>
-
-                                </View>
-
-                            :
-                            <></>
+                        <></>
                     }
 
 
