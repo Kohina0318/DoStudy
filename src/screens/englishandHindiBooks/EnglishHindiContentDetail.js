@@ -18,6 +18,10 @@ import HTML from 'react-native-render-html';
 import { useNavigation } from '@react-navigation/native';
 import { getHindiBooksDescription } from '../../repository/EnglishandHindiBooksRepository/EnglishandHindiBooksRep';
 import Sound from 'react-native-sound';
+import { getProfileInfo } from '../../repository/ProfileRepository/EditProfileRepo';
+import LinearGradient from "react-native-linear-gradient";
+import FA from 'react-native-vector-icons/Feather';
+
 const { width, height } = Dimensions.get('screen');
 
 export default function EnglishHindiContentDetail(props) {
@@ -49,7 +53,13 @@ export default function EnglishHindiContentDetail(props) {
     const [loader, setLoader] = useState(true);
     const [htmlData, setHtmlData] = useState([]);
     const [pdf, setPdf] = useState('');
+    const [packageType, setPackageType] = useState(0);
+    const [packageExpiry, setPackageExpiry] = useState("");
     const [speckerOnStop, setSpeckerOnStop] = useState(0);
+
+    let yourDate = new Date()
+    var TodayDate = yourDate.toISOString().split('T')[0]
+
 
     const [sound, setSound] = useState(null);
     const [audioUrl, setAudioUrl] = useState('https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3');
@@ -58,6 +68,28 @@ export default function EnglishHindiContentDetail(props) {
     const [activeIndex, setActiveIndex] = useState(-1);
     const [isPlaying, setIsPlaying] = useState(false);
     const [recognizedText, setRecognizedText] = useState('');
+
+
+    const handleUserData = async () => {
+        try {
+            var res = await getProfileInfo();
+            if (res.status === true) {
+                setPackageType(res.data[0].package_type)
+                setPackageExpiry(res.data[0].package_valid_date)
+            }
+            else {
+                toast.show(res.message, {
+                    type: 'warning',
+                    placement: 'bottom',
+                    duration: 1000,
+                    offset: 30,
+                    animationType: 'slide-in',
+                });
+            }
+        } catch (e) {
+        }
+    };
+
 
     const handleBooksDescription = async () => {
         try {
@@ -85,6 +117,7 @@ export default function EnglishHindiContentDetail(props) {
     };
 
     useEffect(() => {
+        handleUserData()
         handleBooksDescription()
     }, [])
 
@@ -116,8 +149,6 @@ export default function EnglishHindiContentDetail(props) {
             if (desiredVoice) {
                 Tts.setDefaultLanguage(desiredVoice.language)
                 Tts.setDefaultVoice(desiredVoice.id);
-                // Tts.setDefaultRate(0.3);
-                // Tts.setDefaultPitch(1.0);
             } else {
                 setShowAudio(1)
                 // Tts.setDefaultRate(0.3);
@@ -252,100 +283,234 @@ export default function EnglishHindiContentDetail(props) {
                                         padding: 20
                                     }}
                                 >
-                                    {htmlData.map((html, index) => (
-                                        showAudio === 1 ?
-                                            <View>
-                                                <HTML
-                                                    contentWidth={contentWidth}
-                                                    source={{ html: html }}
-                                                    enableExperimentalBRCollapsing={true}
-                                                    enableExperimentalGhostLinesPrevention={true}
-                                                    defaultViewProps={{ width: width * 0.82 }}
-                                                    tagsStyles={{
-                                                        p: {
-                                                            fontSize: 16,
-                                                            color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
-                                                            textAlign: 'left',
-                                                            fontWeight: activeIndex === index ? 'bold' : 'normal',
-                                                            height: 'auto',
-                                                            width: "100%",
-                                                        },
-                                                        h2: {
-                                                            fontSize: 16,
-                                                            color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
-                                                            textAlign: 'left',
-                                                            fontWeight: activeIndex === index ? 'bold' : 'normal',
-                                                            height: 'auto',
-                                                            width: "100%",
-                                                        },
-                                                    }}
-                                                />
-                                            </View>
+                                    {packageExpiry ?
+                                        TodayDate >= packageExpiry ?
+                                            <>
+                                                <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
+                                                    <HTML
+                                                        contentWidth={contentWidth}
+                                                        source={{ html: htmlData[0] }}
+                                                        enableExperimentalBRCollapsing={true}
+                                                        enableExperimentalGhostLinesPrevention={true}
+                                                        defaultViewProps={{ width: width * 0.82 }}
+                                                        tagsStyles={{
+                                                            p: {
+                                                                fontSize: 16,
+                                                                color: themecolor.TXTWHITE,
+                                                                textAlign: 'left',
+                                                                fontWeight: 'normal',
+                                                                height: 'auto',
+                                                                width: "100%",
+                                                            },
+                                                        }}
+                                                    />
+                                                    <View style={styles.MT5} />
+                                                    <Text
+                                                        selectable={true}
+                                                        allowFontScaling={false}
+                                                        style={{
+                                                            ...styles.txt1,
+                                                            color: themecolor.TXTWHITE,
+                                                        }}>.   .    .</Text>
+                                                    <LinearGradient
+                                                        start={{ x: 0.0, y: 0.0 }}
+                                                        end={{ x: 0.0, y: 1.0 }}
+                                                        locations={[0.0, 1.0]}
+                                                        colors={['#ffffff40', '#fffffff5']}
+                                                        useViewFrame={false}
+                                                        style={styles.gradient}
+                                                    />
+
+                                                </View>
+                                                <View style={styles.MT5} />
+                                            </>
                                             :
-                                            <TouchableOpacity key={index} onPress={() => handleTextClick(index)}>
+                                            <>
+                                                {htmlData.map((html, index) => (
+                                                    showAudio === 1 ?
+                                                        <View>
+                                                            <HTML
+                                                                contentWidth={contentWidth}
+                                                                source={{ html: html }}
+                                                                enableExperimentalBRCollapsing={true}
+                                                                enableExperimentalGhostLinesPrevention={true}
+                                                                defaultViewProps={{ width: width * 0.82 }}
+                                                                tagsStyles={{
+                                                                    p: {
+                                                                        fontSize: 16,
+                                                                        color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
+                                                                        textAlign: 'left',
+                                                                        fontWeight: activeIndex === index ? 'bold' : 'normal',
+                                                                        height: 'auto',
+                                                                        width: "100%",
+                                                                    },
+                                                                    h2: {
+                                                                        fontSize: 16,
+                                                                        color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
+                                                                        textAlign: 'left',
+                                                                        fontWeight: activeIndex === index ? 'bold' : 'normal',
+                                                                        height: 'auto',
+                                                                        width: "100%",
+                                                                    },
+                                                                }}
+                                                            />
+                                                        </View>
+                                                        :
+                                                        <TouchableOpacity key={index} onPress={() => handleTextClick(index)}>
+                                                            <HTML
+                                                                contentWidth={contentWidth}
+                                                                source={{ html: html }}
+                                                                enableExperimentalBRCollapsing={true}
+                                                                enableExperimentalGhostLinesPrevention={true}
+                                                                defaultViewProps={{ width: width * 0.82 }}
+                                                                tagsStyles={{
+                                                                    p: {
+                                                                        fontSize: 16,
+                                                                        color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
+                                                                        textAlign: 'left',
+                                                                        fontWeight: activeIndex === index ? 'bold' : 'normal',
+                                                                        height: 'auto',
+                                                                        width: "100%",
+                                                                    },
+                                                                    h2: {
+                                                                        fontSize: 16,
+                                                                        color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
+                                                                        textAlign: 'left',
+                                                                        fontWeight: activeIndex === index ? 'bold' : 'normal',
+                                                                        height: 'auto',
+                                                                        width: "100%",
+                                                                    },
+                                                                }}
+                                                            />
+                                                        </TouchableOpacity>
+                                                ))
+                                                }
+                                            </>
+                                        :
+                                        <>
+                                            <View style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
                                                 <HTML
                                                     contentWidth={contentWidth}
-                                                    source={{ html: html }}
+                                                    source={{ html: htmlData[0] }}
                                                     enableExperimentalBRCollapsing={true}
                                                     enableExperimentalGhostLinesPrevention={true}
                                                     defaultViewProps={{ width: width * 0.82 }}
                                                     tagsStyles={{
                                                         p: {
                                                             fontSize: 16,
-                                                            color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
+                                                            color: themecolor.TXTWHITE,
                                                             textAlign: 'left',
-                                                            fontWeight: activeIndex === index ? 'bold' : 'normal',
-                                                            height: 'auto',
-                                                            width: "100%",
-                                                        },
-                                                        h2: {
-                                                            fontSize: 16,
-                                                            color: activeIndex === index ? themecolor.ADDTOCARTBUTTONCOLOR : themecolor.TXTWHITE,
-                                                            textAlign: 'left',
-                                                            fontWeight: activeIndex === index ? 'bold' : 'normal',
+                                                            fontWeight: 'normal',
                                                             height: 'auto',
                                                             width: "100%",
                                                         },
                                                     }}
                                                 />
-                                            </TouchableOpacity>
-                                    ))}
+                                                <View style={styles.MT5} />
+                                                <Text
+                                                    selectable={true}
+                                                    allowFontScaling={false}
+                                                    style={{
+                                                        ...styles.txt1,
+                                                        color: themecolor.TXTWHITE,
+                                                    }}>.   .    .</Text>
+                                                <LinearGradient
+                                                    start={{ x: 0.0, y: 0.0 }}
+                                                    end={{ x: 0.0, y: 1.0 }}
+                                                    locations={[0.0, 1.0]}
+                                                    colors={['#ffffff40', '#fffffff5']}
+                                                    useViewFrame={false}
+                                                    style={styles.gradient}
+                                                />
+
+                                            </View>
+                                            <View style={styles.MT5} />
+                                        </>
+                                    }
 
                                 </View>
                                 : <></>}
 
+                            {packageExpiry ?
+                                TodayDate >= packageExpiry ?
+                                    <View style={styles.m20} >
+                                        <View style={styles.mt15} />
+                                        <TouchableOpacity activeOpacity={0.5}
+                                            onPress={() => navigation.navigate('MemberShip')}
+                                            style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
+                                            <FA name="lock" color={themecolor.BACKICON} size={30} />
+                                            <View style={styles.mt15} />
+                                            <Text
+                                                selectable={true}
+                                                allowFontScaling={false}
+                                                style={{
+                                                    ...styles.txt1,
+                                                    color: themecolor.BACKICON,
 
-                            <View style={{ ...styles.MT10 }} />
+                                                }}>continue to purchase MemberShip</Text>
+                                        </TouchableOpacity>
+
+                                    </View>
+                                    :
+                                    <></>
+                                :
+                                <View style={styles.m20}>
+                                    <View style={styles.mt15} />
+                                    <TouchableOpacity activeOpacity={0.5}
+                                        onPress={() => navigation.navigate('MemberShip')}
+                                        style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
+                                        <FA name="lock" color={themecolor.BACKICON} size={30} />
+                                        <View style={styles.mt15} />
+                                        <Text
+                                            selectable={true}
+                                            allowFontScaling={false}
+                                            style={{
+                                                ...styles.txt1,
+                                                color: themecolor.BACKICON,
+                                                top: 5
+                                            }}>continue to purchase MemberShip</Text>
+                                    </TouchableOpacity>
+
+                                </View>
+                            }
+
+
+                            <View style={{ marginVertical: 20 }} />
 
                         </View>
                     </ScrollView>
 
+                    {packageExpiry ?
+                        TodayDate >= packageExpiry ?
+                            <></>
+                            :
+                            <View
+                                style={{
+                                    ...styles.touchview,
+                                }}>
+                                <View style={{ ...styles.mainView, backgroundColor: themecolor.LOGINTHEMECOLOR1, borderColor: themecolor.BOXBORDERCOLOR1, elevation: 3 }}>
+                                    {speckerOnStop === 1 ?
+                                        <HalfSizeButton
+                                            title=""
+                                            icon={<IC name="ios-volume-mute-outline" size={35} color={themecolor.TEXTRED} />}
+                                            onPress={() => showAudio === 1 ? stopSound() : handleStop()}
+                                            backgroundColor={'transparent'}
+                                            borderColor={'transparent'}
+                                        />
+                                        : <HalfSizeButton
+                                            title=""
+                                            icon={<IC name="ios-volume-high-outline" size={35} color={themecolor.BACKICON} />}
+                                            onPress={() => showAudio === 1 ? playSound() : handlePlay(0)}
+                                            backgroundColor={'transparent'}
+                                            borderColor={'transparent'}
+                                        />
+                                    }
+                                </View>
 
-                    <View
-                        style={{
-                            ...styles.touchview,
-                        }}>
-                        <View style={{ ...styles.mainView, backgroundColor: themecolor.LOGINTHEMECOLOR1, borderColor: themecolor.BOXBORDERCOLOR1, elevation: 3 }}>
-                            {speckerOnStop === 1 ?
-                                <HalfSizeButton
-                                    title=""
-                                    icon={<IC name="ios-volume-mute-outline" size={35} color={themecolor.TEXTRED} />}
-                                    onPress={() => showAudio === 1 ? stopSound() : handleStop()}
-                                    backgroundColor={'transparent'}
-                                    borderColor={'transparent'}
-                                />
-                                : <HalfSizeButton
-                                    title=""
-                                    icon={<IC name="ios-volume-high-outline" size={35} color={themecolor.BACKICON} />}
-                                    onPress={() => showAudio === 1 ? playSound() : handlePlay(0)}
-                                    backgroundColor={'transparent'}
-                                    borderColor={'transparent'}
-                                />
-                            }
-                        </View>
-
-                    </View>
-
+                            </View>
+                        :
+                        <></>
+                    }
                 </>
             )}
         </View>
