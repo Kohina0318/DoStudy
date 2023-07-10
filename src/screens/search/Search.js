@@ -54,7 +54,7 @@ export default function Search(props) {
         try {
            
             var res = await getSearch(result);
-            if (res.status === true) {
+            if (res.status === true && res.data.length >0) {
                 setData(res.data);
                 setLoader(false)
             } else {
