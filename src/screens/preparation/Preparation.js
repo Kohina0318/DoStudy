@@ -10,15 +10,15 @@ import Header from '../../components/shared/header/Header';
 import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
 import NoDataMsg from '../../components/shared/NoData/NoDataMsg';
 import { styles } from '../../assets/css/ClassesCss/ClassesStyle';
-import { ClassFlatList } from '../../components/shared/FlateLists/ClassesFlateList/ClassFlatList';
 import { getClasses } from '../../repository/ClassesRepository/ClasessRep';
 import { getADsDatabyAsync } from '../../repository/CommonRepository';
 import AdsCarouselFile from '../../components/shared/Carousel/AdsCarouselFile';
+import { PreparationFlatList } from '../../components/shared/FlateLists/PreparationFlatList/PreparationFlatList';
 
 
 const { width } = Dimensions.get('screen');
 
-export default function Classes(props) {
+export default function Preparation(props) {
     function handleBackButtonClick() {
         props.navigation.goBack();
         return true;
@@ -62,8 +62,7 @@ export default function Classes(props) {
 
     const handleClasses = async () => {
         try {
-            
-            var res = await getClasses("Classes");
+            var res = await getClasses("Preparation");
             if (res.status === true) {
                 setData(res.data);
                 setLoader(false)
@@ -87,7 +86,7 @@ export default function Classes(props) {
         handleClasses()
     }, [])
 
-
+   
     return (
         <View style={{ ...styles.bg, backgroundColor: themecolor.THEMECOLOR }}>
             <StatusBar
@@ -96,7 +95,7 @@ export default function Classes(props) {
                 barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
             />
 
-            <Header title="Classes" backIcon={true}
+            <Header title="Preparation" backIcon={true}
                 onPressBack={() => handleBackButtonClick()} />
 
             {loader ? (
@@ -110,7 +109,7 @@ export default function Classes(props) {
                             }}>
 
                             {data.length > 0 ? (
-                                <ClassFlatList data={data}  />
+                                <PreparationFlatList data={data} />
                             ) : (
                                 <NoDataMsg title="No Data Found!" />
                             )}
@@ -127,7 +126,6 @@ export default function Classes(props) {
                             <AdsCarouselFile data={adsdata} />
                         </View>
                         : <></>}
-
 
                 </>
             )}

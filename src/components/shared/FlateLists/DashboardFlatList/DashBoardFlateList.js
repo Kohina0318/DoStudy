@@ -22,7 +22,7 @@ function DashBoardDataFlatList({ item, themecolor, boxSize }) {
     <View style={{ ...styles.mainViewCon }}>
       <TouchableOpacity activeOpacity={0.5} disabled={item.touch}
         style={{ ...styles.classContanier, backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1, }}
-        onPress={() => item.onpress1 ? navigation.navigate("Classes",{type:item.onpress1}) : navigation.navigate(item.onpress)}
+        onPress={() =>  navigation.navigate(item.onpress)}
         
       >
         <View style={{ ...styles.classImg }}>

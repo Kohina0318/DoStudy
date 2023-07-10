@@ -33,21 +33,21 @@ export default function Dashboard(props) {
       id: 1,
       image: require('../../assets/images/classes.png'),
       name: 'Classes',
-      onpress1: "Classes",
+      onpress: "Classes",
       touch: false,
     },
     {
       id: 2,
       image: require('../../assets/images/preprasion.png'),
       name: 'Preparation',
-      onpress1: "Preparation",
+      onpress: "Preparation",
       touch: false,
     },
     {
       id: 3,
       image: require('../../assets/images/courses.png'),
       name: 'Courses',
-      onpress1: "Courses",
+      onpress: "Courses",
       touch: false,
     },
     {
@@ -64,13 +64,6 @@ export default function Dashboard(props) {
       onpress: "HindiBooks",
       touch: false,
     },
-    // {
-    //   id: 6,
-    //   image: require('../../assets/images/youtube.png'),
-    //   name: 'YouTube Classes',
-    //   onpress1: "YouTube_Classes",
-    //   touch: false,
-    // },
     {
       id: 9,
       image: require('../../assets/images/result.png'),
