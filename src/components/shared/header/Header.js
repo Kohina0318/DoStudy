@@ -95,8 +95,9 @@ export default function Header(props) {
                 </View>
               </View>
              <TouchableOpacity activeOpacity={0.5}
-              onPress={() => navigation.navigate('MemberShip')} style={{ ...styles.iconViewCont}}>
-                <MCI name="card-account-details-star-outline" size={23}   color={themecolor.TXTWHITE} />
+              onPress={() => navigation.navigate('Search')} style={{ ...styles.iconViewCont,}}>
+                {/* <MCI name="card-account-details-star-outline" size={23}   color={themecolor.TXTWHITE} /> */}
+                <Icon name="search" size={22} color={themecolor.TXTWHITE} />
               </TouchableOpacity>
             </>
           ) : (

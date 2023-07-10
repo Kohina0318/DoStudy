@@ -18,7 +18,7 @@ import FA from 'react-native-vector-icons/FontAwesome';
 function ContentDataFlateList({ item, themecolor, TopicId }) {
 
     const navigation = useNavigation();
-
+    
     return (
         <TouchableOpacity activeOpacity={0.5}
             style={{
@@ -27,7 +27,7 @@ function ContentDataFlateList({ item, themecolor, TopicId }) {
                 borderColor: themecolor.BOXBORDERCOLOR1,
             }}
             onPress={() => {
-                TopicId === 1 ?
+                TopicId == 1 ?
                 navigation.navigate('ContentDetail', { Id: item.id, UnitNo: item.unit_no, UnitName: item.unit_name, UnitImage: item.image })
                 :
                 navigation.navigate('FullPdfContainDetail', { contantUrl:item.image,UnitNo:item.unit_name  })
