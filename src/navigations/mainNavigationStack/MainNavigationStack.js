@@ -42,6 +42,7 @@ import YouTubeClasses from '../../screens/YouTubeClasses/YouTubeClasses';
 import YouTubeClassesListByID from '../../screens/YouTubeClasses/YouTubeClassesListByID';
 import YouTubeVideoPage from '../../screens/YouTubeClasses/YouTubeVideoPage';
 import EnglishHindiContentDetail from '../../screens/englishandHindiBooks/EnglishHindiContentDetail';
+import Search from '../../screens/search/Search';
 
 
 function MainNavigationStack(props) {
@@ -221,6 +222,11 @@ function MainNavigationStack(props) {
         <Stack.Screen
           name="YouTubeVideoPage"
           component={YouTubeVideoPage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Search"
+          component={Search}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

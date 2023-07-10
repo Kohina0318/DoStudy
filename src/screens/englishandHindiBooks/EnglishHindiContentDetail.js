@@ -62,7 +62,7 @@ export default function EnglishHindiContentDetail(props) {
 
 
     const [sound, setSound] = useState(null);
-    const [audioUrl, setAudioUrl] = useState('https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3');
+    const [audioUrl, setAudioUrl] = useState('');
     const [showAudio, setShowAudio] = useState(0);
 
     const [activeIndex, setActiveIndex] = useState(-1);
@@ -94,7 +94,6 @@ export default function EnglishHindiContentDetail(props) {
     const handleBooksDescription = async () => {
         try {
             var res = await getHindiBooksDescription(props.route.params.Book, props.route.params.ID);
-            console.log("data.......", res.data[0].audio_voice)
             if (res.status === true) {
                 setHtmlData(res.data[0].description);
                 setAudioUrl(res.data[0].audio_voice);
@@ -431,9 +430,31 @@ export default function EnglishHindiContentDetail(props) {
                                 </View>
                                 : <></>}
 
-                            {packageExpiry ?
-                                TodayDate >= packageExpiry ?
-                                    <View style={styles.m20} >
+                            {htmlData.length > 0 ?
+                                packageExpiry ?
+                                    TodayDate >= packageExpiry ?
+                                        <View style={styles.m20} >
+                                            <View style={styles.mt15} />
+                                            <TouchableOpacity activeOpacity={0.5}
+                                                onPress={() => navigation.navigate('MemberShip')}
+                                                style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
+                                                <FA name="lock" color={themecolor.BACKICON} size={30} />
+                                                <View style={styles.mt15} />
+                                                <Text
+                                                    selectable={true}
+                                                    allowFontScaling={false}
+                                                    style={{
+                                                        ...styles.txt1,
+                                                        color: themecolor.BACKICON,
+
+                                                    }}>continue to purchase MemberShip</Text>
+                                            </TouchableOpacity>
+
+                                        </View>
+                                        :
+                                        <></>
+                                    :
+                                    <View style={styles.m20}>
                                         <View style={styles.mt15} />
                                         <TouchableOpacity activeOpacity={0.5}
                                             onPress={() => navigation.navigate('MemberShip')}
@@ -446,33 +467,13 @@ export default function EnglishHindiContentDetail(props) {
                                                 style={{
                                                     ...styles.txt1,
                                                     color: themecolor.BACKICON,
-
+                                                    top: 5
                                                 }}>continue to purchase MemberShip</Text>
                                         </TouchableOpacity>
 
                                     </View>
-                                    :
-                                    <></>
                                 :
-                                <View style={styles.m20}>
-                                    <View style={styles.mt15} />
-                                    <TouchableOpacity activeOpacity={0.5}
-                                        onPress={() => navigation.navigate('MemberShip')}
-                                        style={{ alignContent: "center", alignSelf: "center", alignItems: 'center' }}>
-                                        <FA name="lock" color={themecolor.BACKICON} size={30} />
-                                        <View style={styles.mt15} />
-                                        <Text
-                                            selectable={true}
-                                            allowFontScaling={false}
-                                            style={{
-                                                ...styles.txt1,
-                                                color: themecolor.BACKICON,
-                                                top: 5
-                                            }}>continue to purchase MemberShip</Text>
-                                    </TouchableOpacity>
-
-                                </View>
-                            }
+                                <></>}
 
 
                             <View style={{ marginVertical: 20 }} />

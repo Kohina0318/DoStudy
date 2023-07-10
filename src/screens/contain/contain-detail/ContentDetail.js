@@ -62,6 +62,9 @@ export default function ContentDetail(props) {
     let yourDate = new Date()
     var TodayDate = yourDate.toISOString().split('T')[0]
 
+    const [sound, setSound] = useState(null);
+    const [audioUrl, setAudioUrl] = useState('');
+    const [showAudio, setShowAudio] = useState(0);
 
     const handleUserData = async () => {
         try {
@@ -89,6 +92,7 @@ export default function ContentDetail(props) {
             if (res.status === true) {
                 setData(res.data);
                 setDescription(res.data[0].description)
+                setAudioUrl(res.data[0].audio_voice);
                 setContantUrl(res.data[0].file_url)
                 setLoader(false)
             } else {
@@ -111,11 +115,6 @@ export default function ContentDetail(props) {
         handleUserData();
         handleContentDetail();
     }, []);
-
-    const [sound, setSound] = useState(null);
-    const audioUrl = 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3';
-    const [showAudio, setShowAudio] = useState(0);
-
 
     const [activeIndex, setActiveIndex] = useState(-1);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -145,14 +144,11 @@ export default function ContentDetail(props) {
         try {
             const voices = await Tts.voices();
             //   console.log('Tts.voices..............',voices); 
-            //   const desiredVoice = voices.find(voice => voice.language === 'hi-IN' && voice.id === 'hi-IN-language');
             const desiredVoice = voices.find(voice => voice.id === 'hi-IN-language');
             if (desiredVoice) {
                 Tts.setDefaultLanguage(desiredVoice.language)
                 Tts.setDefaultVoice(desiredVoice.id);
-                // Tts.setDefaultRate(0.3);
-                // Tts.setDefaultPitch(1.0);
-            } else {
+                } else {
                 setShowAudio(1)
                 // Tts.setDefaultRate(0.3);
                 // Tts.setDefaultPitch(1.0);
@@ -162,10 +158,6 @@ export default function ContentDetail(props) {
             }
         } catch (error) {
             setShowAudio(1)
-            // Tts.setDefaultRate(0.3);
-            // Tts.setDefaultPitch(1.0);
-            // Tts.setDefaultLanguage('hi-IN')
-            // Tts.setDefaultVoice('"com.apple.ttsbundle.Lekha-compact')
             console.error('Error fetching available voices:', error);
         }
     };
@@ -248,6 +240,7 @@ export default function ContentDetail(props) {
             setSpeckerOnStop(0)
         }
     };
+
 
 
     return (
