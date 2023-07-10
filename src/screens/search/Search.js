@@ -48,7 +48,7 @@ export default function Search(props) {
         setResult('');
         setData([])
     }
-
+ 
     const handleSearch = async () => {
         setLoader(true)
         try {

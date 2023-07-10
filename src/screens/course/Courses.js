@@ -10,15 +10,15 @@ import Header from '../../components/shared/header/Header';
 import LoadingFullScreen from '../../components/shared/Loader/LoadingFullScreen';
 import NoDataMsg from '../../components/shared/NoData/NoDataMsg';
 import { styles } from '../../assets/css/ClassesCss/ClassesStyle';
-import { ClassFlatList } from '../../components/shared/FlateLists/ClassesFlateList/ClassFlatList';
 import { getClasses } from '../../repository/ClassesRepository/ClasessRep';
 import { getADsDatabyAsync } from '../../repository/CommonRepository';
 import AdsCarouselFile from '../../components/shared/Carousel/AdsCarouselFile';
+import { CoursesFlatList } from '../../components/shared/FlateLists/CoursesFlatList/CoursesFlatList';
 
 
 const { width } = Dimensions.get('screen');
 
-export default function Classes(props) {
+export default function Courses(props) {
     function handleBackButtonClick() {
         props.navigation.goBack();
         return true;
@@ -62,8 +62,7 @@ export default function Classes(props) {
 
     const handleClasses = async () => {
         try {
-            
-            var res = await getClasses("Classes");
+            var res = await getClasses("Courses");
             if (res.status === true) {
                 setData(res.data);
                 setLoader(false)
@@ -96,7 +95,7 @@ export default function Classes(props) {
                 barStyle={mode === 'dark' ? 'light-content' : 'dark-content'}
             />
 
-            <Header title="Classes" backIcon={true}
+            <Header title="Courses" backIcon={true}
                 onPressBack={() => handleBackButtonClick()} />
 
             {loader ? (
@@ -110,7 +109,9 @@ export default function Classes(props) {
                             }}>
 
                             {data.length > 0 ? (
-                                <ClassFlatList data={data}  />
+                                <View style={{...styles.courseInnerView}}>
+                                    <CoursesFlatList data={data} />
+                                </View>
                             ) : (
                                 <NoDataMsg title="No Data Found!" />
                             )}
@@ -127,7 +128,6 @@ export default function Classes(props) {
                             <AdsCarouselFile data={adsdata} />
                         </View>
                         : <></>}
-
 
                 </>
             )}

@@ -14,26 +14,26 @@ import { styles } from '../../../../assets/css/ClassesCss/ClassesStyle';
 
 const { width, height } = Dimensions.get('screen');
 
-function ClassDataFlatList({ item, themecolor, }) {
+function PreparationDataFlatList({ item, themecolor,}) {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity activeOpacity={0.5}
-      style={{...styles.classContanier,backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1,}}
-    onPress={() => navigation.navigate('Subjects', { Id: item.id,Name:item.name, dashTypes:"Classes"})}
+      style={{...styles.fullContanier,backgroundColor: themecolor.BOXBORDERCOLOR, borderColor: themecolor.BOXBORDERCOLOR1,}}
+    onPress={() => navigation.navigate('Subjects', { Id: item.id,Name:item.name, dashTypes:"Preparation"})}
     >
-      <View style={{...styles.classImg}}>
+      <View style={{...styles.fullImg,}}>
       <Image
         source={{ uri: item.image }}
-        resizeMode="contain"
+        resizeMode='stretch'
         style={{ width: '100%', height: '100%' }}
       />
       </View>
-     </TouchableOpacity>
+    </TouchableOpacity>
   );
 }
 
-export function ClassFlatList(props) {
+export function PreparationFlatList(props) {
   const mode = useSelector(state => state.mode);
   const themecolor = new MyThemeClass(mode).getThemeColor();
 
@@ -41,10 +41,8 @@ export function ClassFlatList(props) {
     <FlatList
       data={props.data}
       renderItem={({ item }) => (
-        <ClassDataFlatList item={item} themecolor={themecolor} />
+        <PreparationDataFlatList item={item} themecolor={themecolor} boxSize={props.boxSize} />
       )}
-      numColumns={2}
-      horizontal={false}
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
       scrollEnabled={true}
