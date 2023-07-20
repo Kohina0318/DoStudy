@@ -171,7 +171,7 @@ export default function SignUp(props) {
                 const res = await postSignUp(formdata);
                 if (res.status == true) {
                     setLoader(false)
-                    navigation.navigate('VerifyOtp', { mobileNo: mobileNo, password: password })
+                    navigation.navigate('VerifyOtp', { email: email, password: password })
                 } else {
                     setLoader(false)
                     toast.show(res.message, {

@@ -86,13 +86,13 @@ export default function VerifyOtpForgotPswd(props) {
         } else {
             try {
                 let formdata = new FormData();
-                formdata.append('phone', props.route.params.mobileNo);
+                formdata.append('email', props.route.params.email);
                 formdata.append('otp', otp);
 
                 const res = await postVerifyOtpForgot(formdata);
                 if (res.status == true) {
                     setLoader(false)
-                    navigation.navigate("ChangePswdByForgot", { mobileNo: props.route.params.mobileNo, otp: otp ,comeIn:props.route.params.comeIn})
+                    navigation.navigate("ChangePswdByForgot", { email: props.route.params.email, otp: otp ,comeIn:props.route.params.comeIn})
                 } else {
                     setLoader(false)
                     toast.show(res.message, {

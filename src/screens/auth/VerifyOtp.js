@@ -84,7 +84,7 @@ export default function VerifyOtp(props) {
         } else {
             try {
                 let formdata = new FormData()
-                formdata.append('phone', props.route.params.mobileNo)
+                formdata.append('email', props.route.params.email)
                 formdata.append('otp', otp)
                 formdata.append('password', props.route.params.password)
 
@@ -105,8 +105,6 @@ export default function VerifyOtp(props) {
                         animationType: 'slide-in',
                     });
                     
-
-                    // setShowmodal(!showmodal)
                 }
                 else {
                     setLoader(false)
