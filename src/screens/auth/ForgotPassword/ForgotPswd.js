@@ -48,7 +48,7 @@ export default function ForgotPswd(props) {
     const [loader, setLoader] = useState(true);
     const [appLogoAsync, setAppLogoAsync] = useState('');
 
-    const [mobileNo, setMobileNo] = useState('');
+    const [email, setEmail] = useState('');
 
     useEffect(() => {
         async function temp() {
@@ -72,19 +72,19 @@ export default function ForgotPswd(props) {
 
 
     const HandleSendOtp = async () => {
-        setLoader(true)
-        if (mobileNo == '') {
+        setLoader(true);
+        if (email == '') {
             setLoader(false)
-            toast.show('Mobile number is required!', {
+            toast.show('Email is required!', {
                 type: 'warning',
                 placement: 'bottom',
                 duration: 1000,
                 offset: 30,
                 animationType: 'slide-in',
             });
-        } else if (mobileNo.length < 10) {
+        } else if (!email.includes('@') || !email.includes('gmail.com')) {
             setLoader(false)
-            toast.show('Please enter valid mobile number!', {
+            toast.show('Please enter valid email address!', {
                 type: 'warning',
                 placement: 'bottom',
                 duration: 1000,
@@ -94,12 +94,12 @@ export default function ForgotPswd(props) {
         } else {
             try {
                 let formdata = new FormData();
-                formdata.append('phone', mobileNo);
+                formdata.append('email', email);
 
                 const res = await postforgotByNumber(formdata);
                 if (res.status == true) {
                     setLoader(false)
-                    navigation.navigate("VerifyOtpForgotPswd", { mobileNo: mobileNo, comeIn: props.route.params.comeIn })
+                    navigation.navigate("VerifyOtpForgotPswd", { email: email, comeIn: props.route.params.comeIn })
                 } else {
                     setLoader(false)
                     toast.show(res.message, {
@@ -179,27 +179,28 @@ export default function ForgotPswd(props) {
                                 <View style={styles.mt10} />
 
                                 <View style={{
-                                    ...styles.textInputView,
-                                    backgroundColor: themecolor.OTPBOXCOLOR,
-                                    borderColor: themecolor.BOXBORDERCOLOR1,
-                                }}>
-                                    <MaterialCommunityIcons name="cellphone" style={{ margin: 9 }} size={17} color={themecolor.ICONINPUT} />
-                                    <View style={{ ...styles.textViewWidth }}>
-                                        <TextInput
-                                            allowFontScaling={false}
-                                            value={mobileNo}
-                                            placeholderTextColor={themecolor.TXTGREYS}
-                                            placeholder="Mobile Number*"
-                                            keyboardType="numeric"
-                                            maxLength={10}
-                                            onChangeText={text => setMobileNo(text)}
-                                            style={{
-                                                color: themecolor.TXTWHITE,
-                                                ...styles.textInput,
-                                            }}
-                                        />
+                                        ...styles.textInputView,
+                                        backgroundColor: themecolor.OTPBOXCOLOR,
+                                        borderColor: themecolor.BOXBORDERCOLOR1,
+                                    }}>
+                                        <Icon name="email" style={{ margin: 9 }} size={16} color={themecolor.ICONINPUT} />
+                                        <View style={{ ...styles.textViewWidth }}>
+                                            <TextInput
+                                                allowFontScaling={false}
+                                                value={email}
+                                                placeholderTextColor={themecolor.TXTGREYS}
+                                                placeholder="Email Address*"
+                                                keyboardType="email-address"
+                                                inputMode="email"
+                                                onChangeText={text => setEmail(text)}
+                                                style={{
+                                                    color: themecolor.TXTWHITE,
+                                                    ...styles.textInput,
+                                                }}
+                                            />
+                                        </View>
                                     </View>
-                                </View>
+
 
 
                                 <View style={styles.mt10} />

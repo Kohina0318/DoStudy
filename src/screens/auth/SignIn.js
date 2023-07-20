@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { MyThemeClass } from '../../components/Theme/ThemeDarkLightColor';
-import { useToast } from 'react-native-toast-notifications';
+import { useToast } from 'react-native-toast-notifications'; 
 import { styles } from '../../assets/css/AuthCss/SignInStyle';
 import { useNavigation } from '@react-navigation/native';
 import CIcon from 'react-native-vector-icons/MaterialIcons';
@@ -49,7 +49,7 @@ export default function SignIn(props) {
     const [appLogoAsync, setAppLogoAsync] = useState('');
 
 
-    const [mobileNo, setMobileNo] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const [showmodal, setShowmodal] = useState(false);
@@ -78,18 +78,18 @@ export default function SignIn(props) {
 
     const handleSignIn = async () => {
         setLoader(true);
-        if (mobileNo == '') {
+        if (email == '') {
             setLoader(false)
-            toast.show('Mobile number is required!', {
+            toast.show('Email is required!', {
                 type: 'warning',
                 placement: 'bottom',
                 duration: 1000,
                 offset: 30,
                 animationType: 'slide-in',
             });
-        } else if (mobileNo.length < 10) {
+        } else if (!email.includes('@') || !email.includes('gmail.com')) {
             setLoader(false)
-            toast.show('Please enter valid mobile number!', {
+            toast.show('Please enter valid email address!', {
                 type: 'warning',
                 placement: 'bottom',
                 duration: 1000,
@@ -108,7 +108,7 @@ export default function SignIn(props) {
         } else {
             try {
                 let formdata = new FormData()
-                formdata.append('phone', mobileNo);
+                formdata.append('email', email);
                 formdata.append('password', password)
 
                 const res = await postSignIn(formdata);
@@ -127,7 +127,6 @@ export default function SignIn(props) {
                         offset: 30,
                         animationType: 'slide-in',
                     });
-                    // setShowmodal(!showmodal)
                 }
                 else {
                     setLoader(false)
@@ -199,22 +198,21 @@ export default function SignIn(props) {
 
                                 <View style={styles.mt10} />
 
-
                                 <View style={{
                                     ...styles.textInputView,
                                     backgroundColor: themecolor.OTPBOXCOLOR,
                                     borderColor: themecolor.BOXBORDERCOLOR1,
                                 }}>
-                                    <MaterialCommunityIcons name="cellphone" style={{ margin: 9 }} size={17} color={themecolor.ICONINPUT} />
+                                    <Icon name="email" style={{ margin: 9 }} size={16} color={themecolor.ICONINPUT} />
                                     <View style={{ ...styles.textViewWidth }}>
                                         <TextInput
                                             allowFontScaling={false}
-                                            value={mobileNo}
+                                            value={email}
                                             placeholderTextColor={themecolor.TXTGREYS}
-                                            placeholder="Mobile Number*"
-                                            keyboardType="numeric"
-                                            maxLength={10}
-                                            onChangeText={text => setMobileNo(text)}
+                                            placeholder="Email Address*"
+                                            keyboardType="email-address"
+                                            inputMode="email"
+                                            onChangeText={text => setEmail(text)}
                                             style={{
                                                 color: themecolor.TXTWHITE,
                                                 ...styles.textInput,
@@ -222,6 +220,7 @@ export default function SignIn(props) {
                                         />
                                     </View>
                                 </View>
+
 
 
                                 <View style={styles.mt10} />

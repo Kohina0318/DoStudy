@@ -74,7 +74,7 @@ export default function ChangePswdByForgot(props) {
         else {
             try {
                 let formdata = new FormData();
-                formdata.append('phone', props.route.params.mobileNo);
+                formdata.append('email', props.route.params.email);
                 formdata.append('otp', props.route.params.otp);
                 formdata.append('password1', newPswd);
                 formdata.append('password2', confirmNewPswd);

@@ -17,7 +17,7 @@ courseInnerView:{
   classContanier:{
     width: width * 0.46,
     margin: 3,
-    padding: 15,
+    padding: 10,
     alignItems: 'center',
     alignItems: 'center',
     alignSelf: 'center',

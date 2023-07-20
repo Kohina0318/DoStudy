@@ -27,20 +27,20 @@ export default function Header(props) {
 
   useEffect(() => {
     async function temp() {
-        try {
-            var userData = await getAppLogoAsync();
-            if (userData == null || userData == '' || userData == undefined) {
-                setAppLogoAsync('')
-            } else {
+      try {
+        var userData = await getAppLogoAsync();
+        if (userData == null || userData == '' || userData == undefined) {
+          setAppLogoAsync('')
+        } else {
 
-                setAppLogoAsync(userData);
-            }
-        } catch (e) {
-            setAppLogoAsync('')
+          setAppLogoAsync(userData);
         }
+      } catch (e) {
+        setAppLogoAsync('')
+      }
     }
     temp()
-}, [props]);
+  }, [props]);
 
 
   return (
@@ -61,7 +61,7 @@ export default function Header(props) {
         <View
           style={{ ...styles.headerInnerView }}>
 
-          <View style={{...styles.iconViewCont}}>
+          <View style={{ ...styles.iconViewCont }}>
             {props.backIcon ? (
               <TouchableOpacity
                 activeOpacity={0.5}
@@ -89,26 +89,36 @@ export default function Header(props) {
               <View style={{ ...styles.iconTitle1, }}>
                 <View style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
                   <Image
-                    source={{uri: appLogoAsync}}
-                    style={{ width: 50, height: 50, resizeMode: 'contain',  }}
+                    source={{ uri: appLogoAsync }}
+                    style={{ width: 50, height: 50, resizeMode: 'contain', }}
                   />
                 </View>
               </View>
-             <TouchableOpacity activeOpacity={0.5}
-              onPress={() => navigation.navigate('Search')} style={{ ...styles.iconViewCont,}}>
-                {/* <MCI name="card-account-details-star-outline" size={23}   color={themecolor.TXTWHITE} /> */}
+              <TouchableOpacity activeOpacity={0.5}
+                onPress={() => navigation.navigate('Search')} style={{ ...styles.iconViewCont, }}>
                 <Icon name="search" size={22} color={themecolor.TXTWHITE} />
               </TouchableOpacity>
             </>
           ) : (
-            <View style={{ ...styles.iconTitle, }}>
-              <Text
-                allowFontScaling={false}
-                style={{ ...styles.toolbarTitle, color: themecolor.TXTWHITE, right: 20 }}
-                numberOfLines={1}>
-                {props.title}
-              </Text>
-            </View>
+            <>
+              <View style={{ ...styles.iconTitle1, }}>
+                <Text
+                  allowFontScaling={false}
+                  style={{ ...styles.toolbarTitle, color: themecolor.TXTWHITE, }}
+                  numberOfLines={1}>
+                  {props.title}
+                </Text>
+              </View>
+              {props.title == "Search" ?
+                <View style={{ ...styles.iconViewCont, }}></View> 
+                :
+                <TouchableOpacity activeOpacity={0.5}
+                  onPress={() => navigation.navigate('Search')} style={{ ...styles.iconViewCont, }}>
+                  <Icon name="search" size={22} color={themecolor.TXTWHITE} />
+                </TouchableOpacity>
+              }
+            </>
+
           )}
 
 

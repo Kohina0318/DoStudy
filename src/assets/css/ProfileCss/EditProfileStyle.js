@@ -132,7 +132,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
   },
-    
+  widths:
+  { width: width * 0.82 },
+heights1:
+  { height: 20 },
+picker:
+{
+  fontSize: 13,
+  color: '#333',
+  fontWeight: 'bold',
+  height: 10,
+},
+picker1:
+  { color: '#333', fontWeight: 'bold' },
+
 });
 
 export {styles};
